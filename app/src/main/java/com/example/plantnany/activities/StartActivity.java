@@ -28,10 +28,10 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
         viewPager = findViewById(R.id.info_view_pager);
         list = new ArrayList<>();
-        list.add(new WaterInfoFragment());
+        list.add(new ActivityInfoFragment());
         list.add(new ReminderInfoFragment());
         list.add(new WeightInfoFragment());
-        list.add(new ActivityInfoFragment());
+        list.add(new WaterInfoFragment());
 
         adapter = new InfoStatePagerAdapter(getSupportFragmentManager(), list);
         viewPager.setAdapter(adapter);
