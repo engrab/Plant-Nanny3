@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.PlantNany" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.PlantNany" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -14,25 +14,10 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.PlantNany.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
 
     <style name="Theme.PlantNany.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.PlantNany.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-    <style name="TextInputLayoutAppearance">
-        <item name="android:background">@drawable/textinput_bg</item>
-        <item name="errorTextAppearance">@style/ErrorText</item>
-        <item name="hintTextAppearance">@style/HintText</item>
-    </style>
-    <style name="ErrorText">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@android:color/holo_red_light</item>
-    </style>
-    <style name="HintText">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@android:color/white</item>
-    </style>
+
+
 </resources>

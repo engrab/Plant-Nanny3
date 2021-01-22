@@ -12,26 +12,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PlantNany">
-        <activity android:name=".activities.StartActivity"></activity>
         <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713" />
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
 
-        <activity
-            android:name=".activities.SplashScreenActivity"
-            android:theme="@style/Theme.PlantNany.NoActionBar">
+        <activity android:name=".activities.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".activities.StartActivity" />
+
         <activity android:name=".activities.MainActivity" />
-        <activity
-            android:name=".activities.InitUserInfoActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.PlantNany.NoActionBar"></activity>
+
     </application>
 
 </manifest>
