@@ -33,6 +33,12 @@ public class ReminderInfoFragment extends Fragment {
                 StartActivity.viewPager.setCurrentItem(2);
             }
         });
+        inflate.findViewById(R.id.btn_remind_me).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StartActivity.viewPager.setCurrentItem(2);
+            }
+        });
         return inflate;
     }
 }

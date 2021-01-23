@@ -1,17 +1,28 @@
 package com.example.plantnany.infoFragments;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.plantnany.R;
+import com.example.plantnany.activities.MainActivity;
+
+import java.util.Set;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class WaterInfoFragment extends Fragment implements View.OnClickListener {
@@ -19,9 +30,12 @@ public class WaterInfoFragment extends Fragment implements View.OnClickListener 
 
     ImageView sedentary, moderateActive, vigorouslyActive, extemelyActive;
     TextView exerciseDesc;
+    Button calculateGoal;
+    Context context;
 
     public WaterInfoFragment() {
         // Required empty public constructor
+        context = getActivity();
     }
 
 
@@ -36,11 +50,13 @@ public class WaterInfoFragment extends Fragment implements View.OnClickListener 
         moderateActive = inflate.findViewById(R.id.iv_moderate_active);
         vigorouslyActive = inflate.findViewById(R.id.iv_vigorously_active);
         extemelyActive = inflate.findViewById(R.id.iv_extremely_active);
+        calculateGoal = inflate.findViewById(R.id.btn_calc_goal);
 
         sedentary.setOnClickListener(this::onClick);
         moderateActive.setOnClickListener(this::onClick);
         vigorouslyActive.setOnClickListener(this::onClick);
         extemelyActive.setOnClickListener(this::onClick);
+        calculateGoal.setOnClickListener(this::onClick);
         return inflate;
     }
 
@@ -84,6 +100,15 @@ public class WaterInfoFragment extends Fragment implements View.OnClickListener 
                 sedentary.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
 
                 break;
+
+            case R.id.btn_calc_goal:
+
+                SharedPreferences.Editor editor = this.getActivity().getSharedPreferences("SharedPref",Context.MODE_PRIVATE).edit();
+                editor.putBoolean("intro", true);
+                editor.apply();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
         }
     }
 }

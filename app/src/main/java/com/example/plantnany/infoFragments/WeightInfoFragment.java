@@ -8,23 +8,24 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.plantnany.R;
+import com.example.plantnany.activities.StartActivity;
 
 
 public class WeightInfoFragment extends Fragment {
 
 
     double kg = 60;
+    double lb = 132;
     ImageView sub, add;
     TextView weight;
     RadioButton radKg, radLb;
-
-
-
+    RadioGroup mRadGroup;
 
 
     public WeightInfoFragment() {
@@ -42,6 +43,27 @@ public class WeightInfoFragment extends Fragment {
         weight = inflate.findViewById(R.id.iv_weight);
         radKg = inflate.findViewById(R.id.rad_kg);
         radLb = inflate.findViewById(R.id.rad_lb);
+        mRadGroup = inflate.findViewById(R.id.radio_group_weight);
+
+        mRadGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                switch (checkedId) {
+                    case R.id.rad_kg:
+
+                        kg = lb * 0.45359237;
+                        weight.setText(String.valueOf(Math.round(kg)));
+                        break;
+
+                    case R.id.rad_lb:
+                        lb = kg / 0.45359237;
+                        weight.setText(String.valueOf(Math.round(lb)));
+                        break;
+
+                }
+            }
+        });
 
         radKg.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -54,28 +76,35 @@ public class WeightInfoFragment extends Fragment {
         sub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                kg--;
+
 
                 if (radKg.isChecked()) {
-                    weight.setText(String.valueOf(kg));
-                } else  if (radLb.isChecked()){
-                    double v1 = kg / 0.45359237;
+                    kg--;
+                    weight.setText(String.valueOf(Math.round(kg)));
+                } else if (radLb.isChecked()) {
 
-                    weight.setText(String.valueOf((int) (v1)));
+                    lb = lb - 2;
+                    weight.setText(String.valueOf(Math.round(lb)));
                 }
             }
         });
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                kg++;
-                if (radKg.isChecked()) {
-                    weight.setText(String.valueOf(kg));
-                } else if (radLb.isChecked()){
-                    double v1 = kg / 0.45359237;
 
-                    weight.setText(String.valueOf((int) (v1)));
+                if (radKg.isChecked()) {
+                    kg++;
+                    weight.setText(String.valueOf(Math.round(kg)));
+                } else if (radLb.isChecked()) {
+                    lb = lb + 2;
+                    weight.setText(String.valueOf(Math.round(lb)));
                 }
+            }
+        });
+        inflate.findViewById(R.id.btn_next).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StartActivity.viewPager.setCurrentItem(3);
             }
         });
         return inflate;

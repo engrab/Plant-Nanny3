@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -37,10 +38,16 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        SharedPreferences sharedPreferences = getSharedPreferences("SharedPref", MODE_PRIVATE);
+        boolean intro = sharedPreferences.getBoolean("intro", false);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashScreenActivity.this, StartActivity.class));
+                if (intro) {
+                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                } else {
+                    startActivity(new Intent(SplashScreenActivity.this, StartActivity.class));
+                }
             }
         }, 7000);
     }
