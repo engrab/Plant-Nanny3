@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.example.plantnany.R;
+import com.example.plantnany.activities.StartActivity;
 
 
 public class ReminderInfoFragment extends Fragment {
@@ -24,6 +25,14 @@ public class ReminderInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_reminder_info, container, false);
+        View inflate = inflater.inflate(R.layout.fragment_reminder_info, container, false);
+
+        inflate.findViewById(R.id.btn_skip).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StartActivity.viewPager.setCurrentItem(2);
+            }
+        });
+        return inflate;
     }
 }

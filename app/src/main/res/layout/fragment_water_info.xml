@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-
+    android:orientation="vertical"
     tools:context=".infoFragments.WaterInfoFragment">
 
     <RelativeLayout
         android:id="@+id/rl_first"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="0dp"
+        android:layout_weight="2"
         android:background="#4FBDF2"
         android:orientation="vertical">
 
         <RelativeLayout
-            android:layout_centerInParent="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
 
             <LinearLayout
-                android:gravity="center"
                 android:id="@+id/ll_first"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="150dp"
@@ -39,18 +40,19 @@
 
 
                         <ImageView
+                            android:id="@+id/iv_sedentary"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_sedentary"/>
+                            android:src="@drawable/ic_sedentary" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight=".2"
                             android:gravity="center"
-                            android:textColor="@color/white"
-                            android:text="Sedentary"/>
+                            android:text="Sedentary"
+                            android:textColor="@color/white" />
 
                     </LinearLayout>
 
@@ -58,7 +60,7 @@
 
                 <TextView
                     android:layout_width="50dp"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="150dp"
@@ -73,18 +75,19 @@
 
 
                         <ImageView
+                            android:id="@+id/iv_moderate_active"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_moderately_active"/>
+                            android:src="@drawable/ic_moderately_active" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight=".2"
                             android:gravity="center"
-                            android:textColor="@color/white"
-                            android:text="Moderate Active"/>
+                            android:text="Moderate Active"
+                            android:textColor="@color/white" />
 
                     </LinearLayout>
 
@@ -92,12 +95,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_first"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:layout_below="@id/ll_first"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="150dp"
@@ -112,25 +115,27 @@
 
 
                         <ImageView
+                            android:id="@+id/iv_vigorously_active"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_vigorously_active"/>
+                            android:src="@drawable/ic_vigorously_active" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight=".2"
                             android:gravity="center"
-                            android:textColor="@color/white"
-                            android:text="Vigorously Active"/>
+                            android:text="Vigorously Active"
+                            android:textColor="@color/white" />
 
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
+
                 <TextView
                     android:layout_width="50dp"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="150dp"
@@ -145,18 +150,19 @@
 
 
                         <ImageView
+                            android:id="@+id/iv_extremely_active"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_estremely_active"/>
+                            android:src="@drawable/ic_estremely_active" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight=".2"
                             android:gravity="center"
-                            android:textColor="@color/white"
-                            android:text="Extremely Active"/>
+                            android:text="Extremely Active"
+                            android:textColor="@color/white" />
 
                     </LinearLayout>
 
@@ -165,36 +171,46 @@
         </RelativeLayout>
 
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center">
+
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="Activity Level"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_exsercise_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView7"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="Sedentary: Almost no exercise"
+            android:textSize="16sp" />
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_exsercise_desc"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_start_background"
+            android:text="Calculate your goal"
+            android:textColor="@color/white" />
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rl_first"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="Activity Level"
-        android:textSize="25sp"
-        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textView7"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="Sedentary: Almost no exercise"
-        android:textSize="16sp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textView8"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="20dp"
-        android:text="Calculate your goal" />
-
-</RelativeLayout>
+</LinearLayout>
