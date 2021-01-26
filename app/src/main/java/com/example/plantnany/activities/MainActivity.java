@@ -1,6 +1,5 @@
 package com.example.plantnany.activities;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -34,8 +33,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.sound1);
-        playMusic();
+        SharedPreferences sharedPreferences = getSharedPreferences(PLAY_MUSIC, MODE_PRIVATE);
+        playMusic(sharedPreferences.getBoolean(KEY_MUSIC, true));
 
 
         //getting bottom navigation view and attaching the listener
@@ -43,22 +42,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         navigation.setOnNavigationItemSelectedListener(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-    public void playMusic() {
+    }
 
-        SharedPreferences sharedPreferences = getSharedPreferences(PLAY_MUSIC, MODE_PRIVATE);
+    public void playMusic(boolean bool) {
 
-        if (sharedPreferences.getBoolean(PLAY_MUSIC, true)) {
-            if (mediaPlayer != null){
-                mediaPlayer.setLooping(true);
-                mediaPlayer.start();
-            }
-            else {
-                mediaPlayer = MediaPlayer.create(this, R.raw.sound1);
-                mediaPlayer.setLooping(true);
-                mediaPlayer.start();
-            }
+
+        if (bool) {
+            Log.d(TAG, "playMusic: " + bool);
+            mediaPlayer = MediaPlayer.create(this, R.raw.sound1);
+            mediaPlayer.setLooping(true);
+            mediaPlayer.start();
         } else {
+            Log.d(TAG, "playMusic: " + bool);
             if (mediaPlayer != null) {
 
                 mediaPlayer.stop();
@@ -114,8 +113,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     protected void onDestroy() {
-        mediaPlayer.stop();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        mediaPlayer.stop();
+        super.onStop();
+
     }
 
     @Override
@@ -124,6 +129,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         SharedPreferences.Editor editor = getSharedPreferences(PLAY_MUSIC, MODE_PRIVATE).edit();
         editor.putBoolean(KEY_MUSIC, bool);
         editor.apply();
-        playMusic();
+        playMusic(bool);
     }
 }

@@ -63,10 +63,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        Log.d(TAG, "onCreateView: ");
         init(view);
         initListener();
         mediaPlayerListener();
         callback = this;
+
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(PLAY_MUSIC, Context.MODE_PRIVATE);
 
         mMusicSwitch.setChecked(sharedPreferences.getBoolean(KEY_MUSIC, true));
@@ -74,6 +76,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         mMusicSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.d(TAG, "onCheckedChanged: "+isChecked);
                 mListener.musicPlaying(isChecked);
             }
         });
