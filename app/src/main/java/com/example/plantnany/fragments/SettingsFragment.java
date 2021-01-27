@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -76,7 +77,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         mMusicSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d(TAG, "onCheckedChanged: "+isChecked);
+                Log.d(TAG, "onCheckedChanged: " + isChecked);
                 mListener.musicPlaying(isChecked);
             }
         });
@@ -128,7 +129,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         switch (v.getId()) {
 
             case R.id.ll_privacy_policy:
-                AppUtils.soundButtonClick(getActivity(), true);
+                MediaPlayer mediaPlayer = MediaPlayer.create(getActivity(), R.raw.buttonclick);
+                mediaPlayer.start();
                 startActivity(new Intent(getActivity(), PrivacyPolicyActivity.class));
                 break;
             case R.id.ll_more_apps:

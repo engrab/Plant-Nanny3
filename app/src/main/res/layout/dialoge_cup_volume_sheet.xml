@@ -81,7 +81,7 @@
                 android:button="@android:color/transparent"
                 android:checked="true"
                 android:gravity="center"
-                android:text="Kg"
+                android:text="ml"
                 android:textColor="@drawable/radio_text_color" />
 
             <TextView
@@ -98,7 +98,7 @@
                 android:button="@android:color/transparent"
                 android:checked="false"
                 android:gravity="center"
-                android:text="lb"
+                android:text="oz"
                 android:textColor="@drawable/radio_text_color" />
 
             <TextView
@@ -141,6 +141,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight=".5"
+            android:gravity="center|end"
+            android:text="240ml"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/iv_defaul_cup"
@@ -229,6 +238,7 @@
                 app:srcCompat="@drawable/ic_baseline_navigate_next_24"
                 app:tint="@color/black" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -285,6 +295,7 @@
                 app:srcCompat="@drawable/ic_baseline_navigate_next_24"
                 app:tint="@color/black" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -343,6 +354,14 @@
         </LinearLayout>
 
     </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:text="You can set extra cups and use them quickly when recording your water consumption." />
 
 
 </LinearLayout>
