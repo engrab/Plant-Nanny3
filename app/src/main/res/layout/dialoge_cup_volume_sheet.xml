@@ -61,6 +61,7 @@
 
 
         <RadioGroup
+            android:id="@+id/radg_ml_oz"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -73,7 +74,7 @@
                 android:layout_weight="1" />
 
             <RadioButton
-                android:id="@+id/rad_kg"
+                android:id="@+id/rad_ml"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_weight="1"
@@ -90,7 +91,7 @@
                 android:layout_weight=".2" />
 
             <RadioButton
-                android:id="@+id/rad_lb"
+                android:id="@+id/rad_oz"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
@@ -143,11 +144,21 @@
             android:layout_weight="1" />
 
         <TextView
+            android:id="@+id/tv_default_cup"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight=".5"
             android:gravity="center|end"
-            android:text="240ml"
+            android:text="240"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/tv_defaul_unit"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight=".2"
+            android:gravity="center|start"
+            android:text="ml"
             android:textColor="@color/colorBlack"
             android:textSize="18sp" />
 
@@ -222,13 +233,24 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/tv_small_cup"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:gravity="center|start"
-                android:text="360ml"
+                android:text="360"
                 android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_small_unit"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight=".2"
+                android:gravity="center|start"
+                android:text="ml"
+                android:textColor="@color/colorBlack"
                 android:textSize="18sp" />
 
             <ImageView
@@ -279,13 +301,24 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/tv_medium_cup"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:gravity="center|start"
-                android:text="480ml"
+                android:text="480"
                 android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_medium_unit"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight=".2"
+                android:gravity="center|start"
+                android:text="ml"
+                android:textColor="@color/colorBlack"
                 android:textSize="18sp" />
 
             <ImageView
@@ -336,13 +369,24 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/tv_large_cup"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:gravity="center|start"
-                android:text="600ml"
+                android:text="600"
                 android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_large_unit"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight=".2"
+                android:gravity="center|start"
+                android:text="ml"
+                android:textColor="@color/colorBlack"
                 android:textSize="18sp" />
 
             <ImageView

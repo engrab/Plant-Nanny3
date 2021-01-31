@@ -29,6 +29,7 @@ import com.example.plantnany.activities.PrivacyPolicyActivity;
 import com.example.plantnany.dialoge.CupVolumeBottomDialoge;
 import com.example.plantnany.dialoge.DailyGoalBottomDialoge;
 import com.example.plantnany.dialoge.LanguageBottomDialoge;
+import com.example.plantnany.dialoge.WaterReminderBottomDialoge;
 import com.example.plantnany.utils.AppUtils;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -39,7 +40,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
 
     private static final String TAG = "SettingsFragment";
     LinearLayout mPrivacyPolicy, mMoreApps, mShareApp, mRateUs, mFollowUs, mMusic, mSoundEffect, mLanguage,
-            mDailyGoal, mCupVolume;
+            mDailyGoal, mCupVolume, llReminder;
     SwitchCompat mMusicSwitch;
     private MusicPlayingListener mListener;
     ImageView mReminder;
@@ -98,6 +99,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         mReminder.setOnClickListener(this);
         mDailyGoal.setOnClickListener(this);
         mCupVolume.setOnClickListener(this);
+        llReminder.setOnClickListener(this);
     }
 
     private void mediaPlayerListener() {
@@ -121,6 +123,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         mSelectedLangName = view.findViewById(R.id.tv_language_name);
         mDailyGoal = view.findViewById(R.id.ll_daily_goal);
         mCupVolume = view.findViewById(R.id.ll_cup_volume);
+        llReminder = view.findViewById(R.id.ll_reminder);
     }
 
     @Override
@@ -129,8 +132,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         switch (v.getId()) {
 
             case R.id.ll_privacy_policy:
-                MediaPlayer mediaPlayer = MediaPlayer.create(getActivity(), R.raw.buttonclick);
-                mediaPlayer.start();
                 startActivity(new Intent(getActivity(), PrivacyPolicyActivity.class));
                 break;
             case R.id.ll_more_apps:
@@ -194,6 +195,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
                 CupVolumeBottomDialoge cupVolumeBottomDialoge = new CupVolumeBottomDialoge();
                 cupVolumeBottomDialoge.show(getChildFragmentManager(), "cupvolume");
                 break;
+
+            case R.id.ll_reminder:
+
+                WaterReminderBottomDialoge waterReminderBottomDialoge = new WaterReminderBottomDialoge();
+                waterReminderBottomDialoge.show(getChildFragmentManager(), "waterreminder");
 
 
         }
