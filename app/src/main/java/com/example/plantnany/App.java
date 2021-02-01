@@ -1,6 +1,6 @@
 package com.example.plantnany;
 
-import android.content.SharedPreferences;
+
 import android.media.MediaPlayer;
 
 import androidx.multidex.MultiDex;
@@ -16,8 +16,8 @@ public class App extends MultiDexApplication {
         super.onCreate();
         MultiDex.install(getApplicationContext());
 
-    }
 
+    }
 
 
 }

@@ -88,6 +88,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:background="@drawable/btn_background"
+                            android:padding="5dp"
                             app:srcCompat="@drawable/ic_baseline_music_note_24" />
 
                         <TextView
@@ -122,6 +123,7 @@
                         android:id="@+id/ll_sound_effect"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -131,6 +133,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:background="@drawable/btn_background"
+                            android:padding="5dp"
                             app:srcCompat="@drawable/ic_baseline_volume_up_24" />
 
                         <TextView
@@ -159,6 +162,7 @@
                         android:id="@+id/ll_language"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
                         android:orientation="horizontal">
 
@@ -169,6 +173,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:background="@drawable/btn_background"
+                            android:padding="5dp"
                             app:srcCompat="@drawable/ic_baseline_language_24" />
 
                         <TextView
@@ -185,11 +190,11 @@
                             android:id="@+id/tv_language_name"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
+                            android:layout_gravity="end"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
+                            android:gravity="end"
                             android:text="English"
                             android:textSize="20sp" />
 
@@ -249,6 +254,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:background="@drawable/btn_background"
+                            android:padding="5dp"
                             app:srcCompat="@drawable/ic_baseline_speed_24" />
 
                         <TextView
@@ -289,6 +295,7 @@
                         android:id="@+id/ll_cup_volume"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -298,6 +305,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:background="@drawable/btn_background"
+                            android:padding="5dp"
                             app:srcCompat="@drawable/ic_baseline_hourglass_bottom_24" />
 
                         <TextView
@@ -338,6 +346,7 @@
                         android:id="@+id/ll_reminder"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
                         android:orientation="horizontal">
 
@@ -348,6 +357,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:background="@drawable/btn_background"
+                            android:padding="5dp"
                             app:srcCompat="@drawable/ic_baseline_notification_important_24" />
 
                         <TextView
@@ -426,6 +436,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:background="@drawable/login_background"
+                            android:padding="5dp"
                             app:srcCompat="@drawable/ic_baseline_person_search_24" />
 
                         <TextView
@@ -486,6 +497,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:background="@drawable/abount_background"
+                            android:padding="5dp"
                             app:srcCompat="@drawable/ic_baseline_security_24" />
 
                         <TextView
@@ -517,6 +529,7 @@
                         android:id="@+id/ll_follow_us"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -526,6 +539,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:background="@drawable/abount_background"
+                            android:padding="5dp"
                             app:srcCompat="@drawable/ic_outline_facebook_24" />
 
                         <TextView
@@ -545,6 +559,7 @@
                         android:id="@+id/ll_rate_us"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -554,6 +569,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:background="@drawable/abount_background"
+                            android:padding="5dp"
                             app:srcCompat="@drawable/ic_baseline_star_rate_24" />
 
                         <TextView
@@ -573,6 +589,7 @@
                         android:id="@+id/ll_share_app"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -581,6 +598,7 @@
                             android:layout_gravity="center"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
+                            android:padding="5dp"
                             android:background="@drawable/abount_background"
                             app:srcCompat="@drawable/ic_baseline_share_24" />
 
@@ -601,6 +619,7 @@
                         android:id="@+id/ll_more_apps"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -610,6 +629,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:background="@drawable/abount_background"
+                            android:padding="5dp"
                             app:srcCompat="@drawable/ic_baseline_more_24" />
 
                         <TextView
@@ -630,6 +650,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -639,6 +660,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:background="@drawable/abount_background"
+                            android:padding="5dp"
                             app:srcCompat="@drawable/ic_baseline_security_24" />
 
                         <TextView

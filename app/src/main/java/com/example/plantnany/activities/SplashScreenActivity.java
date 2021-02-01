@@ -12,15 +12,16 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.plantnany.R;
+import com.example.plantnany.services.MusicService;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-
     public static final String PLAY_MUSIC = "play_music";
     public static final String KEY_MUSIC = "key_music";
+
     private static final String TAG = "SplashScreenActivity";
     MediaPlayer mediaPlayer;
 
@@ -33,6 +34,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility(uiOptions);
 
         setContentView(R.layout.activity_splash_screen);
+        startService(new Intent(this, MusicService.class));
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override

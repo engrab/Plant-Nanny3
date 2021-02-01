@@ -17,7 +17,6 @@ import androidx.annotation.Nullable;
 import com.example.plantnany.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import static com.example.plantnany.fragments.SettingsFragment.setLangName;
 
 public class LanguageBottomDialoge extends BottomSheetDialogFragment {
 
@@ -54,7 +53,7 @@ public class LanguageBottomDialoge extends BottomSheetDialogFragment {
 
                 Toast.makeText(getContext(), "selected language " + mRadioButton.getText().toString(), Toast.LENGTH_SHORT).show();
 
-                setLangName(mRadioButton.getText().toString());
+                mListener.selectedLanguage(mRadioButton.getText().toString());
             }
         });
 

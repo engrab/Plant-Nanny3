@@ -19,7 +19,6 @@ import androidx.annotation.Nullable;
 import com.example.plantnany.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import static com.example.plantnany.fragments.SettingsFragment.setLangName;
 
 public class DailyGoalBottomDialoge extends BottomSheetDialogFragment implements View.OnClickListener {
 

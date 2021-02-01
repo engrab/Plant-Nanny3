@@ -205,9 +205,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
-    public static void setLangName(String langName) {
-        mSelectedLangName.setText(langName);
-    }
+
 
     @Override
     public void selectedLanguage(String lang) {
