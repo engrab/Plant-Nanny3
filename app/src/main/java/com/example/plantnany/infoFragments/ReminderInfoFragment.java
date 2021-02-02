@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
@@ -12,7 +13,6 @@ import com.example.plantnany.activities.StartActivity;
 
 
 public class ReminderInfoFragment extends Fragment {
-
 
 
     public ReminderInfoFragment() {
@@ -37,6 +37,7 @@ public class ReminderInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 StartActivity.viewPager.setCurrentItem(2);
+
             }
         });
         return inflate;

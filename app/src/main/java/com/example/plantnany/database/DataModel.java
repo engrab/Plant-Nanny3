@@ -11,8 +11,6 @@ import java.util.Date;
 public class DataModel {
 
     @PrimaryKey
-    private Date time;
-
     private Date date;
     private int weight;
     private  int targetWater;
@@ -22,8 +20,8 @@ public class DataModel {
     public DataModel() {
     }
 
-    public DataModel(Date time, Date date, int weight, int targetWater, int intakeWater, int seed) {
-        this.time = time;
+    public DataModel(Date date, int weight, int targetWater, int intakeWater, int seed) {
+
         this.date = date;
         this.weight = weight;
         this.targetWater = targetWater;
@@ -33,13 +31,7 @@ public class DataModel {
 
 
 
-    public Date getTime() {
-        return time;
-    }
 
-    public void setTime(Date time) {
-        this.time = time;
-    }
 
     public Date getDate() {
         return date;

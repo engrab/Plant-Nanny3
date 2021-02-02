@@ -13,12 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PlantNany">
-        <service
-            android:name=".services.MusicService"
-            android:enabled="true"
-            android:exported="false"/>
 
-        <activity android:name=".activities.PrivacyPolicyActivity"></activity> <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+
+        <activity android:name=".activities.PrivacyPolicyActivity">
+
+        </activity> <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713" />
@@ -32,6 +31,17 @@
         </activity>
         <activity android:name=".activities.StartActivity" />
         <activity android:name=".activities.MainActivity" />
+
+        <service
+            android:name=".services.MusicService"
+            android:enabled="true"
+            android:exported="false"/>
+        <receiver android:name="com.example.dailywater.target.recievers.NotifierReceiver" />
+        <receiver android:name="com.example.dailywater.target.recievers.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

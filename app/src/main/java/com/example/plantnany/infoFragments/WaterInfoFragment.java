@@ -1,12 +1,10 @@
 package com.example.plantnany.infoFragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -16,13 +14,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.plantnany.R;
 import com.example.plantnany.activities.MainActivity;
-
-import java.util.Set;
-
-import static android.content.Context.MODE_PRIVATE;
 
 
 public class WaterInfoFragment extends Fragment implements View.OnClickListener {
@@ -32,6 +27,7 @@ public class WaterInfoFragment extends Fragment implements View.OnClickListener 
     TextView exerciseDesc;
     Button calculateGoal;
     Context context;
+    int workHour = 0;
 
     public WaterInfoFragment() {
         // Required empty public constructor
@@ -52,11 +48,11 @@ public class WaterInfoFragment extends Fragment implements View.OnClickListener 
         extemelyActive = inflate.findViewById(R.id.iv_extremely_active);
         calculateGoal = inflate.findViewById(R.id.btn_calc_goal);
 
-        sedentary.setOnClickListener(this::onClick);
-        moderateActive.setOnClickListener(this::onClick);
-        vigorouslyActive.setOnClickListener(this::onClick);
-        extemelyActive.setOnClickListener(this::onClick);
-        calculateGoal.setOnClickListener(this::onClick);
+        sedentary.setOnClickListener(this);
+        moderateActive.setOnClickListener(this);
+        vigorouslyActive.setOnClickListener(this);
+        extemelyActive.setOnClickListener(this);
+        calculateGoal.setOnClickListener(this);
         return inflate;
     }
 
@@ -66,49 +62,58 @@ public class WaterInfoFragment extends Fragment implements View.OnClickListener 
         switch (v.getId()) {
 
             case R.id.iv_sedentary:
+                workHour = 2;
                 exerciseDesc.setText("Sedentary: Almost no exercise");
-                sedentary.setColorFilter(ContextCompat.getColor(getActivity(), R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-                moderateActive.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
-                vigorouslyActive.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
-                extemelyActive.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
+                sedentary.setColorFilter(ContextCompat.getColor(context, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
+                moderateActive.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
+                vigorouslyActive.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
+                extemelyActive.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
 
                 break;
             case R.id.iv_moderate_active:
+                workHour = 5;
                 exerciseDesc.setText("Moderately Active: Exercise 2 - 5 hours a week");
 
-                moderateActive.setColorFilter(ContextCompat.getColor(getActivity(), R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-                sedentary.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
-                vigorouslyActive.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
-                extemelyActive.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
+                moderateActive.setColorFilter(ContextCompat.getColor(context, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
+                sedentary.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
+                vigorouslyActive.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
+                extemelyActive.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
 
                 break;
             case R.id.iv_vigorously_active:
+                workHour = 7;
                 exerciseDesc.setText("Vigorously Active: Exercise 5 - 7 hours a week");
 
-                vigorouslyActive.setColorFilter(ContextCompat.getColor(getActivity(), R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-                moderateActive.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
-                sedentary.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
-                extemelyActive.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
+                vigorouslyActive.setColorFilter(ContextCompat.getColor(context, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
+                moderateActive.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
+                sedentary.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
+                extemelyActive.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
 
                 break;
             case R.id.iv_extremely_active:
+                workHour = 10;
                 exerciseDesc.setText("Extremely Active: Exercise more than 7 hour a week");
 
-                extemelyActive.setColorFilter(ContextCompat.getColor(getActivity(), R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-                moderateActive.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
-                vigorouslyActive.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
-                sedentary.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
+                extemelyActive.setColorFilter(ContextCompat.getColor(context, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
+                moderateActive.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
+                vigorouslyActive.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
+                sedentary.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
 
                 break;
 
             case R.id.btn_calc_goal:
 
-                SharedPreferences.Editor editor = this.getActivity().getSharedPreferences("SharedPref",Context.MODE_PRIVATE).edit();
+                SharedPreferences.Editor editor = this.context.getSharedPreferences("SharedPref", Context.MODE_PRIVATE).edit();
                 editor.putBoolean("intro", true);
                 editor.apply();
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                if (workHour == 0) {
+                    Toast.makeText(context, "Please Select any activity", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+
+                }
         }
     }
 }

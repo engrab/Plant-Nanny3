@@ -34,7 +34,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility(uiOptions);
 
         setContentView(R.layout.activity_splash_screen);
-        startService(new Intent(this, MusicService.class));
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override

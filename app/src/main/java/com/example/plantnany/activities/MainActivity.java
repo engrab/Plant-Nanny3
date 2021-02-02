@@ -1,5 +1,6 @@
 package com.example.plantnany.activities;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -12,7 +13,10 @@ import com.example.plantnany.fragments.GraphFragment;
 import com.example.plantnany.fragments.HomeFragment;
 import com.example.plantnany.fragments.PotsFragment;
 import com.example.plantnany.fragments.SettingsFragment;
+import com.example.plantnany.helper.AlarmHelper;
+import com.example.plantnany.sharedpref.SharedPreferencesManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setNotification();
+
         SharedPreferences sharedPreferences = getSharedPreferences(PLAY_MUSIC, MODE_PRIVATE);
         playMusic(sharedPreferences.getBoolean(KEY_MUSIC, true));
 
@@ -40,6 +46,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         //getting bottom navigation view and attaching the listener
         BottomNavigationView navigation = findViewById(R.id.nav_view);
         navigation.setOnNavigationItemSelectedListener(this);
+    }
+
+    private void setNotification() {
+        boolean notificationStatus = SharedPreferencesManager.getInstance(this).getNotificationStatus();
+        AlarmHelper alarm = new AlarmHelper();
+        if (!alarm.checkAlarm(this) && notificationStatus) {
+
+            alarm.setAlarm(this, SharedPreferencesManager.getInstance(this).getNotificationFrequency());
+        }
+
     }
 
     @Override

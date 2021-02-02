@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -20,9 +21,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Date;
 
-public class HomeFragment extends Fragment implements View.OnClickListener{
+public class HomeFragment extends Fragment implements View.OnClickListener {
 
     RelativeLayout screenShot;
+    ImageView mAddWater;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -35,19 +38,25 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     private void onclickListener() {
         screenShot.setOnClickListener(this);
+        mAddWater.setOnClickListener(this);
     }
 
     private void init(View view) {
 
         screenShot = view.findViewById(R.id.rl_camera);
+        mAddWater = view.findViewById(R.id.iv_add_water);
     }
 
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.rl_camera:
                 takeScreenshot();
+                break;
+
+            case R.id.iv_add_water:
+
                 break;
         }
     }

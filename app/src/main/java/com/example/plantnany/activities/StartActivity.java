@@ -22,6 +22,7 @@ public class StartActivity extends AppCompatActivity {
     public static ViewPager viewPager;
     private InfoStatePagerAdapter adapter;
     private List<Fragment> list;
+    public static final String CALCULATE_GOAL_KEY = "Calculate_goal";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
