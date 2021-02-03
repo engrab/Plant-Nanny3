@@ -1,4 +1,4 @@
-package com.example.plantnany.dialoge;
+package com.example.plantnany.bottomdialoge;
 
 
 import android.os.Bundle;

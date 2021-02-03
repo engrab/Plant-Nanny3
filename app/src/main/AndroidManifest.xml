@@ -36,8 +36,8 @@
             android:name=".services.MusicService"
             android:enabled="true"
             android:exported="false"/>
-        <receiver android:name="com.example.dailywater.target.recievers.NotifierReceiver" />
-        <receiver android:name="com.example.dailywater.target.recievers.BootReceiver">
+        <receiver android:name="com.example.plantnany.receivers.NotifierReceiver" />
+        <receiver android:name="com.example.plantnany.receivers.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

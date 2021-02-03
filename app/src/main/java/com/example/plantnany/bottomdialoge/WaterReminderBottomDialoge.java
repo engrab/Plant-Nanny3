@@ -1,14 +1,13 @@
-package com.example.plantnany.dialoge;
+package com.example.plantnany.bottomdialoge;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.example.plantnany.R;
+import com.example.plantnany.activities.MainActivity;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -24,6 +24,8 @@ public class WaterReminderBottomDialoge extends BottomSheetDialogFragment {
     SwitchCompat mReminder;
     TextView reminderDesc;
     ImageView cutomReminder;
+    private NotificationStatusListener notificationStatusListener;
+    private NotificationFrequencyListener notificationFrequencyListener;
 
 
     public WaterReminderBottomDialoge() {
@@ -58,8 +60,9 @@ public class WaterReminderBottomDialoge extends BottomSheetDialogFragment {
         mReminder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                notificationStatusListener.notificationStatus(isChecked);
+
                 if (isChecked) {
-                    SharedPreferencesManager.getInstance(getActivity()).setNotificationStatus(true);
                     view.findViewById(R.id.rad_times).setVisibility(View.VISIBLE);
                     view.findViewById(R.id.ll_custome).setVisibility(View.VISIBLE);
                 } else {
@@ -70,13 +73,14 @@ public class WaterReminderBottomDialoge extends BottomSheetDialogFragment {
                 switch (buttonView.getId()) {
 
                     case R.id.rad_two_hour:
-                        SharedPreferencesManager.getInstance(getActivity()).setNotificationFrequency(120);
+                        notificationFrequencyListener.notificationFrequency(120);
+
                         break;
                     case R.id.rad_four_hour:
-                        SharedPreferencesManager.getInstance(getActivity()).setNotificationFrequency(240);
+                        notificationFrequencyListener.notificationFrequency(240);
                         break;
                     case R.id.rad_six_hour:
-                        SharedPreferencesManager.getInstance(getActivity()).setNotificationFrequency(630);
+                        notificationFrequencyListener.notificationFrequency(630);
                         break;
                 }
             }
@@ -84,6 +88,22 @@ public class WaterReminderBottomDialoge extends BottomSheetDialogFragment {
 
 
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof NotificationStatusListener){
+            notificationStatusListener = (NotificationStatusListener) context;
+        }
+    }
+
+    public interface NotificationStatusListener{
+        void notificationStatus(boolean bool);
+    }
+
+    public interface NotificationFrequencyListener{
+        void notificationFrequency(int frequency);
     }
 
 

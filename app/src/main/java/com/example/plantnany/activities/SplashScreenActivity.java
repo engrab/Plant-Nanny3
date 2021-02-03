@@ -13,17 +13,16 @@ import android.view.View;
 
 import com.example.plantnany.R;
 import com.example.plantnany.services.MusicService;
+import com.example.plantnany.sharedpref.SharedPreferencesManager;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-    public static final String PLAY_MUSIC = "play_music";
-    public static final String KEY_MUSIC = "key_music";
 
     private static final String TAG = "SplashScreenActivity";
-    MediaPlayer mediaPlayer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +48,10 @@ public class SplashScreenActivity extends AppCompatActivity {
     private void playMusic() {
 
 
-        SharedPreferences sharedPreferences = getSharedPreferences(PLAY_MUSIC, MODE_PRIVATE);
-        boolean isFirstTime = sharedPreferences.getBoolean(KEY_MUSIC, true);
 
-        if (isFirstTime) {
+        if (SharedPreferencesManager.getInstance(this).getMusicPlay()) {
 
-            mediaPlayer = MediaPlayer.create(this, R.raw.sound1);
-            mediaPlayer.start();
+            startService(new Intent(this, MusicService.class));
         } else {
             Log.d(TAG, "playMusic: false");
         }
@@ -67,18 +63,16 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences sharedPreferences = getSharedPreferences("SharedPref", MODE_PRIVATE);
-        boolean intro = sharedPreferences.getBoolean("intro", false);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (intro) {
+                if (SharedPreferencesManager.getInstance(SplashScreenActivity.this).getIsFirstTime()) {
+
                     startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
-                    finish();
                 } else {
                     startActivity(new Intent(SplashScreenActivity.this, StartActivity.class));
-                    finish();
                 }
+                finish();
             }
         }, 7000);
     }
@@ -92,9 +86,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (mediaPlayer != null){
-            mediaPlayer.stop();
-        }
+
     }
 
     @Override

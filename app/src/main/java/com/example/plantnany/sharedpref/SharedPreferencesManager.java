@@ -14,6 +14,9 @@ public class SharedPreferencesManager {
     private static final String NOTIFICATION_TONE_URI_KEY = "NOTIFICATION_TONE_URI_KEY";
     private static final String NOTIFICATION_MSG_KEY = "NOTIFICATION_MSG_KEY";
     private static final String NOTIFICATION_STATUS_KEY = "NOTIFICATION_STATUS_KEY";
+    private static final String IS_FIRST_TIME_KEY = "is_first_time";
+    private static final String IS_MUSIC_PlayING_KEY = "is_music_play";
+    private static final String IS_BUTTON_CLICK_SOUND_KEY = "is_button_click_sound";
 
 
 
@@ -52,7 +55,7 @@ public class SharedPreferencesManager {
     }
 
     public String getNotificationMessage() {
-        return sharedPrefs.getString(NOTIFICATION_MSG_KEY, Resources.getSystem().getString(R.string.pref_notification_message_value));
+        return sharedPrefs.getString(NOTIFICATION_MSG_KEY, "Lets Drink some water");
     }
 
     public void setNotificationStatus(boolean bool){
@@ -63,5 +66,31 @@ public class SharedPreferencesManager {
 
     public boolean getNotificationStatus(){
         return sharedPrefs.getBoolean(NOTIFICATION_STATUS_KEY, true);
+    }
+
+    public void setIsFirstTime(boolean bool){
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putBoolean(IS_FIRST_TIME_KEY, bool);
+        editor.apply();
+    }
+    public boolean getIsFirstTime(){
+        return sharedPrefs.getBoolean(IS_FIRST_TIME_KEY, true);
+    }
+    public void setIsMusicPlay(boolean bool){
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putBoolean(IS_MUSIC_PlayING_KEY, bool);
+        editor.apply();
+    }
+    public boolean getMusicPlay(){
+        return sharedPrefs.getBoolean(IS_MUSIC_PlayING_KEY, true);
+    }
+
+    public void setButtonClickSound(boolean bool){
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putBoolean(IS_BUTTON_CLICK_SOUND_KEY, bool);
+        editor.apply();
+    }
+    public boolean getButtonClickSound(){
+        return sharedPrefs.getBoolean(IS_BUTTON_CLICK_SOUND_KEY, true);
     }
 }

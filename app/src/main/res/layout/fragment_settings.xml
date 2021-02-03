@@ -148,6 +148,7 @@
 
                         <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/sc_sound"
+                            android:checked="true"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"

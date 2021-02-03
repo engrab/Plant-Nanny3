@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.plantnany.R;
 import com.example.plantnany.activities.MainActivity;
+import com.example.plantnany.sharedpref.SharedPreferencesManager;
 
 
 public class WaterInfoFragment extends Fragment implements View.OnClickListener {
@@ -103,12 +104,10 @@ public class WaterInfoFragment extends Fragment implements View.OnClickListener 
 
             case R.id.btn_calc_goal:
 
-                SharedPreferences.Editor editor = this.context.getSharedPreferences("SharedPref", Context.MODE_PRIVATE).edit();
-                editor.putBoolean("intro", true);
-                editor.apply();
                 if (workHour == 0) {
                     Toast.makeText(context, "Please Select any activity", Toast.LENGTH_SHORT).show();
                 } else {
+                    SharedPreferencesManager.getInstance(getActivity()).setIsFirstTime(false);
                     Intent intent = new Intent(context, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

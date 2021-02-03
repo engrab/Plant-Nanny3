@@ -91,6 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
+            android:checked="true"
             android:text="Every 2 hours"
             android:textSize="18sp" />
 

@@ -1,4 +1,4 @@
-package com.example.plantnany.dialoge;
+package com.example.plantnany.bottomdialoge;
 
 
 import android.app.TimePickerDialog;
@@ -15,12 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantnany.R;
-import com.example.plantnany.adapters.BodyWeightAdapter;
 import com.example.plantnany.adapters.CustomTimeAdapter;
 import com.example.plantnany.model.TimeModel;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
