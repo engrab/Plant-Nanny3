@@ -47,10 +47,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         //getting bottom navigation view and attaching the listener
         BottomNavigationView navigation = findViewById(R.id.nav_view);
         navigation.setOnNavigationItemSelectedListener(this);
+
+        if (savedInstanceState == null) {
+            Fragment fragment = new HomeFragment(MainActivity.this);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.nav_host_fragment, fragment)
+                    .commit();
+        }
     }
 
     private void setNotification() {
-        if (SharedPreferencesManager.getInstance(this).getNotificationStatus()){
+        if (SharedPreferencesManager.getInstance(this).getNotificationStatus()) {
 
             AlarmHelper alarm = new AlarmHelper();
             if (!alarm.checkAlarm(this)) {
@@ -76,50 +83,53 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        Fragment fragment;
+        Fragment fragment = null;
 
         switch (item.getItemId()) {
             case R.id.navigation_home:
                 buttonCick.setOnsoundOnButtonClick();
                 fragment = new HomeFragment(MainActivity.this);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.nav_host_fragment, fragment)
+                        .commit();
                 break;
 
             case R.id.navigation_pots:
                 buttonCick.setOnsoundOnButtonClick();
                 fragment = new PotsFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.nav_host_fragment, fragment)
+                        .commit();
                 break;
 
             case R.id.navigation_all_plants:
                 buttonCick.setOnsoundOnButtonClick();
                 fragment = new AllPlantsFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.nav_host_fragment, fragment)
+                        .commit();
                 break;
 
             case R.id.navigation_setting:
                 buttonCick.setOnsoundOnButtonClick();
                 fragment = new SettingsFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.nav_host_fragment, fragment)
+                        .commit();
                 break;
             case R.id.navigation_graph:
                 buttonCick.setOnsoundOnButtonClick();
                 fragment = new GraphFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.nav_host_fragment, fragment)
+                        .commit();
                 break;
-            default:
-                fragment = new HomeFragment(MainActivity.this);
+
         }
 
-        return loadFragment(fragment);
-    }
-
-    private boolean loadFragment(Fragment fragment) {
-        //switching fragment
-        if (fragment != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.nav_host_fragment, fragment)
-                    .commit();
-            return true;
-        }
         return true;
     }
+
 
     @Override
     protected void onDestroy() {

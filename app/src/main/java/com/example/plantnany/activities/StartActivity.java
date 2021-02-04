@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StartActivity extends AppCompatActivity implements WeightInfoFragment.WeightListener,
-        WaterInfoFragment.TargetWaterListener {
+        WaterInfoFragment.TargetWaterListener, WaterInfoFragment.IntroListener {
 
     public static ViewPager viewPager;
     private InfoStatePagerAdapter adapter;
@@ -41,7 +41,7 @@ public class StartActivity extends AppCompatActivity implements WeightInfoFragme
         list.add(new ActivityInfoFragment());
         list.add(new ReminderInfoFragment());
         list.add(new WeightInfoFragment());
-        list.add(new WaterInfoFragment());
+        list.add(new WaterInfoFragment(StartActivity.this));
 
         adapter = new InfoStatePagerAdapter(getSupportFragmentManager(), list);
         viewPager.setAdapter(adapter);
@@ -55,5 +55,10 @@ public class StartActivity extends AppCompatActivity implements WeightInfoFragme
     @Override
     public void targetWater(double water) {
         SharedPreferencesManager.getInstance(this).setTargetWater(water);
+    }
+
+    @Override
+    public void isFirstTime(boolean isFirst) {
+        SharedPreferencesManager.getInstance(this).setIsFirstTime(isFirst);
     }
 }

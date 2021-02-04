@@ -48,7 +48,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     private void playMusic() {
 
 
-
         if (SharedPreferencesManager.getInstance(this).getMusicPlay()) {
 
             startService(new Intent(this, MusicService.class));
@@ -63,10 +62,11 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        boolean isFirstTime = SharedPreferencesManager.getInstance(SplashScreenActivity.this).getIsFirstTime();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (SharedPreferencesManager.getInstance(SplashScreenActivity.this).getIsFirstTime()) {
+                if (!isFirstTime) {
 
                     startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
                 } else {
