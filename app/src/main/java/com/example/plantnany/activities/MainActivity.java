@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case R.id.navigation_home:
                 buttonCick.setOnsoundOnButtonClick();
-                fragment = new HomeFragment();
+                fragment = new HomeFragment(MainActivity.this);
                 break;
 
             case R.id.navigation_pots:
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 fragment = new GraphFragment();
                 break;
             default:
-                fragment = new HomeFragment();
+                fragment = new HomeFragment(MainActivity.this);
         }
 
         return loadFragment(fragment);

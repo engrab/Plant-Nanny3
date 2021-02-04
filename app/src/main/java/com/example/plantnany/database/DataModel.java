@@ -11,49 +11,45 @@ import java.util.Date;
 public class DataModel {
 
     @PrimaryKey
-    private Date date;
-    private int weight;
-    private  int targetWater;
+    private long date;
+    private float weight;
+    private  float targetWater;
     private int intakeWater;
-    private int seed;
     @Ignore
     public DataModel() {
     }
 
-    public DataModel(Date date, int weight, int targetWater, int intakeWater, int seed) {
+    public DataModel(long date, float weight, float targetWater, int intakeWater) {
 
         this.date = date;
         this.weight = weight;
         this.targetWater = targetWater;
         this.intakeWater = intakeWater;
-        this.seed = seed;
+
     }
 
 
-
-
-
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
-    public int getWeight() {
+    public float getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(float weight) {
         this.weight = weight;
     }
 
-    public int getTargetWater() {
+    public float getTargetWater() {
         return targetWater;
     }
 
-    public void setTargetWater(int targetWater) {
+    public void setTargetWater(float targetWater) {
         this.targetWater = targetWater;
     }
 
@@ -65,11 +61,5 @@ public class DataModel {
         this.intakeWater = intakeWater;
     }
 
-    public int getSeed() {
-        return seed;
-    }
 
-    public void setSeed(int seed) {
-        this.seed = seed;
-    }
 }

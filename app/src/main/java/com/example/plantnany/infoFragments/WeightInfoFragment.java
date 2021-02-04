@@ -1,5 +1,6 @@
 package com.example.plantnany.infoFragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.plantnany.R;
@@ -25,6 +27,7 @@ public class WeightInfoFragment extends Fragment {
     TextView weight;
     RadioButton radKg, radLb;
     RadioGroup mRadGroup;
+    private WeightListener mWeightListener;
 
 
     public WeightInfoFragment() {
@@ -103,9 +106,23 @@ public class WeightInfoFragment extends Fragment {
         inflate.findViewById(R.id.btn_next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mWeightListener.weight(Double.parseDouble(weight.getText().toString()));
                 StartActivity.viewPager.setCurrentItem(3);
             }
         });
         return inflate;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (context instanceof WeightListener){
+            mWeightListener = (WeightListener) context;
+        }
+    }
+
+    public interface WeightListener{
+        void weight(double weight);
     }
 }

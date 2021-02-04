@@ -13,11 +13,13 @@ import com.example.plantnany.infoFragments.ActivityInfoFragment;
 import com.example.plantnany.infoFragments.ReminderInfoFragment;
 import com.example.plantnany.infoFragments.WaterInfoFragment;
 import com.example.plantnany.infoFragments.WeightInfoFragment;
+import com.example.plantnany.sharedpref.SharedPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StartActivity extends AppCompatActivity {
+public class StartActivity extends AppCompatActivity implements WeightInfoFragment.WeightListener,
+        WaterInfoFragment.TargetWaterListener {
 
     public static ViewPager viewPager;
     private InfoStatePagerAdapter adapter;
@@ -43,5 +45,15 @@ public class StartActivity extends AppCompatActivity {
 
         adapter = new InfoStatePagerAdapter(getSupportFragmentManager(), list);
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void weight(double weight) {
+        SharedPreferencesManager.getInstance(this).setWeight(weight);
+    }
+
+    @Override
+    public void targetWater(double water) {
+        SharedPreferencesManager.getInstance(this).setTargetWater(water);
     }
 }

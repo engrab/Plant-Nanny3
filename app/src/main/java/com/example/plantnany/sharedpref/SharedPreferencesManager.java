@@ -17,6 +17,9 @@ public class SharedPreferencesManager {
     private static final String IS_FIRST_TIME_KEY = "is_first_time";
     private static final String IS_MUSIC_PlayING_KEY = "is_music_play";
     private static final String IS_BUTTON_CLICK_SOUND_KEY = "is_button_click_sound";
+    private static final String REMINDER_TIME_KEY = "default_reminder_time";
+    private static final String WEIGHT_KEY = "weight_key";
+    private static final String TARGET_WATER_KEY = "target_water";
 
 
 
@@ -30,6 +33,7 @@ public class SharedPreferencesManager {
 
 
     public static synchronized SharedPreferencesManager getInstance(Context context) {
+
         if (instance == null)
             instance = new SharedPreferencesManager(context);
 
@@ -43,7 +47,7 @@ public class SharedPreferencesManager {
     }
 
     public int getNotificationFrequency() {
-        return sharedPrefs.getInt(NOTIFICATION_FREQUENCY_KEY, 60);
+        return sharedPrefs.getInt(NOTIFICATION_FREQUENCY_KEY, 120);
     }
 
     public boolean getNewMessage() {
@@ -92,5 +96,29 @@ public class SharedPreferencesManager {
     }
     public boolean getButtonClickSound(){
         return sharedPrefs.getBoolean(IS_BUTTON_CLICK_SOUND_KEY, true);
+    }
+    public void setDefaultReminderTime(int i){
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putInt(REMINDER_TIME_KEY, i);
+        editor.apply();
+    }
+    public int getDefaultReminderTime(){
+        return sharedPrefs.getInt(REMINDER_TIME_KEY, 1);
+    }
+    public void setWeight(double weight){
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putFloat(WEIGHT_KEY, (float) weight);
+        editor.apply();
+    }
+    public float getWeight(){
+        return sharedPrefs.getFloat(WEIGHT_KEY, 60.0f);
+    }
+    public void setTargetWater(double water){
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putFloat(TARGET_WATER_KEY, (float) water);
+        editor.apply();
+    }
+    public float getTargetWater(){
+        return sharedPrefs.getFloat(TARGET_WATER_KEY, 3300.0f);
     }
 }

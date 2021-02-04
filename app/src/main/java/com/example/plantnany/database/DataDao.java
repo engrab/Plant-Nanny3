@@ -13,11 +13,11 @@ public interface DataDao {
     @Query("SELECT * FROM user")
     List<DataModel> getAll();
 
-    @Query("SELECT * FROM user WHERE date IN (:userIds)")
-    List<DataModel> loadAllByIds(int[] userIds);
+    @Query("SELECT targetWater FROM user WHERE date= :date")
+    float getTargetWaterDB(long date);
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(DataModel... users);
+    void insertAll(DataModel users);
 
 }

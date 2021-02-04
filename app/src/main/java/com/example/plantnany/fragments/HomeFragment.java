@@ -1,5 +1,6 @@
 package com.example.plantnany.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -10,21 +11,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.plantnany.R;
+import com.example.plantnany.database.AppDataBase;
+import com.example.plantnany.database.DataModel;
+import com.example.plantnany.sharedpref.SharedPreferencesManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Date;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
     RelativeLayout screenShot;
     ImageView mAddWater;
+    private final AppDataBase appDataBase;
+    private DataModel dataModel;
+    private Date date = new Date();
+    private Executor executor = Executors.newSingleThreadExecutor();
+    float targetWaterDB;
+    TextView targerWaterInfo;
+
+    public HomeFragment(Context context) {
+        appDataBase = AppDataBase.getInstance(context);
+    }
 
     @Nullable
     @Override
@@ -45,6 +62,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         screenShot = view.findViewById(R.id.rl_camera);
         mAddWater = view.findViewById(R.id.iv_add_water);
+        targerWaterInfo = view.findViewById(R.id.tv_target_water_info);
     }
 
     @Override
@@ -56,6 +74,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.iv_add_water:
+
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        dataModel = new DataModel(date.getTime(),
+                                SharedPreferencesManager.getInstance(getActivity()).getWeight(),
+                                SharedPreferencesManager.getInstance(getActivity()).getTargetWater(), 240);
+
+                        appDataBase.dataDao().insertAll(dataModel);
+
+                        targetWaterDB = appDataBase.dataDao().getTargetWaterDB(date.getTime());
+                        targerWaterInfo.setText(String.valueOf(targetWaterDB));
+                    }
+                });
+
 
                 break;
         }
