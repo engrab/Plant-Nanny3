@@ -20,6 +20,7 @@ public class SharedPreferencesManager {
     private static final String REMINDER_TIME_KEY = "default_reminder_time";
     private static final String WEIGHT_KEY = "weight_key";
     private static final String TARGET_WATER_KEY = "target_water";
+    private static final String DEFAULT_WATER_VOLUME = "default_water";
 
 
 
@@ -113,6 +114,7 @@ public class SharedPreferencesManager {
     public float getWeight(){
         return sharedPrefs.getFloat(WEIGHT_KEY, 60.0f);
     }
+
     public void setTargetWater(double water){
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putFloat(TARGET_WATER_KEY, (float) water);
@@ -120,5 +122,13 @@ public class SharedPreferencesManager {
     }
     public float getTargetWater(){
         return sharedPrefs.getFloat(TARGET_WATER_KEY, 3300.0f);
+    }
+    public void setDefaultCupVolume(String  cupVolume){
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putString(DEFAULT_WATER_VOLUME, cupVolume);
+        editor.apply();
+    }
+    public String  getDefaultCupVolume(){
+        return sharedPrefs.getString(DEFAULT_WATER_VOLUME, 240+"");
     }
 }

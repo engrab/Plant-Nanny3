@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.plantnany.R;
+import com.example.plantnany.sharedpref.SharedPreferencesManager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 
@@ -21,6 +22,8 @@ public class DailyGoalBottomDialoge extends BottomSheetDialogFragment implements
     LinearLayout mBodyWeight, mHowCalGoal;
     SeekBar mSeekBar;
     TextView mActivityLevel;
+    TextView mDailyGoal, mWeight;
+
 
     public DailyGoalBottomDialoge() {
 
@@ -33,6 +36,8 @@ public class DailyGoalBottomDialoge extends BottomSheetDialogFragment implements
 
         View view = inflater.inflate(R.layout.dialoge_daily_goal_sheet, container, false);
         mBodyWeight = view.findViewById(R.id.ll_body_weight);
+        mWeight = view.findViewById(R.id.tv_total_weight);
+        mDailyGoal = view.findViewById(R.id.tv_daily_target_water);
         mActivityLevel = view.findViewById(R.id.tv_activity_level);
         mSeekBar = view.findViewById(R.id.seekBar);
         mHowCalGoal = view.findViewById(R.id.ll_how_calc_goal);
@@ -78,6 +83,12 @@ public class DailyGoalBottomDialoge extends BottomSheetDialogFragment implements
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mDailyGoal.setText(String.valueOf(SharedPreferencesManager.getInstance(getActivity()).getTargetWater()));
+        mWeight.setText(String.valueOf(SharedPreferencesManager.getInstance(getActivity()).getWeight()));
+    }
 
     @Override
     public void onClick(View v) {

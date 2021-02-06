@@ -269,6 +269,7 @@
                             android:textSize="20sp" />
 
                         <TextView
+                            android:id="@+id/tv_target_water"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
@@ -320,6 +321,7 @@
                             android:textSize="20sp" />
 
                         <TextView
+                            android:id="@+id/tv_default_cup_volume"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"

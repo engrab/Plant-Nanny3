@@ -118,6 +118,13 @@
 
     </RadioGroup>
 
+    <TextView
+        android:id="@+id/tv_reminder_statement"
+        android:text="Sleeping is alo important. Plant Nanny will only remind you between 8:00 AM to 10:00 PM."
+        android:layout_width="match_parent"
+        android:textColor="@color/black"
+        android:layout_height="wrap_content"/>
+
     <LinearLayout
         android:id="@+id/ll_custome"
         android:layout_width="match_parent"
@@ -146,7 +153,12 @@
             android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/tv_custom_time"
             android:layout_width="0dp"
+            android:text="12:00"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 

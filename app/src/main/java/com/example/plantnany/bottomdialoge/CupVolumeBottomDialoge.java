@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.plantnany.R;
+import com.example.plantnany.sharedpref.SharedPreferencesManager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 
@@ -27,6 +29,7 @@ public class CupVolumeBottomDialoge extends BottomSheetDialogFragment {
     double smallCup;
     double mediumCup;
     double largeCup;
+    LinearLayout mDefaultCupVolume;
 
     public CupVolumeBottomDialoge() {
 
@@ -51,6 +54,17 @@ public class CupVolumeBottomDialoge extends BottomSheetDialogFragment {
         mMediumUnit = view.findViewById(R.id.tv_medium_unit);
         mLargeCup = view.findViewById(R.id.tv_large_cup);
         mLargeUnit = view.findViewById(R.id.tv_large_unit);
+        mDefaultCupVolume = view.findViewById(R.id.ll_default_cup_volume);
+
+        mDefaultCup.setText(SharedPreferencesManager.getInstance(getActivity()).getDefaultCupVolume());
+        mDefaultCupVolume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                CupSettingBottomDialoge cupSettingBottomDialoge = new CupSettingBottomDialoge();
+                cupSettingBottomDialoge.show(getChildFragmentManager(), "custom_volume_setting_dialoge");
+            }
+        });
 
         mRadmloz.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override

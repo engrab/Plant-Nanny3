@@ -41,6 +41,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
     static TextView mSelectedLangName;
     public LanguageBottomDialoge.LanguageSelectListener callback;
     private Context context;
+    TextView mDefaultCupVolume, mTargerWater;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -49,10 +50,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         if (context instanceof MusicPlayingListener) {
             mMusicPlayListener = (MusicPlayingListener) context;
         }
-        if (context instanceof SoundClickListener){
+        if (context instanceof SoundClickListener) {
             mSoundListener = (SoundClickListener) context;
         }
-        this.context=context;
+        this.context = context;
     }
 
     public SettingsFragment() {
@@ -105,6 +106,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         mDailyGoal.setOnClickListener(this);
         mCupVolume.setOnClickListener(this);
         llReminder.setOnClickListener(this);
+
     }
 
     private void mediaPlayerListener() {
@@ -130,12 +132,15 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         mCupVolume = view.findViewById(R.id.ll_cup_volume);
         llReminder = view.findViewById(R.id.ll_reminder);
         mSoundSwitch = view.findViewById(R.id.sc_sound);
+        mDefaultCupVolume = view.findViewById(R.id.tv_default_cup_volume);
+        mTargerWater = view.findViewById(R.id.tv_target_water);
     }
 
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
+
 
             case R.id.ll_privacy_policy:
                 startActivity(new Intent(getActivity(), PrivacyPolicyActivity.class));
@@ -211,6 +216,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mDefaultCupVolume.setText(SharedPreferencesManager.getInstance(getActivity()).getDefaultCupVolume());
+        mTargerWater.setText(String.valueOf(SharedPreferencesManager.getInstance(getActivity()).getTargetWater()));
+    }
 
     @Override
     public void selectedLanguage(String lang) {
@@ -221,6 +232,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
     public interface MusicPlayingListener {
         void musicPlaying(boolean bool);
     }
+
     public interface SoundClickListener {
         void soundClick(boolean bool);
     }

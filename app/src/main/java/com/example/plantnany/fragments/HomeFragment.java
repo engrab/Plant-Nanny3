@@ -68,6 +68,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void onclickListener() {
         screenShot.setOnClickListener(this);
         mAddWater.setOnClickListener(this);
+        potsRedirect.setOnClickListener(this);
     }
 
     private void init(View view) {
@@ -86,6 +87,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             case R.id.iv_pots_redirect:
                 MainActivity.navigation.setSelectedItemId(R.id.navigation_pots);
+                Toast.makeText(getActivity(), "pots redirect hit", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.rl_camera:
