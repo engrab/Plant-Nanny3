@@ -1,10 +1,14 @@
 package com.example.plantnany.activities;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -33,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     private static final String TAG = "MainActivity";
     ButtonCick buttonCick;
+    public  static BottomNavigationView navigation;
 
 
     @Override
@@ -45,7 +50,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
         //getting bottom navigation view and attaching the listener
-        BottomNavigationView navigation = findViewById(R.id.nav_view);
+
+        navigation = findViewById(R.id.nav_view);
         navigation.setOnNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
@@ -53,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.nav_host_fragment, fragment)
                     .commit();
+            navigation.setSelectedItemId(R.id.navigation_home);
         }
     }
 
@@ -170,4 +177,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         SharedPreferencesManager.getInstance(this).setNotificationFrequency(frequency);
         setNotification();
     }
+
+
+
+
+
 }

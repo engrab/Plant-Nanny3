@@ -1,35 +1,45 @@
 package com.example.plantnany.fragments;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.plantnany.R;
+import com.example.plantnany.activities.MainActivity;
 import com.example.plantnany.database.AppDataBase;
 import com.example.plantnany.database.DataModel;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
+    private static final int REQUEST_STORAGE = 100;
+    private static final String TAG = "Mytag";
     RelativeLayout screenShot;
     ImageView mAddWater;
     private final AppDataBase appDataBase;
@@ -38,6 +48,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private Executor executor = Executors.newSingleThreadExecutor();
     float targetWaterDB;
     TextView targerWaterInfo;
+    ViewGroup viewGroup;
+    ImageView potsRedirect;
 
     public HomeFragment(Context context) {
         appDataBase = AppDataBase.getInstance(context);
@@ -63,14 +75,25 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         screenShot = view.findViewById(R.id.rl_camera);
         mAddWater = view.findViewById(R.id.iv_add_water);
         targerWaterInfo = view.findViewById(R.id.tv_target_water_info);
+        viewGroup = view.findViewById(R.id.relativeLayout3);
+        potsRedirect = view.findViewById(R.id.iv_pots_redirect);
     }
 
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
+
+            case R.id.iv_pots_redirect:
+                MainActivity.navigation.setSelectedItemId(R.id.navigation_pots);
+                break;
+
             case R.id.rl_camera:
-                takeScreenshot();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    permissionCheck();
+                } else {
+                    takeScreenshot();
+                }
                 break;
 
             case R.id.iv_add_water:
@@ -104,7 +127,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
 
             // create bitmap screen capture
-            View v1 = getActivity().getWindow().getDecorView().getRootView();
+            View v1 =  getActivity().getWindow().getDecorView().getRootView();
             v1.setDrawingCacheEnabled(true);
             Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
             v1.setDrawingCacheEnabled(false);
@@ -117,18 +140,47 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             outputStream.flush();
             outputStream.close();
 
-            openScreenshot(imageFile);
+            shareScreenShot(imageFile);
         } catch (Throwable e) {
             // Several error may come out with file handling or DOM
             e.printStackTrace();
         }
     }
 
-    private void openScreenshot(File imageFile) {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        Uri uri = Uri.fromFile(imageFile);
-        intent.setDataAndType(uri, "image/*");
-        startActivity(Intent.createChooser(intent, "choose one"));
+
+    private void shareScreenShot(File fileScreenShot){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        Uri uri = Uri.fromFile(fileScreenShot);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.app_name));
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(Intent.createChooser(intent, "Share via"));
+        }
+    }
+
+    public void permissionCheck() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_STORAGE);
+            } else {
+                takeScreenshot();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_STORAGE) {
+            if ((grantResults[0] == PackageManager.PERMISSION_GRANTED) && (grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
+
+                Log.d(TAG, "onRequestPermissionsResult: ");
+            } else {
+                Toast.makeText(getActivity(), "camera permission denied", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }
