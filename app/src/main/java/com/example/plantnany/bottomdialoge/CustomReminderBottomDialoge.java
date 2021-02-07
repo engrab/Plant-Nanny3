@@ -3,6 +3,7 @@ package com.example.plantnany.bottomdialoge;
 
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,20 +18,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.plantnany.R;
 import com.example.plantnany.adapters.CustomTimeAdapter;
 import com.example.plantnany.model.TimeModel;
+import com.example.plantnany.sharedpref.SharedPreferencesManager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import static com.example.plantnany.sharedpref.SharedPreferencesManager.*;
 
 public class CustomReminderBottomDialoge extends BottomSheetDialogFragment {
 
     ImageView addReminder;
     RecyclerView recyclerViewTime;
     List<TimeModel> mList;
-    int hour;
-    int mint;
-    boolean isEnable;
-
+    int hour = 8;
+    int mint = 0;
+    TimePickerDialog timePickerDialog;
+    CustomTimeAdapter customTimeAdapter;
 
 
     public CustomReminderBottomDialoge() {
@@ -54,26 +59,36 @@ public class CustomReminderBottomDialoge extends BottomSheetDialogFragment {
 
         addReminder = view.findViewById(R.id.iv_add_reminder);
         recyclerViewTime = view.findViewById(R.id.recycler_view_time);
+        view.findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
         addReminder.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Calendar mcurrentTime = Calendar.getInstance();
-                final int[] hour = {mcurrentTime.get(Calendar.HOUR_OF_DAY)};
-                int minute = mcurrentTime.get(Calendar.MINUTE);
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+
+                timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        hour[0] = hourOfDay;
+
+                        hour = hourOfDay;
                         mint = minute;
 
-                    }
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(0, 0, 0, hour, mint);
 
-                }, hour[0], minute, true);//Yes 24 hour time
-                mTimePicker.setTitle("Select Time");
-                mTimePicker.show();
+//                        time.setText(DateFormat.format("hh:mm aa", calendar));
+                        mList.add(new TimeModel(hour, mint));
+                        customTimeAdapter.notifyDataSetChanged();
+                        getInstance(getActivity()).setSafeReminderTime(mList);
+
+
+                    }
+                }, 12, 0, false);
+                timePickerDialog.show();
 
             }
         });
@@ -83,11 +98,13 @@ public class CustomReminderBottomDialoge extends BottomSheetDialogFragment {
     }
 
     private void setAdapterInRecycler() {
+        customTimeAdapter = new CustomTimeAdapter(getActivity(), mList);
         recyclerViewTime.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerViewTime.setAdapter(new CustomTimeAdapter(getActivity(), mList));
+        recyclerViewTime.setAdapter(customTimeAdapter);
     }
 
     private void timeList() {
-        mList.add(new TimeModel(hour, mint, true));
+        mList = new ArrayList<>();
+        mList = getInstance(getActivity()).getSafeReminderTime();
     }
 }

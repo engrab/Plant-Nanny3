@@ -6,6 +6,13 @@ import android.content.res.Resources;
 import android.media.RingtoneManager;
 
 import com.example.plantnany.R;
+import com.example.plantnany.model.TimeModel;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SharedPreferencesManager {
     private static final String APP_PREFS = "AppPrefsFile";
@@ -21,6 +28,9 @@ public class SharedPreferencesManager {
     private static final String WEIGHT_KEY = "weight_key";
     private static final String TARGET_WATER_KEY = "target_water";
     private static final String DEFAULT_WATER_VOLUME = "default_water";
+    private static final String SAFE_REMINDER_TIME_KEY = "safe_reminder_time";
+
+    private List<TimeModel> mList;
 
 
 
@@ -123,6 +133,7 @@ public class SharedPreferencesManager {
     public float getTargetWater(){
         return sharedPrefs.getFloat(TARGET_WATER_KEY, 3300.0f);
     }
+
     public void setDefaultCupVolume(String  cupVolume){
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(DEFAULT_WATER_VOLUME, cupVolume);
@@ -130,5 +141,23 @@ public class SharedPreferencesManager {
     }
     public String  getDefaultCupVolume(){
         return sharedPrefs.getString(DEFAULT_WATER_VOLUME, 240+"");
+    }
+    public void setSafeReminderTime(List<TimeModel> modelList){
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        Gson gson = new Gson();
+        String toJson = gson.toJson(modelList);
+        editor.putString(SAFE_REMINDER_TIME_KEY, toJson);
+        editor.apply();
+    }
+    public List<TimeModel>  getSafeReminderTime(){
+        Gson gson = new Gson();
+        String json = sharedPrefs.getString(SAFE_REMINDER_TIME_KEY, null);
+        Type type = new TypeToken<ArrayList<TimeModel>>() {}.getType();
+
+        if (mList == null){
+            mList = new ArrayList<>();
+        }
+        mList = gson.fromJson(json, type);
+        return mList;
     }
 }

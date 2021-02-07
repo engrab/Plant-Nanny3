@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantnany.R;
 import com.example.plantnany.model.CreatureModel;
+import com.example.plantnany.sharedpref.SharedPreferencesManager;
 
 import java.util.List;
 
@@ -38,6 +39,13 @@ public class BodyWeightAdapter extends RecyclerView.Adapter<BodyWeightAdapter.Vi
 
 
         holder.weight.setText(String.valueOf(mList.get(position)));
+        holder.weight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String weight = holder.weight.getText().toString();
+                SharedPreferencesManager.getInstance(mContext).setWeight(Double.parseDouble(weight));
+            }
+        });
 
     }
 

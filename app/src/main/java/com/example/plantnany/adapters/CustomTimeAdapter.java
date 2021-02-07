@@ -36,9 +36,8 @@ public class CustomTimeAdapter extends RecyclerView.Adapter<CustomTimeAdapter.Vi
 
 
 
-        holder.mint.setText(mList.get(position).getMint());
-        holder.hour.setText(mList.get(position).getHour());
-        holder.sw_time.setChecked(mList.get(position).isEnable());
+        holder.mint.setText(String.valueOf(mList.get(position).getMint()));
+        holder.hour.setText(String.valueOf(mList.get(position).getHour()));
 
 
     }
@@ -63,7 +62,7 @@ public class CustomTimeAdapter extends RecyclerView.Adapter<CustomTimeAdapter.Vi
         }
     }
     public void newAddeddata(int hour, int mint){
-        mList.add(new TimeModel(hour, mint, true));
+        mList.add(new TimeModel(hour, mint));
         notifyDataSetChanged();
     }
 }

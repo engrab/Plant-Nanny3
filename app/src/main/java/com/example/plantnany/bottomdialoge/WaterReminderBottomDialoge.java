@@ -38,7 +38,6 @@ public class WaterReminderBottomDialoge extends BottomSheetDialogFragment {
     RadioButton radTwoHour, radFourHour, radSixHour;
     LinearLayout customTime;
     int hour, mint;
-    TextView time;
 
     public WaterReminderBottomDialoge() {
 
@@ -56,7 +55,7 @@ public class WaterReminderBottomDialoge extends BottomSheetDialogFragment {
         reminderStatment = view.findViewById(R.id.tv_reminder_statement);
         mRadioGroupDefaultTime = view.findViewById(R.id.rad_times);
         customTime = view.findViewById(R.id.ll_custome);
-        time = view.findViewById(R.id.tv_custom_time);
+
 
 
         radTwoHour = view.findViewById(R.id.rad_two_hour);
@@ -75,22 +74,10 @@ public class WaterReminderBottomDialoge extends BottomSheetDialogFragment {
         customTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-                        hour = hourOfDay;
-                        mint = minute;
-
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.set(0, 0, 0, hour, mint);
-
-                        time.setText(DateFormat.format("hh:mm aa", calendar));
-
-
-                    }
-                }, 12, 0, false);
+                CustomReminderBottomDialoge customReminderBottomDialoge = new CustomReminderBottomDialoge();
+                customReminderBottomDialoge.show(getChildFragmentManager(), "customreminder");
             }
+
         });
 
         mRadioGroupDefaultTime.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -122,8 +109,7 @@ public class WaterReminderBottomDialoge extends BottomSheetDialogFragment {
         cutomReminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomReminderBottomDialoge customReminderBottomDialoge = new CustomReminderBottomDialoge();
-                customReminderBottomDialoge.show(getChildFragmentManager(), "customreminder");
+
             }
         });
 

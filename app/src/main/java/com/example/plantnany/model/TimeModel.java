@@ -4,15 +4,14 @@ public class TimeModel {
 
     private int hour;
     private int mint;
-    private boolean isEnable;
     public TimeModel(){
 
     }
 
-    public TimeModel(int hour, int mint, boolean isEnable) {
+    public TimeModel(int hour, int mint) {
         this.hour = hour;
         this.mint = mint;
-        this.isEnable = isEnable;
+
     }
 
     public int getHour() {
@@ -31,11 +30,4 @@ public class TimeModel {
         this.mint = mint;
     }
 
-    public boolean isEnable() {
-        return isEnable;
-    }
-
-    public void setEnable(boolean enable) {
-        isEnable = enable;
-    }
 }

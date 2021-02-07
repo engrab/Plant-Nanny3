@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +25,8 @@ public class BodyWeightBottomDialoge extends BottomSheetDialogFragment {
     RecyclerView recyclerView;
     BodyWeightAdapter mAdapter;
     List<Integer> mList;
+    ImageView ok;
+    RadioGroup kglb;
 
     public BodyWeightBottomDialoge() {
 
@@ -35,6 +39,30 @@ public class BodyWeightBottomDialoge extends BottomSheetDialogFragment {
 
         View view = inflater.inflate(R.layout.dialoge_body_weight_sheet, container, false);
         recyclerView = view.findViewById(R.id.rv_weight);
+        kglb = view.findViewById(R.id.radio_group_kg_lb);
+
+        kglb.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                switch (group.getId()){
+                    case R.id.rad_kg:
+
+                        break;
+
+                    case R.id.rad_lb:
+
+                        break;
+                }
+            }
+        });
+        ok = view.findViewById(R.id.iv_ok);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
         list();
         mAdapter = new BodyWeightAdapter(getActivity(), mList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -53,27 +81,9 @@ public class BodyWeightBottomDialoge extends BottomSheetDialogFragment {
 
     private void list() {
         mList = new ArrayList<>();
-        mList.add(30);
-        mList.add(31);
-        mList.add(32);
-        mList.add(33);
-        mList.add(34);
-        mList.add(35);
-        mList.add(36);
-        mList.add(37);
-        mList.add(38);
-        mList.add(39);
-        mList.add(40);
-        mList.add(41);
-        mList.add(42);
-        mList.add(43);
-        mList.add(44);
-        mList.add(45);
-        mList.add(46);
-        mList.add(47);
-        mList.add(48);
-        mList.add(49);
-        mList.add(50);
+        for (int i=30; i<=200; i++){
+            mList.add(i);
+        }
 
     }
 

@@ -153,9 +153,8 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/tv_custom_time"
             android:layout_width="0dp"
-            android:text="12:00"
+
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="16sp"
