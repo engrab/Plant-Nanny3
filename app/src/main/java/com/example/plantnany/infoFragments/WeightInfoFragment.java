@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.plantnany.R;
 import com.example.plantnany.activities.StartActivity;
+import com.example.plantnany.sharedpref.SharedPreferencesManager;
 
 
 public class WeightInfoFragment extends Fragment {
@@ -106,7 +107,7 @@ public class WeightInfoFragment extends Fragment {
         inflate.findViewById(R.id.btn_next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mWeightListener.weight(Double.parseDouble(weight.getText().toString()));
+                SharedPreferencesManager.getInstance(getActivity()).setWeight(Integer.parseInt(weight.getText().toString()));
                 StartActivity.viewPager.setCurrentItem(3);
             }
         });

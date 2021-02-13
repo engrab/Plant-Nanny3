@@ -6,25 +6,28 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity(tableName = "user")
-public class DataModel {
+public class DataEntity {
 
     @PrimaryKey
-    private long date;
-    private float weight;
-    private  float targetWater;
-    private int intakeWater;
+    public int id;
+    public long date;
+    public int weight;
+    public   int targetWater;
+    public int intakeWater;
     @Ignore
-    public DataModel() {
+    public DataEntity() {
     }
 
-    public DataModel(long date, float weight, float targetWater, int intakeWater) {
+    public DataEntity(int id, long date, int weight, int targetWater, int intakeWater) {
 
         this.date = date;
         this.weight = weight;
         this.targetWater = targetWater;
         this.intakeWater = intakeWater;
+        
 
     }
 
@@ -37,19 +40,19 @@ public class DataModel {
         this.date = date;
     }
 
-    public float getWeight() {
+    public int getWeight() {
         return weight;
     }
 
-    public void setWeight(float weight) {
+    public void setWeight(int weight) {
         this.weight = weight;
     }
 
-    public float getTargetWater() {
+    public int getTargetWater() {
         return targetWater;
     }
 
-    public void setTargetWater(float targetWater) {
+    public void setTargetWater(int targetWater) {
         this.targetWater = targetWater;
     }
 

@@ -11,13 +11,14 @@ import java.util.List;
 public interface DataDao {
 
     @Query("SELECT * FROM user")
-    List<DataModel> getAll();
+    List<DataEntity> getAll();
 
-    @Query("SELECT targetWater FROM user WHERE date= :date")
-    float getTargetWaterDB(long date);
+    @Query("SELECT * FROM user")
+    DataEntity getWater();
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(DataModel users);
+    void insertAll(DataEntity users);
+
 
 }

@@ -50,6 +50,13 @@ public class WaterReminderBottomDialoge extends BottomSheetDialogFragment {
 
         View view = inflater.inflate(R.layout.dialoge_water_reminder_sheet, container, false);
 
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         mReminder = view.findViewById(R.id.sc_reminder);
         reminderDesc = view.findViewById(R.id.tv_reminder_desc);
         reminderStatment = view.findViewById(R.id.tv_reminder_statement);
@@ -65,9 +72,15 @@ public class WaterReminderBottomDialoge extends BottomSheetDialogFragment {
         int notificationFrequency = SharedPreferencesManager.getInstance(getActivity()).getNotificationFrequency();
         if (notificationFrequency == 120) {
             radTwoHour.setChecked(true);
+            radFourHour.setChecked(false);
+            radSixHour.setChecked(false);
         } else if (notificationFrequency == 240) {
+            radTwoHour.setChecked(false);
             radFourHour.setChecked(true);
+            radSixHour.setChecked(false);
         } else if (notificationFrequency == 360) {
+            radTwoHour.setChecked(false);
+            radFourHour.setChecked(false);
             radSixHour.setChecked(true);
         }
 
@@ -87,14 +100,19 @@ public class WaterReminderBottomDialoge extends BottomSheetDialogFragment {
                 switch (group.getId()) {
 
                     case R.id.rad_two_hour:
-                        notificationFrequencyListener.notificationFrequency(120);
+                        SharedPreferencesManager.getInstance(getActivity()).setNotificationFrequency(120);
+//                        notificationFrequencyListener.notificationFrequency(120);
 
                         break;
                     case R.id.rad_four_hour:
-                        notificationFrequencyListener.notificationFrequency(240);
+                        SharedPreferencesManager.getInstance(getActivity()).setNotificationFrequency(240);
+
+//                        notificationFrequencyListener.notificationFrequency(240);
                         break;
                     case R.id.rad_six_hour:
-                        notificationFrequencyListener.notificationFrequency(360);
+                        SharedPreferencesManager.getInstance(getActivity()).setNotificationFrequency(360);
+
+//                        notificationFrequencyListener.notificationFrequency(360);
                         break;
                 }
             }
@@ -105,13 +123,7 @@ public class WaterReminderBottomDialoge extends BottomSheetDialogFragment {
                 dismiss();
             }
         });
-        cutomReminder = view.findViewById(R.id.iv_custom_reminder);
-        cutomReminder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
 
         boolean notificationStatus = SharedPreferencesManager.getInstance(getActivity()).getNotificationStatus();
         mReminder.setChecked(notificationStatus);
@@ -147,9 +159,6 @@ public class WaterReminderBottomDialoge extends BottomSheetDialogFragment {
 
             }
         });
-
-
-        return view;
     }
 
     @Override

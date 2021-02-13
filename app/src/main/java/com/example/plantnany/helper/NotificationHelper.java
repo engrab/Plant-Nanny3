@@ -41,9 +41,9 @@ public final class NotificationHelper {
     }
 
     private final void createChannels() {
-        if (Build.VERSION.SDK_INT >= 26) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String notificationsNewMessageRingtone = SharedPreferencesManager.getInstance(ctx).getNotificationToneUri();
-            NotificationChannel notificationChannel = new NotificationChannel(this.CHANNEL_ONE_ID, this.CHANNEL_ONE_NAME, NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ONE_ID, CHANNEL_ONE_NAME, NotificationManager.IMPORTANCE_HIGH);
             boolean z = true;
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(-16776961);
@@ -57,8 +57,6 @@ public final class NotificationHelper {
                 notificationChannel.setSound(Uri.parse(notificationsNewMessageRingtone), new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).setUsage(AudioAttributes.USAGE_NOTIFICATION).build());
             }
             NotificationManager manager = getManager();
-            if (manager == null) {
-            }
             manager.createNotificationChannel(notificationChannel);
         }
     }

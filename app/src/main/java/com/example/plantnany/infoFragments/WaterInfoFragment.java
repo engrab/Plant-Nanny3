@@ -111,9 +111,8 @@ public class WaterInfoFragment extends Fragment implements View.OnClickListener 
                     Toast.makeText(context, "Please Select any activity", Toast.LENGTH_SHORT).show();
                 } else {
 
-                    introListener.isFirstTime(false);
-                    double targetWater = calculateIntake(SharedPreferencesManager.getInstance(getActivity()).getWeight(), workHour);
-                    targetWaterListener.targetWater(targetWater);
+                    SharedPreferencesManager.getInstance(getActivity()).setIsFirstTime(false);
+                    SharedPreferencesManager.getInstance(getActivity()).setTargetWater(calculateIntake(SharedPreferencesManager.getInstance(getActivity()).getWeight(), workHour));
                     Intent intent = new Intent(context, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
@@ -134,8 +133,8 @@ public class WaterInfoFragment extends Fragment implements View.OnClickListener 
 
     }
 
-    public final double calculateIntake(float weight, int workTime) {
-        return (((double) (weight * 100)) / 3.0d) + ((double) ((workTime / 6) * 7));
+    public final int calculateIntake(float weight, int workTime) {
+        return (int) ((((double) (weight * 100)) / 3.0d) + ((double) ((workTime / 6) * 7)));
     }
 
     public interface TargetWaterListener {

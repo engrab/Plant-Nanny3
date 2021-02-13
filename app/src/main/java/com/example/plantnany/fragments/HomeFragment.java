@@ -9,11 +9,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,15 +26,18 @@ import androidx.fragment.app.Fragment;
 import com.example.plantnany.R;
 import com.example.plantnany.activities.MainActivity;
 import com.example.plantnany.database.AppDataBase;
-import com.example.plantnany.database.DataModel;
+import com.example.plantnany.database.DataEntity;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
@@ -43,13 +46,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     RelativeLayout screenShot;
     ImageView mAddWater;
     private final AppDataBase appDataBase;
-    private DataModel dataModel;
+    private DataEntity dataEntity;
     private Date date = new Date();
     private Executor executor = Executors.newSingleThreadExecutor();
     float targetWaterDB;
     TextView targerWaterInfo;
     ViewGroup viewGroup;
     ImageView potsRedirect;
+    TextView targetWater;
+    TextView inTakeWater;
+    List<DataEntity> all;
+    int id = 0;
+
 
     public HomeFragment(Context context) {
         appDataBase = AppDataBase.getInstance(context);
@@ -59,8 +67,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        ButterKnife.bind(getActivity(), view);
         init(view);
         onclickListener();
+        view.findViewById(R.id.btn_getdata).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        all = appDataBase.dataDao().getAll();
+                    }
+                });
+                Toast.makeText(getActivity() ,"list size = "+all.size(), Toast.LENGTH_LONG).show();
+            }
+        });
         return view;
 
     }
@@ -78,6 +99,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         targerWaterInfo = view.findViewById(R.id.tv_target_water_info);
         viewGroup = view.findViewById(R.id.relativeLayout3);
         potsRedirect = view.findViewById(R.id.iv_pots_redirect);
+        targetWater = view.findViewById(R.id.tv_target);
+        inTakeWater = view.findViewById(R.id.tv_intake);
+
     }
 
     @Override
@@ -104,19 +128,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void run() {
 
-                        dataModel = new DataModel(date.getTime(),
+                        dataEntity = new DataEntity(id++, date.getTime(),
                                 SharedPreferencesManager.getInstance(getActivity()).getWeight(),
                                 SharedPreferencesManager.getInstance(getActivity()).getTargetWater(), 240);
 
-                        appDataBase.dataDao().insertAll(dataModel);
+                        appDataBase.dataDao().insertAll(dataEntity);
 
-                        targetWaterDB = appDataBase.dataDao().getTargetWaterDB(date.getTime());
-                        targerWaterInfo.setText(String.valueOf(targetWaterDB));
+
                     }
                 });
 
 
+
                 break;
+
+
         }
     }
 

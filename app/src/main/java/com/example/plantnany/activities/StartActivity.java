@@ -18,8 +18,8 @@ import com.example.plantnany.sharedpref.SharedPreferencesManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StartActivity extends AppCompatActivity implements WeightInfoFragment.WeightListener,
-        WaterInfoFragment.TargetWaterListener, WaterInfoFragment.IntroListener {
+public class StartActivity extends AppCompatActivity implements
+       WaterInfoFragment.IntroListener {
 
     public static ViewPager viewPager;
     private InfoStatePagerAdapter adapter;
@@ -47,18 +47,9 @@ public class StartActivity extends AppCompatActivity implements WeightInfoFragme
         viewPager.setAdapter(adapter);
     }
 
-    @Override
-    public void weight(double weight) {
-        SharedPreferencesManager.getInstance(this).setWeight(weight);
-    }
-
-    @Override
-    public void targetWater(double water) {
-        SharedPreferencesManager.getInstance(this).setTargetWater(water);
-    }
 
     @Override
     public void isFirstTime(boolean isFirst) {
-        SharedPreferencesManager.getInstance(this).setIsFirstTime(isFirst);
+
     }
 }

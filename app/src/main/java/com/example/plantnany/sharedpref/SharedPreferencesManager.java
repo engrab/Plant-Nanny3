@@ -58,7 +58,7 @@ public class SharedPreferencesManager {
     }
 
     public int getNotificationFrequency() {
-        return sharedPrefs.getInt(NOTIFICATION_FREQUENCY_KEY, 120);
+        return sharedPrefs.getInt(NOTIFICATION_FREQUENCY_KEY, 240);
     }
 
     public boolean getNewMessage() {
@@ -70,7 +70,7 @@ public class SharedPreferencesManager {
     }
 
     public String getNotificationMessage() {
-        return sharedPrefs.getString(NOTIFICATION_MSG_KEY, "Lets Drink some water");
+        return sharedPrefs.getString(NOTIFICATION_MSG_KEY, "Lets... Drink some water");
     }
 
     public void setNotificationStatus(boolean bool){
@@ -116,22 +116,22 @@ public class SharedPreferencesManager {
     public int getDefaultReminderTime(){
         return sharedPrefs.getInt(REMINDER_TIME_KEY, 1);
     }
-    public void setWeight(double weight){
+    public void setWeight(int weight){
         SharedPreferences.Editor editor = sharedPrefs.edit();
-        editor.putFloat(WEIGHT_KEY, (float) weight);
+        editor.putInt(WEIGHT_KEY, weight);
         editor.apply();
     }
-    public float getWeight(){
-        return sharedPrefs.getFloat(WEIGHT_KEY, 60.0f);
+    public int getWeight(){
+        return sharedPrefs.getInt(WEIGHT_KEY, 60);
     }
 
-    public void setTargetWater(double water){
+    public void setTargetWater(int water){
         SharedPreferences.Editor editor = sharedPrefs.edit();
-        editor.putFloat(TARGET_WATER_KEY, (float) water);
+        editor.putInt(TARGET_WATER_KEY, water);
         editor.apply();
     }
-    public float getTargetWater(){
-        return sharedPrefs.getFloat(TARGET_WATER_KEY, 3300.0f);
+    public int getTargetWater(){
+        return sharedPrefs.getInt(TARGET_WATER_KEY, 3300);
     }
 
     public void setDefaultCupVolume(String  cupVolume){
