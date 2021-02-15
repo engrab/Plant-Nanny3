@@ -2,6 +2,7 @@ package com.example.plantnany.fragments;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -23,12 +24,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.example.plantnany.R;
 import com.example.plantnany.activities.MainActivity;
 import com.example.plantnany.database.AppDataBase;
 import com.example.plantnany.database.DataEntity;
+import com.example.plantnany.sharedpref.SharedPreferencesManager;
 import com.example.plantnany.utils.AppUtils;
 
 import java.io.File;
@@ -76,33 +79,26 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         init(view);
         onclickListener();
         all = new ArrayList<>();
-//        getDBData();
-
-        view.findViewById(R.id.btn_getdata).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                getDBData();
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (!all.isEmpty()) {
-                            for (DataEntity entity : all) {
-                                date = entity.getDate();
-                                intakeWater = entity.getIntakeWater();
-                                inTakeWater.setText(String.valueOf(intakeWater));
-                                targetWater.setText(date);
-                            }
-                        }
-                    }
-                },1000);
 
 
-            }
-        });
         return view;
 
+    }
+
+    private void waterDialoge() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Total Water = " + SharedPreferencesManager.getInstance(getActivity()).getTargetWater());
+        builder.setMessage("Taken Water = " + intakeWater);
+        builder.setCancelable(true);
+        builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void getDBData() {
@@ -137,8 +133,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         targerWaterInfo = view.findViewById(R.id.tv_target_water_info);
         viewGroup = view.findViewById(R.id.relativeLayout3);
         potsRedirect = view.findViewById(R.id.iv_pots_redirect);
-        targetWater = view.findViewById(R.id.tv_target);
-        inTakeWater = view.findViewById(R.id.tv_intake);
 
     }
 
@@ -167,25 +161,36 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     public void run() {
 
                         getDBData();
-                        Log.d(TAG, "run: "+all.size());
-                        if (all.size()!=0){
-                            Log.d(TAG, "run: "+all.size());
-                            if (all.get(0).getDate().equals(AppUtils.getCurrentDate())){
-                                int lastWater = all.get(0).getIntakeWater();
-                                Log.d(TAG, "run: "+lastWater);
-                                dataEntity = new DataEntity(0, AppUtils.getCurrentDate(), 240+lastWater);
-                                appDataBase.dataDao().insertAll(dataEntity);
+
+                        if (all.size() != 0) {
+
+                            if (all.get(all.size() - 1).getDate().equals(AppUtils.getCurrentDate())) {
+                                int lastWater = all.get(all.size() - 1).getIntakeWater();
+                                dataEntity = new DataEntity(AppUtils.getCurrentDate(), 240 + lastWater);
+                            } else {
+                                dataEntity = new DataEntity(AppUtils.getCurrentDate(), 240);
                             }
 
-                        }else {
-                            dataEntity = new DataEntity(0, AppUtils.getCurrentDate(), 240);
-                            appDataBase.dataDao().insertAll(dataEntity);
+                        } else {
+                            dataEntity = new DataEntity(AppUtils.getCurrentDate(), 240);
                         }
-
+                        appDataBase.dataDao().insertAll(dataEntity);
 
 
                     }
                 });
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!all.isEmpty()) {
+                            date = all.get(all.size() - 1).getDate();
+                            intakeWater = all.get(all.size() - 1).getIntakeWater();
+
+                            waterDialoge();
+                        }
+                    }
+                }, 1000);
 
 
                 break;
