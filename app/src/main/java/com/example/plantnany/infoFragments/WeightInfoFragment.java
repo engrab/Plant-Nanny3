@@ -107,7 +107,8 @@ public class WeightInfoFragment extends Fragment {
         inflate.findViewById(R.id.btn_next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferencesManager.getInstance(getActivity()).setWeight(Integer.parseInt(weight.getText().toString()));
+                String weight = WeightInfoFragment.this.weight.getText().toString();
+                SharedPreferencesManager.getInstance(getActivity()).setWeight((int)Double.parseDouble(weight));
                 StartActivity.viewPager.setCurrentItem(3);
             }
         });

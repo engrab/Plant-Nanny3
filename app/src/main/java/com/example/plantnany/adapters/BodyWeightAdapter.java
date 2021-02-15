@@ -43,7 +43,7 @@ public class BodyWeightAdapter extends RecyclerView.Adapter<BodyWeightAdapter.Vi
             @Override
             public void onClick(View v) {
                 String weight = holder.weight.getText().toString();
-                SharedPreferencesManager.getInstance(mContext).setWeight(Integer.parseInt(weight));
+                SharedPreferencesManager.getInstance(mContext).setWeight((int)Double.parseDouble(weight));
             }
         });
 

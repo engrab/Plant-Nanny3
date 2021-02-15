@@ -116,6 +116,7 @@ public class SharedPreferencesManager {
     public int getDefaultReminderTime(){
         return sharedPrefs.getInt(REMINDER_TIME_KEY, 1);
     }
+
     public void setWeight(int weight){
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putInt(WEIGHT_KEY, weight);

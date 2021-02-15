@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,17 +29,16 @@ import com.example.plantnany.R;
 import com.example.plantnany.activities.MainActivity;
 import com.example.plantnany.database.AppDataBase;
 import com.example.plantnany.database.DataEntity;
-import com.example.plantnany.sharedpref.SharedPreferencesManager;
+import com.example.plantnany.utils.AppUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
@@ -47,16 +48,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     ImageView mAddWater;
     private final AppDataBase appDataBase;
     private DataEntity dataEntity;
-    private Date date = new Date();
     private Executor executor = Executors.newSingleThreadExecutor();
-    float targetWaterDB;
+
     TextView targerWaterInfo;
     ViewGroup viewGroup;
     ImageView potsRedirect;
     TextView targetWater;
     TextView inTakeWater;
-    List<DataEntity> all;
     int id = 0;
+    List<DataEntity> all;
+    DataEntity entity;
+
+    String date;
+    int intakeWater;
 
 
     public HomeFragment(Context context) {
@@ -67,22 +71,56 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        ButterKnife.bind(getActivity(), view);
+
+        entity = new DataEntity();
         init(view);
         onclickListener();
+        all = new ArrayList<>();
+//        getDBData();
+
         view.findViewById(R.id.btn_getdata).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                executor.execute(new Runnable() {
+
+                getDBData();
+
+                new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        all = appDataBase.dataDao().getAll();
+                        if (!all.isEmpty()) {
+                            for (DataEntity entity : all) {
+                                date = entity.getDate();
+                                intakeWater = entity.getIntakeWater();
+                                inTakeWater.setText(String.valueOf(intakeWater));
+                                targetWater.setText(date);
+                            }
+                        }
                     }
-                });
-                Toast.makeText(getActivity() ,"list size = "+all.size(), Toast.LENGTH_LONG).show();
+                },1000);
+
+
             }
         });
         return view;
+
+    }
+
+    private void getDBData() {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                all = appDataBase.dataDao().getAll();
+
+            }
+        });
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
 
     }
 
@@ -128,16 +166,26 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void run() {
 
-                        dataEntity = new DataEntity(id++, date.getTime(),
-                                SharedPreferencesManager.getInstance(getActivity()).getWeight(),
-                                SharedPreferencesManager.getInstance(getActivity()).getTargetWater(), 240);
+                        getDBData();
+                        Log.d(TAG, "run: "+all.size());
+                        if (all.size()!=0){
+                            Log.d(TAG, "run: "+all.size());
+                            if (all.get(0).getDate().equals(AppUtils.getCurrentDate())){
+                                int lastWater = all.get(0).getIntakeWater();
+                                Log.d(TAG, "run: "+lastWater);
+                                dataEntity = new DataEntity(0, AppUtils.getCurrentDate(), 240+lastWater);
+                                appDataBase.dataDao().insertAll(dataEntity);
+                            }
 
-                        appDataBase.dataDao().insertAll(dataEntity);
+                        }else {
+                            dataEntity = new DataEntity(0, AppUtils.getCurrentDate(), 240);
+                            appDataBase.dataDao().insertAll(dataEntity);
+                        }
+
 
 
                     }
                 });
-
 
 
                 break;
@@ -155,7 +203,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
 
             // create bitmap screen capture
-            View v1 =  getActivity().getWindow().getDecorView().getRootView();
+            View v1 = getActivity().getWindow().getDecorView().getRootView();
             v1.setDrawingCacheEnabled(true);
             Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
             v1.setDrawingCacheEnabled(false);
@@ -176,7 +224,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    private void shareScreenShot(File fileScreenShot){
+    private void shareScreenShot(File fileScreenShot) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         Uri uri = Uri.fromFile(fileScreenShot);
         intent.setType("image/*");
