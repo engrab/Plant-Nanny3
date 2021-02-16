@@ -29,6 +29,9 @@ public class SharedPreferencesManager {
     private static final String TARGET_WATER_KEY = "target_water";
     private static final String DEFAULT_WATER_VOLUME = "default_water";
     private static final String SAFE_REMINDER_TIME_KEY = "safe_reminder_time";
+    private static final String SEEDS_KEY = "seeds";
+    private static final String CLOVER_KEY = "clover";
+    private static final String SET_POT_KEY = "set_pot";
 
     private List<TimeModel> mList;
 
@@ -161,4 +164,30 @@ public class SharedPreferencesManager {
         mList = gson.fromJson(json, type);
         return mList;
     }
+
+    public void setSeeds(int  seeds){
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putInt(SEEDS_KEY, seeds);
+        editor.apply();
+    }
+    public int  getSeeds(){
+        return sharedPrefs.getInt(SEEDS_KEY, 1);
+    }
+    public void setClover(int  clover){
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putInt(CLOVER_KEY, clover);
+        editor.apply();
+    }
+    public int  getClover(){
+        return sharedPrefs.getInt(CLOVER_KEY, 1);
+    }
+    public void setPot(int  clover){
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putInt(SET_POT_KEY, clover);
+        editor.apply();
+    }
+    public int  getPot(){
+        return sharedPrefs.getInt(SET_POT_KEY, 1);
+    }
+
 }

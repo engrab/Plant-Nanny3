@@ -59,10 +59,10 @@
             android:layout_gravity="center"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:src="@drawable/ic_seed" />
+            android:src="@drawable/ic_flower" />
 
         <TextView
-            android:id="@+id/tv_target_water_info"
+            android:id="@+id/tv_clover"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
@@ -82,6 +82,7 @@
             android:src="@drawable/ic_seed" />
 
         <TextView
+            android:id="@+id/tv_seeds"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
@@ -128,7 +129,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/relativeLayout"
+        android:id="@+id/rl_seeds"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"

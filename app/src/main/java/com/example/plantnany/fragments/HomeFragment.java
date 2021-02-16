@@ -11,12 +11,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,6 +31,11 @@ import com.example.plantnany.database.AppDataBase;
 import com.example.plantnany.database.DataEntity;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
 import com.example.plantnany.utils.AppUtils;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,31 +46,34 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 
-public class HomeFragment extends Fragment implements View.OnClickListener {
+public class HomeFragment extends Fragment implements View.OnClickListener, RewardedVideoAdListener {
 
     private static final int REQUEST_STORAGE = 100;
     private static final String TAG = "Mytag";
-    RelativeLayout screenShot;
+    RelativeLayout screenShot, rlSeeds;
     ImageView mAddWater;
     private final AppDataBase appDataBase;
     private DataEntity dataEntity;
     private Executor executor = Executors.newSingleThreadExecutor();
 
-    TextView targerWaterInfo;
+    TextView clover;
     ViewGroup viewGroup;
     ImageView potsRedirect;
-    TextView targetWater;
-    TextView inTakeWater;
     int id = 0;
     List<DataEntity> all;
     DataEntity entity;
 
     String date;
     int intakeWater;
+    RewardedVideoAd rewardedVideoAd;
+    TextView seeds;
+    Context mContext;
+    ImageView pots;
 
 
     public HomeFragment(Context context) {
         appDataBase = AppDataBase.getInstance(context);
+        mContext = context;
     }
 
     @Nullable
@@ -80,9 +86,72 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         onclickListener();
         all = new ArrayList<>();
 
+        rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(getActivity());
+        rewardedVideoAd.setRewardedVideoAdListener(this);
+
+        loadRewardVideoAd();
+
 
         return view;
 
+    }
+
+
+    private void setPots() {
+        int pot = SharedPreferencesManager.getInstance(mContext).getPot();
+        switch (pot) {
+
+            case 1:
+                pots.setImageResource(R.drawable.ic_pot_1);
+                break;
+            case 2:
+                pots.setImageResource(R.drawable.ic_pot_2);
+                break;
+            case 3:
+                pots.setImageResource(R.drawable.ic_pot_3);
+                break;
+            case 4:
+                pots.setImageResource(R.drawable.ic_pot_4);
+                break;
+            case 5:
+                pots.setImageResource(R.drawable.ic_pot_5);
+                break;
+            case 6:
+                pots.setImageResource(R.drawable.ic_pot_6);
+                break;
+
+        }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        seeds.setText(SharedPreferencesManager.getInstance(getActivity()).getSeeds() + "");
+        clover.setText(SharedPreferencesManager.getInstance(getActivity()).getClover() + "");
+    }
+
+    private void loadRewardVideoAd() {
+        rewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());
+    }
+
+    private void seedDialoge() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Are You Want to Increase Your Seeds? ");
+        builder.setMessage("Then Press the OK Button below and watch full video");
+        builder.setCancelable(true);
+        builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (rewardedVideoAd.isLoaded()) {
+                    rewardedVideoAd.show();
+                }
+                dialog.dismiss();
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void waterDialoge() {
@@ -116,6 +185,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+        setPots();
 
 
     }
@@ -124,15 +194,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         screenShot.setOnClickListener(this);
         mAddWater.setOnClickListener(this);
         potsRedirect.setOnClickListener(this);
+        rlSeeds.setOnClickListener(this);
     }
 
     private void init(View view) {
 
         screenShot = view.findViewById(R.id.rl_camera);
         mAddWater = view.findViewById(R.id.iv_add_water);
-        targerWaterInfo = view.findViewById(R.id.tv_target_water_info);
+        clover = view.findViewById(R.id.tv_clover);
         viewGroup = view.findViewById(R.id.relativeLayout3);
         potsRedirect = view.findViewById(R.id.iv_pots_redirect);
+        rlSeeds = view.findViewById(R.id.rl_seeds);
+        seeds = view.findViewById(R.id.tv_seeds);
+        pots = view.findViewById(R.id.iv_pots);
 
     }
 
@@ -195,6 +269,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                 break;
 
+            case R.id.rl_seeds:
+                seedDialoge();
+                break;
 
         }
     }
@@ -263,5 +340,49 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 Toast.makeText(getActivity(), "camera permission denied", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+
+        loadRewardVideoAd();
+    }
+
+    @Override
+    public void onRewarded(RewardItem rewardItem) {
+        SharedPreferencesManager.getInstance(getActivity()).setSeeds(SharedPreferencesManager.getInstance(getActivity()).getSeeds() + 1);
+        seeds.setText(SharedPreferencesManager.getInstance(getActivity()).getSeeds() + "");
+
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+
+    }
+
+    @Override
+    public void onRewardedVideoCompleted() {
+
+
     }
 }
