@@ -1,5 +1,7 @@
 package com.example.plantnany.fragments;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -8,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -22,25 +23,31 @@ import com.example.plantnany.R;
 import com.example.plantnany.adapters.PotsAdapter;
 import com.example.plantnany.model.PotModel;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PotsFragment extends Fragment implements RewardedVideoAdListener {
+public class PotsFragment extends Fragment {
 
     RecyclerView mRecyclerView;
     List<PotModel> mList;
     LinearLayout freeClover;
-    RewardedVideoAd rewardedVideoAd;
+    RewardedAd rewardedAd;
     TextView clover;
     TextView seeds;
+    Activity mContext;
 
-    public PotsFragment() {
+    public PotsFragment(Activity context) {
+        mContext = context;
     }
 
     @Nullable
@@ -51,10 +58,7 @@ public class PotsFragment extends Fragment implements RewardedVideoAdListener {
         listPots();
         setAdapterForRecyclerView();
 
-        rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(getActivity());
-        rewardedVideoAd.setRewardedVideoAdListener(this);
 
-        loadRewardVideoAd();
         freeClover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,9 +70,6 @@ public class PotsFragment extends Fragment implements RewardedVideoAdListener {
 
     }
 
-    private void loadRewardVideoAd() {
-        rewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());
-    }
 
     private void cloverDialoge() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -78,9 +79,8 @@ public class PotsFragment extends Fragment implements RewardedVideoAdListener {
         builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (rewardedVideoAd.isLoaded()){
-                    rewardedVideoAd.show();
-                }
+                loadRewardedAd();
+                showRewardedAd();
                 dialog.dismiss();
 
             }
@@ -89,6 +89,57 @@ public class PotsFragment extends Fragment implements RewardedVideoAdListener {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    private void loadRewardedAd() {
+
+        FullScreenContentCallback callback = new FullScreenContentCallback() {
+            @Override
+            public void onAdFailedToShowFullScreenContent(AdError adError) {
+
+            }
+
+            @Override
+            public void onAdShowedFullScreenContent() {
+
+            }
+
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                rewardedAd = null;
+            }
+        };
+
+        RewardedAd.load(mContext, getString(R.string.admob_rewarded_id), new AdRequest.Builder().build(), new RewardedAdLoadCallback() {
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                super.onAdFailedToLoad(loadAdError);
+            }
+
+            @Override
+            public void onAdLoaded(@NonNull RewardedAd rewarded) {
+                super.onAdLoaded(rewardedAd);
+                rewardedAd = rewarded;
+                rewardedAd.setFullScreenContentCallback(callback);
+
+            }
+        });
+    }
+
+    private void showRewardedAd() {
+
+        if (rewardedAd != null) {
+            rewardedAd.show(mContext, new OnUserEarnedRewardListener() {
+                @Override
+                public void onUserEarnedReward(@NonNull com.google.android.gms.ads.rewarded.RewardItem rewardItem) {
+
+                    SharedPreferencesManager.getInstance(getActivity()).setClover(SharedPreferencesManager.getInstance(getActivity()).getClover() + 1);
+                    clover.setText(SharedPreferencesManager.getInstance(getActivity()).getClover() + "");
+                }
+            });
+        }
+    }
+
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -108,7 +159,7 @@ public class PotsFragment extends Fragment implements RewardedVideoAdListener {
     }
 
     private void setAdapterForRecyclerView() {
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         mRecyclerView.setAdapter(new PotsAdapter(getActivity(), mList));
     }
 
@@ -121,47 +172,5 @@ public class PotsFragment extends Fragment implements RewardedVideoAdListener {
 
     }
 
-    @Override
-    public void onRewardedVideoAdLoaded() {
 
-    }
-
-    @Override
-    public void onRewardedVideoAdOpened() {
-
-    }
-
-    @Override
-    public void onRewardedVideoStarted() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdClosed() {
-
-    }
-
-    @Override
-    public void onRewarded(RewardItem rewardItem) {
-
-        SharedPreferencesManager.getInstance(getActivity()).setClover(SharedPreferencesManager.getInstance(getActivity()).getClover() + 1);
-        clover.setText(SharedPreferencesManager.getInstance(getActivity()).getClover() + "");
-
-    }
-
-    @Override
-    public void onRewardedVideoAdLeftApplication() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdFailedToLoad(int i) {
-
-        Toast.makeText(getActivity(), "Please Click again for rewarded ads", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onRewardedVideoCompleted() {
-
-    }
 }

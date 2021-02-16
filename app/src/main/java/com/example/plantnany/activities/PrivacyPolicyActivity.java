@@ -3,30 +3,30 @@ package com.example.plantnany.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.example.plantnany.R;
+import com.example.plantnany.databinding.ActivityPrivacyPolicyBinding;
 
 public class PrivacyPolicyActivity extends AppCompatActivity {
 
-    private WebView webview;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_privacy_policy);
+        ActivityPrivacyPolicyBinding binding = ActivityPrivacyPolicyBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
 
-
-        webview = findViewById(R.id.webView);
-
-        webview.setWebViewClient(new WebViewClient());
-        webview.getSettings().setJavaScriptEnabled(true);
-        webview.getSettings().setDomStorageEnabled(true);
-        webview.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
-        webview.loadUrl("https://www.google.com/");
+        binding.webView.setWebViewClient(new WebViewClient());
+        binding.webView.getSettings().setJavaScriptEnabled(true);
+        binding.webView.getSettings().setDomStorageEnabled(true);
+        binding.webView.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
+        binding.webView.loadUrl("https://www.google.com/");
     }
 
 

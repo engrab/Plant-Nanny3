@@ -1,21 +1,14 @@
 package com.example.plantnany.activities;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.example.plantnany.ButtonCick;
 import com.example.plantnany.R;
 import com.example.plantnany.bottomdialoge.WaterReminderBottomDialoge;
+import com.example.plantnany.databinding.ActivityMainBinding;
 import com.example.plantnany.fragments.AllPlantsFragment;
 import com.example.plantnany.fragments.GraphFragment;
 import com.example.plantnany.fragments.HomeFragment;
@@ -25,7 +18,6 @@ import com.example.plantnany.helper.AlarmHelper;
 import com.example.plantnany.services.MusicService;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,19 +28,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         , SettingsFragment.MusicPlayingListener, SettingsFragment.SoundClickListener,
         WaterReminderBottomDialoge.NotificationStatusListener, WaterReminderBottomDialoge.NotificationFrequencyListener {
 
-    private static final String TAG = "MainActivity";
     ButtonCick buttonCick;
-    public  static BottomNavigationView navigation;
+    public static BottomNavigationView navigation;
 
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View decorView = getWindow().getDecorView();
-        // Hide the status bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
-        setContentView(R.layout.activity_main);
+
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         setNotification();
         buttonCick = new ButtonCick(this);
@@ -84,6 +75,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onResume() {
         super.onResume();
 
+        View decorView = getWindow().getDecorView();
+        // Hide the status bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
         if (SharedPreferencesManager.getInstance(this).getMusicPlay()) {
             startService(new Intent(this, MusicService.class));
         } else {
@@ -101,43 +96,36 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.navigation_home:
                 buttonCick.setOnsoundOnButtonClick();
                 fragment = new HomeFragment(MainActivity.this);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.nav_host_fragment, fragment)
-                        .commit();
+
                 break;
 
             case R.id.navigation_pots:
                 buttonCick.setOnsoundOnButtonClick();
-                fragment = new PotsFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.nav_host_fragment, fragment)
-                        .commit();
+                fragment = new PotsFragment(MainActivity.this);
+
                 break;
 
             case R.id.navigation_all_plants:
                 buttonCick.setOnsoundOnButtonClick();
                 fragment = new AllPlantsFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.nav_host_fragment, fragment)
-                        .commit();
+
                 break;
 
             case R.id.navigation_setting:
                 buttonCick.setOnsoundOnButtonClick();
                 fragment = new SettingsFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.nav_host_fragment, fragment)
-                        .commit();
+
                 break;
             case R.id.navigation_graph:
                 buttonCick.setOnsoundOnButtonClick();
                 fragment = new GraphFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.nav_host_fragment, fragment)
-                        .commit();
+
                 break;
 
         }
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.nav_host_fragment, fragment)
+                .commit();
 
         return true;
     }
@@ -182,9 +170,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         SharedPreferencesManager.getInstance(this).setNotificationFrequency(frequency);
         setNotification();
     }
-
-
-
 
 
 }

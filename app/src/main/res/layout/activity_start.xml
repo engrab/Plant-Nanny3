@@ -7,7 +7,7 @@
     tools:context=".activities.StartActivity">
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/info_view_pager"
+        android:id="@+id/vp_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </RelativeLayout>

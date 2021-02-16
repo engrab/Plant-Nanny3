@@ -1,6 +1,7 @@
 package com.example.plantnany.fragments;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,16 +30,21 @@ import com.example.plantnany.R;
 import com.example.plantnany.activities.MainActivity;
 import com.example.plantnany.database.AppDataBase;
 import com.example.plantnany.database.DataEntity;
+import com.example.plantnany.database.DateConverter;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
 import com.example.plantnany.utils.AppUtils;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdCallback;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -46,7 +52,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 
-public class HomeFragment extends Fragment implements View.OnClickListener, RewardedVideoAdListener {
+public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private static final int REQUEST_STORAGE = 100;
     private static final String TAG = "Mytag";
@@ -54,7 +60,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rewa
     ImageView mAddWater;
     private final AppDataBase appDataBase;
     private DataEntity dataEntity;
-    private Executor executor = Executors.newSingleThreadExecutor();
+    private final Executor executor = Executors.newSingleThreadExecutor();
 
     TextView clover;
     ViewGroup viewGroup;
@@ -63,9 +69,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rewa
     List<DataEntity> all;
     DataEntity entity;
 
-    String date;
+    Date curDate = new Date();
     int intakeWater;
-    RewardedVideoAd rewardedVideoAd;
+    RewardedAd rewardedAd;
     TextView seeds;
     Context mContext;
     ImageView pots;
@@ -85,11 +91,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rewa
         init(view);
         onclickListener();
         all = new ArrayList<>();
-
-        rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(getActivity());
-        rewardedVideoAd.setRewardedVideoAdListener(this);
-
-        loadRewardVideoAd();
 
 
         return view;
@@ -130,9 +131,52 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rewa
         clover.setText(SharedPreferencesManager.getInstance(getActivity()).getClover() + "");
     }
 
-    private void loadRewardVideoAd() {
-        rewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());
+
+    private void loadRewardAd() {
+
+        FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {
+                    @Override
+                    public void onAdShowedFullScreenContent() {
+                        // Code to be invoked when the ad showed full screen content.
+                    }
+
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        rewardedAd = null;
+                        // Code to be invoked when the ad dismissed full screen content.
+                    }
+                };
+
+        RewardedAd.load(mContext, getString(R.string.admob_rewarded_id), new AdRequest.Builder().build(), new RewardedAdLoadCallback() {
+
+            @Override
+            public void onAdLoaded(RewardedAd ad) {
+
+                rewardedAd = ad;
+                rewardedAd.setFullScreenContentCallback(fullScreenContentCallback);
+            }
+        });
+
     }
+
+    public void showRewardedAd() {
+
+        if (rewardedAd != null) {
+            rewardedAd.show((Activity) mContext, new OnUserEarnedRewardListener() {
+                @Override
+                public void onUserEarnedReward(@NonNull com.google.android.gms.ads.rewarded.RewardItem rewardItem) {
+                    Toast.makeText(
+                            mContext,
+                            "onRewarded! currency: "
+                                    + rewardItem.getType() + "    amount: "
+                                    + rewardItem.getAmount(), Toast.LENGTH_SHORT).show();
+                    SharedPreferencesManager.getInstance(getActivity()).setSeeds(SharedPreferencesManager.getInstance(getActivity()).getSeeds() + 1);
+                    seeds.setText(SharedPreferencesManager.getInstance(getActivity()).getSeeds() + "");
+                }
+            });
+        }
+    }
+
 
     private void seedDialoge() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -142,10 +186,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rewa
         builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (rewardedVideoAd.isLoaded()) {
-                    rewardedVideoAd.show();
-                }
-                dialog.dismiss();
+               loadRewardAd();
+               showRewardedAd();
+               dialog.dismiss();
 
             }
         });
@@ -154,10 +197,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rewa
         dialog.show();
     }
 
-    private void waterDialoge() {
+    private void waterDialoge(String date) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Total Water = " + SharedPreferencesManager.getInstance(getActivity()).getTargetWater());
-        builder.setMessage("Taken Water = " + intakeWater);
+        builder.setMessage("Taken Water = " + intakeWater +"\n"+date);
         builder.setCancelable(true);
         builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
             @Override
@@ -238,15 +281,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rewa
 
                         if (all.size() != 0) {
 
-                            if (all.get(all.size() - 1).getDate().equals(AppUtils.getCurrentDate())) {
+
+                            if (all.get(all.size() - 1).getDate().equals(DateConverter.dateToString(curDate.getTime()))) {
                                 int lastWater = all.get(all.size() - 1).getIntakeWater();
-                                dataEntity = new DataEntity(AppUtils.getCurrentDate(), 240 + lastWater);
+                                dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240 + lastWater);
                             } else {
-                                dataEntity = new DataEntity(AppUtils.getCurrentDate(), 240);
+                                dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240);
                             }
 
                         } else {
-                            dataEntity = new DataEntity(AppUtils.getCurrentDate(), 240);
+                            dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240);
                         }
                         appDataBase.dataDao().insertAll(dataEntity);
 
@@ -258,10 +302,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rewa
                     @Override
                     public void run() {
                         if (!all.isEmpty()) {
-                            date = all.get(all.size() - 1).getDate();
+                            String date = all.get(all.size() - 1).getDate();
                             intakeWater = all.get(all.size() - 1).getIntakeWater();
 
-                            waterDialoge();
+                            waterDialoge(date);
                         }
                     }
                 }, 1000);
@@ -342,47 +386,5 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rewa
         }
     }
 
-    @Override
-    public void onRewardedVideoAdLoaded() {
 
-    }
-
-    @Override
-    public void onRewardedVideoAdOpened() {
-
-    }
-
-    @Override
-    public void onRewardedVideoStarted() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdClosed() {
-
-        loadRewardVideoAd();
-    }
-
-    @Override
-    public void onRewarded(RewardItem rewardItem) {
-        SharedPreferencesManager.getInstance(getActivity()).setSeeds(SharedPreferencesManager.getInstance(getActivity()).getSeeds() + 1);
-        seeds.setText(SharedPreferencesManager.getInstance(getActivity()).getSeeds() + "");
-
-    }
-
-    @Override
-    public void onRewardedVideoAdLeftApplication() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdFailedToLoad(int i) {
-
-    }
-
-    @Override
-    public void onRewardedVideoCompleted() {
-
-
-    }
 }

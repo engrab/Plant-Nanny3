@@ -18,13 +18,11 @@ import com.example.plantnany.sharedpref.SharedPreferencesManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StartActivity extends AppCompatActivity implements
-       WaterInfoFragment.IntroListener {
+public class StartActivity extends AppCompatActivity {
 
     public static ViewPager viewPager;
     private InfoStatePagerAdapter adapter;
     private List<Fragment> list;
-    public static final String CALCULATE_GOAL_KEY = "Calculate_goal";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +31,10 @@ public class StartActivity extends AppCompatActivity implements
         // Hide the status bar.
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
+
         setContentView(R.layout.activity_start);
 
-        viewPager = findViewById(R.id.info_view_pager);
+        viewPager = findViewById(R.id.vp_info);
 
         list = new ArrayList<>();
         list.add(new ActivityInfoFragment());
@@ -48,8 +47,5 @@ public class StartActivity extends AppCompatActivity implements
     }
 
 
-    @Override
-    public void isFirstTime(boolean isFirst) {
 
-    }
 }
