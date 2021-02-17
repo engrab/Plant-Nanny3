@@ -1,6 +1,7 @@
 package com.example.plantnany.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -19,6 +20,10 @@ import com.example.plantnany.database.DateConverter;
 import com.example.plantnany.databinding.FragmentGraphBinding;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
 import com.example.plantnany.viewmodels.GraphFragmentViewModel;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,6 +38,8 @@ public class GraphFragment extends Fragment {
     DataEntity mEntity;
     private Date currentDate = new Date();
     private static final String TAG = "GraphFragment";
+    private List<BarEntry> entries = new ArrayList<>();
+
 
     public GraphFragment(Context context) {
         mContext = context;
@@ -55,6 +62,28 @@ public class GraphFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getWaterInfo();
+        setGraph();
+    }
+
+    private void setGraph() {
+        int targetWater = SharedPreferencesManager.getInstance(getActivity()).getTargetWater();
+        for (int i = 0 ; i <= mDataList.size() -1; i++){
+            int intakeWater = mDataList.get(i).getIntakeWater();
+            int percent = (intakeWater *100) / targetWater;
+            entries.add(new BarEntry((float) i, percent));
+        }
+        if (!entries.isEmpty()){
+            BarDataSet barDataSet = new BarDataSet(entries, "Drink Chart");
+            barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+            barDataSet.setValueTextColor(Color.BLACK);
+            barDataSet.setValueTextSize(16f);
+
+            BarData barData = new BarData(barDataSet);
+            binding.barChart.setFitBars(false);
+            binding.barChart.setData(barData);
+            binding.barChart.getDescription().setText("Drink Chart");
+            binding.barChart.animate();
+        }
     }
 
     private void getAllData() {
