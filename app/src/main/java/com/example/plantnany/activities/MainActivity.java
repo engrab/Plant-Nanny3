@@ -8,7 +8,6 @@ import android.view.View;
 import com.example.plantnany.ButtonCick;
 import com.example.plantnany.R;
 import com.example.plantnany.bottomdialoge.WaterReminderBottomDialoge;
-import com.example.plantnany.databinding.ActivityMainBinding;
 import com.example.plantnany.fragments.AllPlantsFragment;
 import com.example.plantnany.fragments.GraphFragment;
 import com.example.plantnany.fragments.HomeFragment;
@@ -31,15 +30,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     ButtonCick buttonCick;
     public static BottomNavigationView navigation;
 
-    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+
+        setContentView(R.layout.activity_main);
 
         setNotification();
         buttonCick = new ButtonCick(this);
@@ -73,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     protected void onResume() {
-        super.onResume();
+
 
         View decorView = getWindow().getDecorView();
         // Hide the status bar.
@@ -84,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         } else {
             stopService(new Intent(this, MusicService.class));
         }
+        super.onResume();
     }
 
 
@@ -118,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 break;
             case R.id.navigation_graph:
                 buttonCick.setOnsoundOnButtonClick();
-                fragment = new GraphFragment();
+                fragment = new GraphFragment(this);
 
                 break;
 

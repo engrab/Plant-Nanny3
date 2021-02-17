@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.plantnany.R;
+import com.example.plantnany.databinding.ActivitySplashScreenBinding;
 import com.example.plantnany.services.MusicService;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
 import com.google.android.gms.ads.MobileAds;
@@ -32,7 +33,9 @@ public class SplashScreenActivity extends AppCompatActivity {
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
 
-        setContentView(R.layout.activity_splash_screen);
+        ActivitySplashScreenBinding binding = ActivitySplashScreenBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override

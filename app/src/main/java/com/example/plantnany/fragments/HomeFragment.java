@@ -25,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.plantnany.R;
 import com.example.plantnany.activities.MainActivity;
@@ -32,24 +33,18 @@ import com.example.plantnany.database.AppDataBase;
 import com.example.plantnany.database.DataEntity;
 import com.example.plantnany.database.DateConverter;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
-import com.example.plantnany.utils.AppUtils;
+import com.example.plantnany.viewmodels.HomeFragmentViewModel;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
-import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
-import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
@@ -58,15 +53,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "Mytag";
     RelativeLayout screenShot, rlSeeds;
     ImageView mAddWater;
-    private final AppDataBase appDataBase;
     private DataEntity dataEntity;
-    private final Executor executor = Executors.newSingleThreadExecutor();
 
     TextView clover;
     ViewGroup viewGroup;
     ImageView potsRedirect;
     int id = 0;
-    List<DataEntity> all;
+    List<DataEntity> mListEntity = new ArrayList<>();
     DataEntity entity;
 
     Date curDate = new Date();
@@ -75,10 +68,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     TextView seeds;
     Context mContext;
     ImageView pots;
+    private HomeFragmentViewModel mViewModel;
 
 
     public HomeFragment(Context context) {
-        appDataBase = AppDataBase.getInstance(context);
         mContext = context;
     }
 
@@ -87,14 +80,26 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        initViewModel();
         entity = new DataEntity();
         init(view);
         onclickListener();
-        all = new ArrayList<>();
+
+
+        getAllData();
 
 
         return view;
 
+    }
+
+    private void getAllData() {
+        mViewModel.getAllData();
+        mListEntity = mViewModel.mListEntity;
+    }
+
+    private void initViewModel() {
+        mViewModel = ViewModelProviders.of(getActivity()).get(HomeFragmentViewModel.class);
     }
 
 
@@ -135,17 +140,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void loadRewardAd() {
 
         FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {
-                    @Override
-                    public void onAdShowedFullScreenContent() {
-                        // Code to be invoked when the ad showed full screen content.
-                    }
+            @Override
+            public void onAdShowedFullScreenContent() {
+                // Code to be invoked when the ad showed full screen content.
+            }
 
-                    @Override
-                    public void onAdDismissedFullScreenContent() {
-                        rewardedAd = null;
-                        // Code to be invoked when the ad dismissed full screen content.
-                    }
-                };
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                rewardedAd = null;
+                // Code to be invoked when the ad dismissed full screen content.
+            }
+        };
 
         RewardedAd.load(mContext, getString(R.string.admob_rewarded_id), new AdRequest.Builder().build(), new RewardedAdLoadCallback() {
 
@@ -186,9 +191,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-               loadRewardAd();
-               showRewardedAd();
-               dialog.dismiss();
+                loadRewardAd();
+                showRewardedAd();
+                dialog.dismiss();
 
             }
         });
@@ -200,7 +205,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void waterDialoge(String date) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Total Water = " + SharedPreferencesManager.getInstance(getActivity()).getTargetWater());
-        builder.setMessage("Taken Water = " + intakeWater +"\n"+date);
+        builder.setMessage("Taken Water = " + intakeWater + "\n" + date);
         builder.setCancelable(true);
         builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
             @Override
@@ -211,18 +216,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    private void getDBData() {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-
-                all = appDataBase.dataDao().getAll();
-
-            }
-        });
-
     }
 
     @Override
@@ -260,7 +253,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             case R.id.iv_pots_redirect:
                 MainActivity.navigation.setSelectedItemId(R.id.navigation_pots);
-                Toast.makeText(getActivity(), "pots redirect hit", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.rl_camera:
@@ -273,42 +265,32 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             case R.id.iv_add_water:
 
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        getDBData();
-
-                        if (all.size() != 0) {
-
-
-                            if (all.get(all.size() - 1).getDate().equals(DateConverter.dateToString(curDate.getTime()))) {
-                                int lastWater = all.get(all.size() - 1).getIntakeWater();
-                                dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240 + lastWater);
-                            } else {
-                                dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240);
-                            }
-
-                        } else {
-                            dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240);
-                        }
-                        appDataBase.dataDao().insertAll(dataEntity);
-
-
+                if (mListEntity.size() != 0) {
+                    if (mListEntity.get(mListEntity.size() - 1).getDate().equals(DateConverter.dateToString(curDate.getTime()))) {
+                        int lastWater = mListEntity.get(mListEntity.size() - 1).getIntakeWater();
+                        dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240 + lastWater);
+                    } else {
+                        dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240);
                     }
-                });
+                } else {
+                    dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240);
+                }
+
+                mViewModel.inserData(dataEntity);
+                getAllData();
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (!all.isEmpty()) {
-                            String date = all.get(all.size() - 1).getDate();
-                            intakeWater = all.get(all.size() - 1).getIntakeWater();
+                        getAllData();
+                        if (!mListEntity.isEmpty()) {
+                            String date = mListEntity.get(mListEntity.size() - 1).getDate();
+                            intakeWater = mListEntity.get(mListEntity.size() - 1).getIntakeWater();
 
                             waterDialoge(date);
                         }
                     }
-                }, 1000);
+                }, 500);
 
 
                 break;

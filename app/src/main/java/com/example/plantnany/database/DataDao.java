@@ -18,7 +18,7 @@ public interface DataDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(DataEntity users);
+    void inserData(DataEntity users);
 
 
     @Query("SELECT * FROM user ORDER BY intakeWater DESC LIMIT 1")

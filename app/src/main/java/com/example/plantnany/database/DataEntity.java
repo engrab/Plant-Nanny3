@@ -6,13 +6,11 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Date;
 
 
 @Entity(tableName = "user")
 public class DataEntity {
+
 
 
 
@@ -25,7 +23,7 @@ public class DataEntity {
 
     }
 
-    public DataEntity(@NotNull String  date, int intakeWater) {
+    public DataEntity(@NonNull String  date, int intakeWater) {
         this.date = date;
         this.intakeWater = intakeWater;
     }

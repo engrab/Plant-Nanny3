@@ -73,7 +73,7 @@
                     android:text="Remaining" />
 
                 <TextView
-                    android:id="@+id/remainingIntake"
+                    android:id="@+id/tv_remaining_intake"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1100 ml"
@@ -101,7 +101,7 @@
                     android:text="Target" />
 
                 <TextView
-                    android:id="@+id/targetIntake"
+                    android:id="@+id/tv_target_intake"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3100 ml"
