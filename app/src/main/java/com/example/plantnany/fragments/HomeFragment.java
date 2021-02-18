@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,15 +24,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.plantnany.R;
 import com.example.plantnany.activities.MainActivity;
-import com.example.plantnany.database.AppDataBase;
 import com.example.plantnany.database.DataEntity;
 import com.example.plantnany.database.DateConverter;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
-import com.example.plantnany.viewmodels.HomeFragmentViewModel;
+import com.example.plantnany.viewmodels.FragmentViewModel;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
@@ -58,7 +57,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     TextView clover;
     ViewGroup viewGroup;
     ImageView potsRedirect;
-    int id = 0;
     List<DataEntity> mListEntity = new ArrayList<>();
     DataEntity entity;
 
@@ -68,7 +66,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     TextView seeds;
     Context mContext;
     ImageView pots;
-    private HomeFragmentViewModel mViewModel;
+    private FragmentViewModel mViewModel;
 
 
     public HomeFragment(Context context) {
@@ -95,11 +93,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private void getAllData() {
         mViewModel.getAllData();
-        mListEntity = mViewModel.mListEntity;
     }
 
     private void initViewModel() {
-        mViewModel = ViewModelProviders.of(getActivity()).get(HomeFragmentViewModel.class);
+        mViewModel = new ViewModelProvider(requireActivity()).get(FragmentViewModel.class);
+        Observer<List<DataEntity>> observer = new Observer<List<DataEntity>>() {
+            @Override
+            public void onChanged(List<DataEntity> dataEntities) {
+
+                mListEntity.clear();
+                mListEntity.addAll(dataEntities);
+            }
+        };
+        mViewModel.mListEntity.observe(requireActivity(), observer);
     }
 
 
@@ -265,9 +271,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             case R.id.iv_add_water:
 
-                if (mListEntity.size() != 0) {
+                if (!mListEntity.isEmpty()) {
                     if (mListEntity.get(mListEntity.size() - 1).getDate().equals(DateConverter.dateToString(curDate.getTime()))) {
                         int lastWater = mListEntity.get(mListEntity.size() - 1).getIntakeWater();
+
                         dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240 + lastWater);
                     } else {
                         dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240);
@@ -276,22 +283,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240);
                 }
 
-                mViewModel.inserData(dataEntity);
-                getAllData();
+                mViewModel.insertData(dataEntity);
+                if (!mListEntity.isEmpty()) {
+                    String date = mListEntity.get(mListEntity.size() - 1).getDate();
+                    intakeWater = mListEntity.get(mListEntity.size() - 1).getIntakeWater();
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        getAllData();
-                        if (!mListEntity.isEmpty()) {
-                            String date = mListEntity.get(mListEntity.size() - 1).getDate();
-                            intakeWater = mListEntity.get(mListEntity.size() - 1).getIntakeWater();
-
-                            waterDialoge(date);
-                        }
-                    }
-                }, 500);
-
+                    waterDialoge(date);
+                }
 
                 break;
 

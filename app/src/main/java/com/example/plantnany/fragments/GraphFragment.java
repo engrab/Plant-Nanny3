@@ -1,6 +1,7 @@
 package com.example.plantnany.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,14 +13,16 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.plantnany.database.DataEntity;
 import com.example.plantnany.database.DateConverter;
 import com.example.plantnany.databinding.FragmentGraphBinding;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
-import com.example.plantnany.viewmodels.GraphFragmentViewModel;
+import com.example.plantnany.viewmodels.FragmentViewModel;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -32,10 +35,9 @@ import java.util.List;
 public class GraphFragment extends Fragment {
 
     private FragmentGraphBinding binding;
-    private GraphFragmentViewModel mViewModel;
+    private FragmentViewModel mViewModel;
     private Context mContext;
     private List<DataEntity> mDataList = new ArrayList<>();
-    DataEntity mEntity;
     private Date currentDate = new Date();
     private static final String TAG = "GraphFragment";
     private List<BarEntry> entries = new ArrayList<>();
@@ -52,8 +54,8 @@ public class GraphFragment extends Fragment {
 
         binding = FragmentGraphBinding.inflate(inflater, container, false);
         initViewModel();
-        getAllData();
-
+        getWaterInfo();
+        setGraph();
         return binding.getRoot();
 
     }
@@ -61,19 +63,18 @@ public class GraphFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getWaterInfo();
-        setGraph();
+
     }
 
     private void setGraph() {
         int targetWater = SharedPreferencesManager.getInstance(getActivity()).getTargetWater();
-        for (int i = 0 ; i <= mDataList.size() -1; i++){
+        for (int i = 0; i <= mDataList.size() - 1; i++) {
             int intakeWater = mDataList.get(i).getIntakeWater();
-            int percent = (intakeWater *100) / targetWater;
+            int percent = (intakeWater * 100) / targetWater;
             entries.add(new BarEntry((float) i, percent));
         }
-        if (!entries.isEmpty()){
-            BarDataSet barDataSet = new BarDataSet(entries, "Drink Chart");
+        if (!entries.isEmpty()) {
+            BarDataSet barDataSet = new BarDataSet(entries, "Water Chart");
             barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
             barDataSet.setValueTextColor(Color.BLACK);
             barDataSet.setValueTextSize(16f);
@@ -81,32 +82,66 @@ public class GraphFragment extends Fragment {
             BarData barData = new BarData(barDataSet);
             binding.barChart.setFitBars(false);
             binding.barChart.setData(barData);
-            binding.barChart.getDescription().setText("Drink Chart");
+            binding.barChart.getDescription().setText("Water Chart");
             binding.barChart.animate();
         }
     }
 
-    private void getAllData() {
-        mViewModel.getAllData();
-        mDataList = mViewModel.mList;
-
-    }
-
     private void initViewModel() {
-        mViewModel = ViewModelProviders.of(getActivity()).get(GraphFragmentViewModel.class);
+
+        Observer<List<DataEntity>> dataEntityObserver = new Observer<List<DataEntity>>() {
+            @Override
+            public void onChanged(List<DataEntity> dataEntities) {
+
+                mDataList.clear();
+                mDataList.addAll(dataEntities);
+
+            }
+        };
+
+        mViewModel = new ViewModelProvider(requireActivity()).get(FragmentViewModel.class);
+        mViewModel.mListEntity.observe(requireActivity(), dataEntityObserver);
     }
 
     @Override
     public void onResume() {
-
+//        showAlertDialogWithAutoDismiss();
+//        if (mDataList.size() == 0) {
+//            showAlertDialogWithAutoDismiss();
+//        }
 
         super.onResume();
+        Log.d(TAG, "onResume: " + mDataList.size());
+        getWaterInfo();
+        setGraph();
+    }
+
+    public void showAlertDialogWithAutoDismiss() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Please wait")
+                .setMessage("setup data")
+                .setCancelable(false).setCancelable(false)
+                .setPositiveButton("SKIP", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //this for skip dialog
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (alertDialog.isShowing()) {
+                    alertDialog.dismiss();
+                }
+            }
+        }, 5000);
     }
 
 
     private void getWaterInfo() {
 
-        getAllData();
 
         int targetWater = SharedPreferencesManager.getInstance(getActivity()).getTargetWater();
         binding.tvTargetIntake.setText(String.valueOf(targetWater));

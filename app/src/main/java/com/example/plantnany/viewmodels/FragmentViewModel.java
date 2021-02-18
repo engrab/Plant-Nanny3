@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import com.example.plantnany.AppRepository;
 import com.example.plantnany.database.DataEntity;
@@ -11,21 +12,21 @@ import com.example.plantnany.database.DataEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragmentViewModel extends AndroidViewModel {
+public class FragmentViewModel extends AndroidViewModel {
 
-    public List<DataEntity> mListEntity = new ArrayList<>();
+    public LiveData<List<DataEntity>> mListEntity;
     private AppRepository mRepository;
-    public HomeFragmentViewModel(@NonNull Application application) {
+    public FragmentViewModel(@NonNull Application application) {
         super(application);
         mRepository = AppRepository.getInstance(application.getApplicationContext());
-
+        mListEntity = getAllData();
     }
 
-    public void getAllData() {
-         mListEntity = mRepository.getAllData();
+    public LiveData<List<DataEntity>> getAllData() {
+         return mRepository.getAllData();
     }
 
-    public void inserData(DataEntity dataEntity) {
+    public void insertData(DataEntity dataEntity) {
         mRepository.insertData(dataEntity);
     }
 }

@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     protected void onResume() {
 
-
+        super.onResume();
         View decorView = getWindow().getDecorView();
         // Hide the status bar.
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         } else {
             stopService(new Intent(this, MusicService.class));
         }
-        super.onResume();
     }
 
 
