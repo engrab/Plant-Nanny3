@@ -67,6 +67,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     Context mContext;
     ImageView pots;
     private FragmentViewModel mViewModel;
+    TextView level, plant;
+
+    ArrayList<String> plantType = new ArrayList<>();
 
 
     public HomeFragment(Context context) {
@@ -84,11 +87,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         onclickListener();
 
 
-        getAllData();
+        plantArray();
+//        getAllData();
 
 
         return view;
 
+    }
+
+
+    private void plantArray() {
+        plantType.add("Sunflower");
+        plantType.add("Devils");
+        plantType.add("Dendelion");
+        plantType.add("Cactus");
+        plantType.add("Mashroom");
+        plantType.add("Rose");
+        plantType.add("Cyclamen");
     }
 
     private void getAllData() {
@@ -140,6 +155,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         seeds.setText(SharedPreferencesManager.getInstance(getActivity()).getSeeds() + "");
         clover.setText(SharedPreferencesManager.getInstance(getActivity()).getClover() + "");
+
+        if (!mListEntity.isEmpty()){
+
+            level.setText(mListEntity.get(mListEntity.size()-1).getLevel()+"");
+            plant.setText(mListEntity.get(mListEntity.size()-1).getPlantType()+"");
+        }
+        else {
+            level.setText(1+"");
+            plant.setText(1+"");
+        }
+
     }
 
 
@@ -249,6 +275,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         rlSeeds = view.findViewById(R.id.rl_seeds);
         seeds = view.findViewById(R.id.tv_seeds);
         pots = view.findViewById(R.id.iv_pots);
+        level = view.findViewById(R.id.tv_level);
+        plant = view.findViewById(R.id.tv_plant);
 
     }
 
@@ -271,25 +299,27 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             case R.id.iv_add_water:
 
-                if (!mListEntity.isEmpty()) {
-                    if (mListEntity.get(mListEntity.size() - 1).getDate().equals(DateConverter.dateToString(curDate.getTime()))) {
-                        int lastWater = mListEntity.get(mListEntity.size() - 1).getIntakeWater();
+                plantTypeAndLevel();
 
-                        dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240 + lastWater);
+                int targetWater = SharedPreferencesManager.getInstance(getActivity()).getTargetWater();
+                int level = SharedPreferencesManager.getInstance(getActivity()).getLevel();
+                int plantType = SharedPreferencesManager.getInstance(getActivity()).getPlantType();
+
+                if (!mListEntity.isEmpty()) {
+                    int lastWater = mListEntity.get(mListEntity.size() - 1).getIntakeWater();
+                    if (mListEntity.get(mListEntity.size() - 1).getDate().equals(DateConverter.dateToString(curDate.getTime()))) {
+
+                        dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240 + lastWater, targetWater, level, plantType);
                     } else {
-                        dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240);
+                        dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240 , targetWater, level, plantType);
                     }
                 } else {
-                    dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240);
+                    dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240, targetWater, level, plantType);
                 }
 
                 mViewModel.insertData(dataEntity);
-                if (!mListEntity.isEmpty()) {
-                    String date = mListEntity.get(mListEntity.size() - 1).getDate();
-                    intakeWater = mListEntity.get(mListEntity.size() - 1).getIntakeWater();
+                Toast.makeText(mContext, "Plant is watered", Toast.LENGTH_SHORT).show();
 
-                    waterDialoge(date);
-                }
 
                 break;
 
@@ -364,6 +394,26 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 Toast.makeText(getActivity(), "camera permission denied", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    public void plantTypeAndLevel() {
+
+        if (!mListEntity.isEmpty()) {
+
+
+            if (DateConverter.toDate(curDate.getTime()).equals(mListEntity.get(mListEntity.size() - 1).getDate())) {
+                Log.d(TAG, "plantTypeAndLevel: Today working");
+            } else {
+                int level = SharedPreferencesManager.getInstance(getActivity()).getLevel();
+                if (level == 4) {
+                    level = 1;
+                    SharedPreferencesManager.getInstance(getActivity()).setLevel(level);
+                    int plantType = SharedPreferencesManager.getInstance(getActivity()).getPlantType();
+                    SharedPreferencesManager.getInstance(getActivity()).setPlantType(plantType++);
+                }
+            }
+        }
+
     }
 
 

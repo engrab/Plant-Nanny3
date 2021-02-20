@@ -31,6 +31,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tv_level"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -147,6 +148,17 @@
             app:srcCompat="@drawable/ic_seed" />
     </RelativeLayout>
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_name"
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toTopOf="@+id/relativeLayout3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/seed" />
+
     <RelativeLayout
         android:id="@+id/relativeLayout3"
         android:layout_width="wrap_content"
@@ -163,30 +175,32 @@
             android:layout_centerInParent="true"
             android:src="@drawable/ic_pots" />
 
-    </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="241dp"
-        android:layout_height="177dp"
-        android:layout_marginBottom="176dp"
-        android:src="@drawable/ic_glass"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.905"
-        app:layout_constraintStart_toStartOf="parent" />
+
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/iv_add_water"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:clickable="true"
         android:layout_marginBottom="16dp"
         android:background="@drawable/btn_background"
-        app:srcCompat="@drawable/ic_baseline_add_24"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
+
+    <TextView
+        android:id="@+id/tv_plant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="32dp"
+        android:text="plant type"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,9 +15,11 @@ public class AppRepository {
 
     private static AppRepository instance;
     private final AppDataBase mDatabase;
-    private final Executor mExecutor = Executors.newSingleThreadExecutor();
+    private  final Executor mExecutor = Executors.newSingleThreadExecutor();
 
     public LiveData<List<DataEntity>> mList;
+
+
 
     public static AppRepository getInstance(Context context) {
         return instance = new AppRepository(context);
@@ -35,6 +37,7 @@ public class AppRepository {
 
         return mDatabase.dataDao().getAll();
     }
+
 
     public void insertData(DataEntity dataEntity) {
         mExecutor.execute(new Runnable() {

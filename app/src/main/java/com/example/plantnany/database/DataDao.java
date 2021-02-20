@@ -22,7 +22,6 @@ public interface DataDao {
     void insertData(DataEntity users);
 
 
-    @Query("SELECT * FROM user ORDER BY intakeWater DESC LIMIT 1")
-    int getLastWater();
+
 
 }

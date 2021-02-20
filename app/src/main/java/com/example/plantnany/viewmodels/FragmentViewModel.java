@@ -19,7 +19,7 @@ public class FragmentViewModel extends AndroidViewModel {
     public FragmentViewModel(@NonNull Application application) {
         super(application);
         mRepository = AppRepository.getInstance(application.getApplicationContext());
-        mListEntity = getAllData();
+        mListEntity = mRepository.mList;
     }
 
     public LiveData<List<DataEntity>> getAllData() {

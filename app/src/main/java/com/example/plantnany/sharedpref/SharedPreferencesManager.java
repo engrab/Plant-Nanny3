@@ -32,6 +32,8 @@ public class SharedPreferencesManager {
     private static final String SEEDS_KEY = "seeds";
     private static final String CLOVER_KEY = "clover";
     private static final String SET_POT_KEY = "set_pot";
+    private static final String LEVEL_KEY = "plant_level";
+    private static final String PLANT_TYPE_KEY = "plant_type_key";
 
     private List<TimeModel> mList;
 
@@ -181,6 +183,7 @@ public class SharedPreferencesManager {
     public int  getClover(){
         return sharedPrefs.getInt(CLOVER_KEY, 1);
     }
+
     public void setPot(int  clover){
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putInt(SET_POT_KEY, clover);
@@ -188,6 +191,23 @@ public class SharedPreferencesManager {
     }
     public int  getPot(){
         return sharedPrefs.getInt(SET_POT_KEY, 1);
+    }
+
+    public void setLevel(int  level){
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putInt(LEVEL_KEY, level);
+        editor.apply();
+    }
+    public int  getLevel(){
+        return sharedPrefs.getInt(LEVEL_KEY, 0);
+    }
+    public void setPlantType(int  plantType){
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putInt(PLANT_TYPE_KEY, plantType);
+        editor.apply();
+    }
+    public int  getPlantType(){
+        return sharedPrefs.getInt(PLANT_TYPE_KEY, 1);
     }
 
 }
