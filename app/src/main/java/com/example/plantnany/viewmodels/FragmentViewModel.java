@@ -29,4 +29,6 @@ public class FragmentViewModel extends AndroidViewModel {
     public void insertData(DataEntity dataEntity) {
         mRepository.insertData(dataEntity);
     }
+
+
 }

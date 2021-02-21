@@ -32,6 +32,9 @@ public class DataEntity {
     @ColumnInfo(name = "plant_type")
     public int plantType;
 
+    @NonNull
+    @ColumnInfo(name =  "complete")
+    public int isTargetCompleted;
 
 
     @Ignore
@@ -39,12 +42,14 @@ public class DataEntity {
 
     }
 
-    public DataEntity(@NonNull String date, int intakeWater, int targetWater, int level, int plantType) {
+
+    public DataEntity(@NonNull String date, int intakeWater, int targetWater, int level, int plantType, int isTargetCompleted) {
         this.date = date;
         this.intakeWater = intakeWater;
         this.targetWater = targetWater;
         this.level = level;
         this.plantType = plantType;
+        this.isTargetCompleted = isTargetCompleted;
 
     }
 
@@ -88,6 +93,14 @@ public class DataEntity {
 
     public void setPlantType(int plantType) {
         this.plantType = plantType;
+    }
+
+    public int getIsTargetCompleted() {
+        return isTargetCompleted;
+    }
+
+    public void setIsTargetCompleted(int isTargetCompleted) {
+        this.isTargetCompleted = isTargetCompleted;
     }
 
 }

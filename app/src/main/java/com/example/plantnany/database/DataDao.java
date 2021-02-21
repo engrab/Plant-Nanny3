@@ -21,7 +21,4 @@ public interface DataDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertData(DataEntity users);
 
-
-
-
 }

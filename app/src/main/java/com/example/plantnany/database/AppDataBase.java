@@ -11,7 +11,7 @@ import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 
-@Database(entities = {DataEntity.class}, version = 6)
+@Database(entities = {DataEntity.class}, version = 7)
 public abstract class AppDataBase extends RoomDatabase {
 
     public static final String DATABASE_NAME = "appdatabase.db";
@@ -21,10 +21,10 @@ public abstract class AppDataBase extends RoomDatabase {
     public static volatile AppDataBase instance;
     private static final Object LOCK = new Object();
 
-    static Migration migration = new Migration(5,6) {
+    static Migration migration = new Migration(6,7) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
-            database.execSQL("ALTER TABLE 'user' ADD COLUMN 'plant_type' INTEGER NOT NULL DEFAULT 1 ");
+            database.execSQL("ALTER TABLE 'user' ADD COLUMN 'complete' INTEGER NOT NULL DEFAULT 0 ");
         }
     };
 

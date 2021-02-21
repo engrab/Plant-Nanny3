@@ -34,9 +34,9 @@ public class SharedPreferencesManager {
     private static final String SET_POT_KEY = "set_pot";
     private static final String LEVEL_KEY = "plant_level";
     private static final String PLANT_TYPE_KEY = "plant_type_key";
+    private static final String IS_TARGET_COMPLETED = "is_target_completed";
 
     private List<TimeModel> mList;
-
 
 
     private SharedPreferences sharedPrefs;
@@ -78,136 +78,165 @@ public class SharedPreferencesManager {
         return sharedPrefs.getString(NOTIFICATION_MSG_KEY, "Lets... Drink some water");
     }
 
-    public void setNotificationStatus(boolean bool){
+    public void setNotificationStatus(boolean bool) {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putBoolean(NOTIFICATION_STATUS_KEY, bool);
         editor.apply();
     }
 
-    public boolean getNotificationStatus(){
+    public boolean getNotificationStatus() {
         return sharedPrefs.getBoolean(NOTIFICATION_STATUS_KEY, true);
     }
 
-    public void setIsFirstTime(boolean bool){
+    public void setIsFirstTime(boolean bool) {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putBoolean(IS_FIRST_TIME_KEY, bool);
         editor.apply();
     }
-    public boolean getIsFirstTime(){
+
+    public boolean getIsFirstTime() {
         return sharedPrefs.getBoolean(IS_FIRST_TIME_KEY, true);
     }
-    public void setIsMusicPlay(boolean bool){
+
+    public void setIsMusicPlay(boolean bool) {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putBoolean(IS_MUSIC_PlayING_KEY, bool);
         editor.apply();
     }
-    public boolean getMusicPlay(){
+
+    public boolean getMusicPlay() {
         return sharedPrefs.getBoolean(IS_MUSIC_PlayING_KEY, true);
     }
 
-    public void setButtonClickSound(boolean bool){
+    public void setButtonClickSound(boolean bool) {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putBoolean(IS_BUTTON_CLICK_SOUND_KEY, bool);
         editor.apply();
     }
-    public boolean getButtonClickSound(){
+
+    public boolean getButtonClickSound() {
         return sharedPrefs.getBoolean(IS_BUTTON_CLICK_SOUND_KEY, true);
     }
-    public void setDefaultReminderTime(int i){
+
+    public void setDefaultReminderTime(int i) {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putInt(REMINDER_TIME_KEY, i);
         editor.apply();
     }
-    public int getDefaultReminderTime(){
+
+    public int getDefaultReminderTime() {
         return sharedPrefs.getInt(REMINDER_TIME_KEY, 1);
     }
 
-    public void setWeight(int weight){
+    public void setWeight(int weight) {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putInt(WEIGHT_KEY, weight);
         editor.apply();
     }
-    public int getWeight(){
+
+    public int getWeight() {
         return sharedPrefs.getInt(WEIGHT_KEY, 60);
     }
 
-    public void setTargetWater(int water){
+    public void setTargetWater(int water) {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putInt(TARGET_WATER_KEY, water);
         editor.apply();
     }
-    public int getTargetWater(){
+
+    public int getTargetWater() {
         return sharedPrefs.getInt(TARGET_WATER_KEY, 3300);
     }
 
-    public void setDefaultCupVolume(String  cupVolume){
+    public void setDefaultCupVolume(String cupVolume) {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(DEFAULT_WATER_VOLUME, cupVolume);
         editor.apply();
     }
-    public String  getDefaultCupVolume(){
-        return sharedPrefs.getString(DEFAULT_WATER_VOLUME, 240+"");
+
+    public String getDefaultCupVolume() {
+        return sharedPrefs.getString(DEFAULT_WATER_VOLUME, 240 + "");
     }
-    public void setSafeReminderTime(List<TimeModel> modelList){
+
+    public void setSafeReminderTime(List<TimeModel> modelList) {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         Gson gson = new Gson();
         String toJson = gson.toJson(modelList);
         editor.putString(SAFE_REMINDER_TIME_KEY, toJson);
         editor.apply();
     }
-    public List<TimeModel>  getSafeReminderTime(){
+
+    public List<TimeModel> getSafeReminderTime() {
         Gson gson = new Gson();
         String json = sharedPrefs.getString(SAFE_REMINDER_TIME_KEY, null);
-        Type type = new TypeToken<ArrayList<TimeModel>>() {}.getType();
+        Type type = new TypeToken<ArrayList<TimeModel>>() {
+        }.getType();
 
-        if (mList == null){
+        if (mList == null) {
             mList = new ArrayList<>();
         }
         mList = gson.fromJson(json, type);
         return mList;
     }
 
-    public void setSeeds(int  seeds){
+    public void setSeeds(int seeds) {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putInt(SEEDS_KEY, seeds);
         editor.apply();
     }
-    public int  getSeeds(){
+
+    public int getSeeds() {
         return sharedPrefs.getInt(SEEDS_KEY, 1);
     }
-    public void setClover(int  clover){
+
+    public void setClover(int clover) {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putInt(CLOVER_KEY, clover);
         editor.apply();
     }
-    public int  getClover(){
+
+    public int getClover() {
         return sharedPrefs.getInt(CLOVER_KEY, 1);
     }
 
-    public void setPot(int  clover){
+    public void setPot(int clover) {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putInt(SET_POT_KEY, clover);
         editor.apply();
     }
-    public int  getPot(){
+
+    public int getPot() {
         return sharedPrefs.getInt(SET_POT_KEY, 1);
     }
 
-    public void setLevel(int  level){
+    public void setLevel(int level) {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putInt(LEVEL_KEY, level);
         editor.apply();
     }
-    public int  getLevel(){
-        return sharedPrefs.getInt(LEVEL_KEY, 0);
+
+    public int getLevel() {
+        return sharedPrefs.getInt(LEVEL_KEY, 1);
     }
-    public void setPlantType(int  plantType){
+
+    public void setPlantType(int plantType) {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putInt(PLANT_TYPE_KEY, plantType);
         editor.apply();
     }
-    public int  getPlantType(){
+
+    public int getPlantType() {
         return sharedPrefs.getInt(PLANT_TYPE_KEY, 1);
+    }
+
+    public void setIsTargetCompleted(int isTargetCompleted) {
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putInt(IS_TARGET_COMPLETED, isTargetCompleted);
+        editor.apply();
+    }
+
+    public int getIsTargetCompleted() {
+        return sharedPrefs.getInt(IS_TARGET_COMPLETED, 0);
     }
 
 }

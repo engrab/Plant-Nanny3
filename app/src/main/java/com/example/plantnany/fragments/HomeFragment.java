@@ -88,7 +88,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
 
         plantArray();
-//        getAllData();
 
 
         return view;
@@ -104,10 +103,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         plantType.add("Mashroom");
         plantType.add("Rose");
         plantType.add("Cyclamen");
-    }
-
-    private void getAllData() {
-        mViewModel.getAllData();
     }
 
     private void initViewModel() {
@@ -156,15 +151,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         seeds.setText(SharedPreferencesManager.getInstance(getActivity()).getSeeds() + "");
         clover.setText(SharedPreferencesManager.getInstance(getActivity()).getClover() + "");
 
-        if (!mListEntity.isEmpty()){
+        if (!mListEntity.isEmpty()) {
 
-            level.setText(mListEntity.get(mListEntity.size()-1).getLevel()+"");
-            plant.setText(mListEntity.get(mListEntity.size()-1).getPlantType()+"");
+            level.setText(mListEntity.get(mListEntity.size() - 1).getLevel() + "");
+            plant.setText(mListEntity.get(mListEntity.size() - 1).getPlantType() + "");
+        } else {
+            level.setText(1 + "");
+            plant.setText(1 + "");
         }
-        else {
-            level.setText(1+"");
-            plant.setText(1+"");
-        }
+
 
     }
 
@@ -255,6 +250,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         super.onResume();
         setPots();
 
+        isLevelCompleted();
+
 
     }
 
@@ -299,22 +296,25 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             case R.id.iv_add_water:
 
-                plantTypeAndLevel();
+                if (!mListEntity.isEmpty()) {
 
-                int targetWater = SharedPreferencesManager.getInstance(getActivity()).getTargetWater();
-                int level = SharedPreferencesManager.getInstance(getActivity()).getLevel();
-                int plantType = SharedPreferencesManager.getInstance(getActivity()).getPlantType();
+                    if (mListEntity.get(mListEntity.size() - 1).getDate().equals(DateConverter.dateToString(curDate.getTime()))) {
+
+                        isTargetAchieve();
+                    }
+                }
+
 
                 if (!mListEntity.isEmpty()) {
                     int lastWater = mListEntity.get(mListEntity.size() - 1).getIntakeWater();
                     if (mListEntity.get(mListEntity.size() - 1).getDate().equals(DateConverter.dateToString(curDate.getTime()))) {
 
-                        dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240 + lastWater, targetWater, level, plantType);
+                        dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240 + lastWater, SharedPreferencesManager.getInstance(getActivity()).getTargetWater(), SharedPreferencesManager.getInstance(getActivity()).getLevel(), SharedPreferencesManager.getInstance(getActivity()).getPlantType(), SharedPreferencesManager.getInstance(getActivity()).getIsTargetCompleted());
                     } else {
-                        dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240 , targetWater, level, plantType);
+                        dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240, SharedPreferencesManager.getInstance(getActivity()).getTargetWater(), SharedPreferencesManager.getInstance(getActivity()).getLevel(), SharedPreferencesManager.getInstance(getActivity()).getPlantType(), SharedPreferencesManager.getInstance(getActivity()).getIsTargetCompleted());
                     }
                 } else {
-                    dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240, targetWater, level, plantType);
+                    dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240, SharedPreferencesManager.getInstance(getActivity()).getTargetWater(), SharedPreferencesManager.getInstance(getActivity()).getLevel(), SharedPreferencesManager.getInstance(getActivity()).getPlantType(), SharedPreferencesManager.getInstance(getActivity()).getIsTargetCompleted());
                 }
 
                 mViewModel.insertData(dataEntity);
@@ -396,24 +396,51 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void plantTypeAndLevel() {
+
+    private void isTargetAchieve() {
+
+
+                if (mListEntity.get(mListEntity.size() - 1).getTargetWater() <= mListEntity.get(mListEntity.size() - 1).getIntakeWater()) {
+
+                    SharedPreferencesManager.getInstance(getActivity()).setIsTargetCompleted(1);
+                } else {
+                    SharedPreferencesManager.getInstance(getActivity()).setIsTargetCompleted(0);
+                }
+
+    }
+
+    private void isLevelCompleted() {
 
         if (!mListEntity.isEmpty()) {
+            String date = mListEntity.get(mListEntity.size() - 1).getDate();
+            String date1 = DateConverter.dateToString(curDate.getTime());
+            if (!date.equals(date1)) {
+                Log.d(TAG, "New Date: ");
+                int isTargetCompleted = mListEntity.get(mListEntity.size() - 1).getIsTargetCompleted();
+                if (isTargetCompleted == 1) {
+                    Log.d(TAG, "target completed: ");
+                    int level = mListEntity.get(mListEntity.size() - 1).getLevel();
+                    int plantType = mListEntity.get(mListEntity.size() - 1).getPlantType();
+                    if (level == 4) {
+                        Log.d(TAG, "increment plant: ");
+                        plantType = plantType + 1;
+                        SharedPreferencesManager.getInstance(getActivity()).setLevel(1);
+                        SharedPreferencesManager.getInstance(getActivity()).setPlantType(plantType);
 
-
-            if (DateConverter.toDate(curDate.getTime()).equals(mListEntity.get(mListEntity.size() - 1).getDate())) {
-                Log.d(TAG, "plantTypeAndLevel: Today working");
-            } else {
-                int level = SharedPreferencesManager.getInstance(getActivity()).getLevel();
-                if (level == 4) {
-                    level = 1;
-                    SharedPreferencesManager.getInstance(getActivity()).setLevel(level);
-                    int plantType = SharedPreferencesManager.getInstance(getActivity()).getPlantType();
-                    SharedPreferencesManager.getInstance(getActivity()).setPlantType(plantType++);
+                    } else {
+                        Log.d(TAG, "Increment level: ");
+                        level = level + 1;
+                        SharedPreferencesManager.getInstance(getActivity()).setLevel(level);
+                    }
+                }else {
+                    Log.d(TAG, "target not completed: ");
                 }
+            } else {
+                Log.d(TAG, "current date: ");
             }
+        } else {
+            Log.d(TAG, "first time:  ");
         }
-
     }
 
 
