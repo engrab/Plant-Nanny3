@@ -37,19 +37,36 @@ public class DataEntity {
     public int isTargetCompleted;
 
 
+
+    @NonNull
+    @ColumnInfo(name =  "seed")
+    public int seed;
+
+
+
+    @NonNull
+    @ColumnInfo(name =  "clover")
+    public int clover;
+
+
+
+
     @Ignore
     public DataEntity() {
 
     }
 
 
-    public DataEntity(@NonNull String date, int intakeWater, int targetWater, int level, int plantType, int isTargetCompleted) {
+    public DataEntity(@NonNull String date, int intakeWater, int targetWater, int level,
+                      int plantType, int isTargetCompleted, int seed, int clover) {
         this.date = date;
         this.intakeWater = intakeWater;
         this.targetWater = targetWater;
         this.level = level;
         this.plantType = plantType;
         this.isTargetCompleted = isTargetCompleted;
+        this.seed = seed;
+        this.clover = clover;
 
     }
 
@@ -103,4 +120,19 @@ public class DataEntity {
         this.isTargetCompleted = isTargetCompleted;
     }
 
+    public int getSeed() {
+        return seed;
+    }
+
+    public void setSeed(int seed) {
+        this.seed = seed;
+    }
+
+    public int getClover() {
+        return clover;
+    }
+
+    public void setClover(int clover) {
+        this.clover = clover;
+    }
 }

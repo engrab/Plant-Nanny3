@@ -10,6 +10,7 @@ import com.example.plantnany.AppRepository;
 import com.example.plantnany.database.DataEntity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class FragmentViewModel extends AndroidViewModel {
@@ -31,4 +32,7 @@ public class FragmentViewModel extends AndroidViewModel {
     }
 
 
+    public void insertClover(String toDate, int clovers) {
+        mRepository.insertClover(toDate, clovers);
+    }
 }

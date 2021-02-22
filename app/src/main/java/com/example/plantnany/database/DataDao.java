@@ -21,4 +21,7 @@ public interface DataDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertData(DataEntity users);
 
+    @Query("UPDATE user SET clover = :clovers WHERE date = :date")
+    int insertClover(String date, int clovers);
+
 }

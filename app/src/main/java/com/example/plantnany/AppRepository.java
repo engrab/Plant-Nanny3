@@ -47,4 +47,13 @@ public class AppRepository {
             }
         });
     }
+
+    public void insertClover(String toDate, int clovers) {
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDatabase.dataDao().insertClover(toDate, clovers);
+            }
+        });
+    }
 }

@@ -72,9 +72,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     ButtonClick buttonClick;
 
 
-
-
-
     public HomeFragment(Context context) {
         mContext = context;
         buttonClick = new ButtonClick(mContext);
@@ -153,16 +150,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        seeds.setText(SharedPreferencesManager.getInstance(getActivity()).getSeeds() + "");
-        clover.setText(SharedPreferencesManager.getInstance(getActivity()).getClover() + "");
 
         if (!mListEntity.isEmpty()) {
-
+            clover.setText(mListEntity.get(mListEntity.size() - 1).getClover()  + "");
             level.setText(mListEntity.get(mListEntity.size() - 1).getLevel() + "");
             plant.setText(mListEntity.get(mListEntity.size() - 1).getPlantType() + "");
+            seeds.setText(mListEntity.get(mListEntity.size() - 1).getSeed() + "");
         } else {
-            level.setText(SharedPreferencesManager.getInstance(getActivity()).getLevel()+ "");
-            plant.setText(SharedPreferencesManager.getInstance(getActivity()).getPlantType()+ "");
+            clover.setText(SharedPreferencesManager.getInstance(getActivity()).getClover() + "");
+            seeds.setText(SharedPreferencesManager.getInstance(getActivity()).getSeeds() + "");
+            level.setText(SharedPreferencesManager.getInstance(getActivity()).getLevel() + "");
+            plant.setText(SharedPreferencesManager.getInstance(getActivity()).getPlantType() + "");
         }
 
 
@@ -316,12 +314,31 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     int lastWater = mListEntity.get(mListEntity.size() - 1).getIntakeWater();
                     if (mListEntity.get(mListEntity.size() - 1).getDate().equals(DateConverter.dateToString(curDate.getTime()))) {
 
-                        dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240 + lastWater, SharedPreferencesManager.getInstance(getActivity()).getTargetWater(), SharedPreferencesManager.getInstance(getActivity()).getLevel(), SharedPreferencesManager.getInstance(getActivity()).getPlantType(), SharedPreferencesManager.getInstance(getActivity()).getIsTargetCompleted());
+                        dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()),
+                                240 + lastWater,
+                                SharedPreferencesManager.getInstance(getActivity()).getTargetWater(),
+                                SharedPreferencesManager.getInstance(getActivity()).getLevel(),
+                                SharedPreferencesManager.getInstance(getActivity()).getPlantType(),
+                                SharedPreferencesManager.getInstance(getActivity()).getIsTargetCompleted(),
+                                SharedPreferencesManager.getInstance(getActivity()).getSeeds(),
+                                SharedPreferencesManager.getInstance(getActivity()).getClover());
                     } else {
-                        dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240, SharedPreferencesManager.getInstance(getActivity()).getTargetWater(), SharedPreferencesManager.getInstance(getActivity()).getLevel(), SharedPreferencesManager.getInstance(getActivity()).getPlantType(), SharedPreferencesManager.getInstance(getActivity()).getIsTargetCompleted());
+                        dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240,
+                                SharedPreferencesManager.getInstance(getActivity()).getTargetWater(),
+                                SharedPreferencesManager.getInstance(getActivity()).getLevel(),
+                                SharedPreferencesManager.getInstance(getActivity()).getPlantType(),
+                                SharedPreferencesManager.getInstance(getActivity()).getIsTargetCompleted(),
+                                SharedPreferencesManager.getInstance(getActivity()).getSeeds(),
+                                SharedPreferencesManager.getInstance(getActivity()).getClover());
                     }
                 } else {
-                    dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240, SharedPreferencesManager.getInstance(getActivity()).getTargetWater(), SharedPreferencesManager.getInstance(getActivity()).getLevel(), SharedPreferencesManager.getInstance(getActivity()).getPlantType(), SharedPreferencesManager.getInstance(getActivity()).getIsTargetCompleted());
+                    dataEntity = new DataEntity(DateConverter.dateToString(curDate.getTime()), 240,
+                            SharedPreferencesManager.getInstance(getActivity()).getTargetWater(),
+                            SharedPreferencesManager.getInstance(getActivity()).getLevel(),
+                            SharedPreferencesManager.getInstance(getActivity()).getPlantType(),
+                            SharedPreferencesManager.getInstance(getActivity()).getIsTargetCompleted(),
+                            SharedPreferencesManager.getInstance(getActivity()).getSeeds(),
+                            SharedPreferencesManager.getInstance(getActivity()).getClover());
                 }
 
                 mViewModel.insertData(dataEntity);
@@ -408,12 +425,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void isTargetAchieve() {
 
 
-                if (mListEntity.get(mListEntity.size() - 1).getTargetWater() <= mListEntity.get(mListEntity.size() - 1).getIntakeWater()) {
+        if (mListEntity.get(mListEntity.size() - 1).getTargetWater() <= mListEntity.get(mListEntity.size() - 1).getIntakeWater()) {
 
-                    SharedPreferencesManager.getInstance(getActivity()).setIsTargetCompleted(1);
-                } else {
-                    SharedPreferencesManager.getInstance(getActivity()).setIsTargetCompleted(0);
-                }
+            SharedPreferencesManager.getInstance(getActivity()).setIsTargetCompleted(1);
+        } else {
+            SharedPreferencesManager.getInstance(getActivity()).setIsTargetCompleted(0);
+        }
 
     }
 
@@ -440,7 +457,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         level = level + 1;
                         SharedPreferencesManager.getInstance(getActivity()).setLevel(level);
                     }
-                }else {
+                } else {
                     Log.d(TAG, "target not completed: ");
                 }
             } else {

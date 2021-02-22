@@ -1,6 +1,8 @@
 package com.example.plantnany.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import android.app.ActionBar;
 import android.content.Intent;
@@ -12,12 +14,17 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.plantnany.R;
+import com.example.plantnany.database.DataEntity;
+import com.example.plantnany.database.DateConverter;
 import com.example.plantnany.databinding.ActivitySplashScreenBinding;
 import com.example.plantnany.services.MusicService;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
+import com.example.plantnany.viewmodels.FragmentViewModel;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+
+import java.util.Date;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -36,6 +43,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         ActivitySplashScreenBinding binding = ActivitySplashScreenBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
@@ -74,6 +82,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                     startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
                 } else {
+
                     startActivity(new Intent(SplashScreenActivity.this, StartActivity.class));
                 }
                 finish();

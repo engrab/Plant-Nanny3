@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,8 +24,11 @@ import android.widget.Toast;
 import com.example.plantnany.R;
 import com.example.plantnany.activities.MainActivity;
 import com.example.plantnany.adapters.PotsAdapter;
+import com.example.plantnany.database.DataEntity;
+import com.example.plantnany.database.DateConverter;
 import com.example.plantnany.model.PotModel;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
+import com.example.plantnany.viewmodels.FragmentViewModel;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
@@ -35,6 +40,7 @@ import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PotsFragment extends Fragment {
@@ -46,6 +52,11 @@ public class PotsFragment extends Fragment {
     TextView clover;
     TextView seeds;
     Context mContext;
+    TextView level;
+    List<DataEntity> mListEntity = new ArrayList<>();
+    private FragmentViewModel mViewModel;
+    Date date = new Date();
+
 
     public PotsFragment(Context context) {
         mContext = context;
@@ -56,6 +67,7 @@ public class PotsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pots, container, false);
         init(view);
+        initViewModel();
         listPots();
         setAdapterForRecyclerView();
 
@@ -69,6 +81,19 @@ public class PotsFragment extends Fragment {
 
         return view;
 
+    }
+
+    private void initViewModel() {
+        mViewModel = new ViewModelProvider(requireActivity()).get(FragmentViewModel.class);
+        Observer<List<DataEntity>> observer = new Observer<List<DataEntity>>() {
+            @Override
+            public void onChanged(List<DataEntity> dataEntities) {
+
+                mListEntity.clear();
+                mListEntity.addAll(dataEntities);
+            }
+        };
+        mViewModel.mListEntity.observe(requireActivity(), observer);
     }
 
 
@@ -133,10 +158,21 @@ public class PotsFragment extends Fragment {
                 @Override
                 public void onUserEarnedReward(@NonNull com.google.android.gms.ads.rewarded.RewardItem rewardItem) {
 
+                    insertClover();
                     SharedPreferencesManager.getInstance(getActivity()).setClover(SharedPreferencesManager.getInstance(getActivity()).getClover() + 1);
-                    clover.setText(SharedPreferencesManager.getInstance(getActivity()).getClover() + "");
+//                    clover.setText(SharedPreferencesManager.getInstance(getActivity()).getClover() + "");
+
                 }
             });
+        }
+    }
+
+    private void insertClover() {
+        if (!mListEntity.isEmpty()) {
+            if (mListEntity.get(mListEntity.size() - 1).getDate().equals(DateConverter.dateToString(date.getTime()))) {
+                mViewModel.insertClover(DateConverter.dateToString(date.getTime()), SharedPreferencesManager.getInstance(getActivity()).getClover() + 3);
+
+            }
         }
     }
 
@@ -144,8 +180,15 @@ public class PotsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        clover.setText(SharedPreferencesManager.getInstance(getActivity()).getClover() + "");
-        seeds.setText(SharedPreferencesManager.getInstance(getActivity()).getSeeds() + "");
+        if (!mListEntity.isEmpty()) {
+            clover.setText(mListEntity.get(mListEntity.size() - 1).getClover() + "");
+            level.setText(mListEntity.get(mListEntity.size() - 1).getLevel() + "");
+            seeds.setText(mListEntity.get(mListEntity.size() - 1).getSeed() + "");
+        } else {
+            clover.setText(SharedPreferencesManager.getInstance(getActivity()).getClover() + "");
+            seeds.setText(SharedPreferencesManager.getInstance(getActivity()).getSeeds() + "");
+            level.setText(SharedPreferencesManager.getInstance(getActivity()).getLevel() + "");
+        }
 
     }
 
@@ -170,6 +213,7 @@ public class PotsFragment extends Fragment {
         freeClover = view.findViewById(R.id.ll_free_clover);
         clover = view.findViewById(R.id.tv_clover);
         seeds = view.findViewById(R.id.tv_seeds);
+        level = view.findViewById(R.id.tv_level);
 
     }
 

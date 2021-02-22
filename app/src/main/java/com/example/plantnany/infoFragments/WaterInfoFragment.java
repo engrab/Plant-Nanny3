@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +20,11 @@ import android.widget.Toast;
 import com.example.plantnany.ButtonClick;
 import com.example.plantnany.R;
 import com.example.plantnany.activities.MainActivity;
+import com.example.plantnany.activities.SplashScreenActivity;
+import com.example.plantnany.database.DataEntity;
+import com.example.plantnany.database.DateConverter;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
+import com.example.plantnany.viewmodels.FragmentViewModel;
 
 import java.util.Date;
 
@@ -33,6 +38,8 @@ public class WaterInfoFragment extends Fragment implements View.OnClickListener 
     Context mContext;
     int workHour = 0;
     ButtonClick buttonClick;
+    private FragmentViewModel mViewModel;
+
 
     public WaterInfoFragment(Context mContext) {
         // Required empty public constructor
@@ -47,6 +54,7 @@ public class WaterInfoFragment extends Fragment implements View.OnClickListener 
         // Inflate the layout for this fragment
         View inflate = inflater.inflate(R.layout.fragment_water_info, container, false);
 
+        initViewModel();
         exerciseDesc = inflate.findViewById(R.id.tv_exsercise_desc);
         sedentary = inflate.findViewById(R.id.iv_sedentary);
         moderateActive = inflate.findViewById(R.id.iv_moderate_active);
@@ -60,6 +68,10 @@ public class WaterInfoFragment extends Fragment implements View.OnClickListener 
         extemelyActive.setOnClickListener(this);
         calculateGoal.setOnClickListener(this);
         return inflate;
+    }
+
+    private void initViewModel() {
+        mViewModel = new ViewModelProvider(requireActivity()).get(FragmentViewModel.class);
     }
 
     @Override
@@ -121,6 +133,14 @@ public class WaterInfoFragment extends Fragment implements View.OnClickListener 
                     int weight = SharedPreferencesManager.getInstance(getActivity()).getWeight();
                     int targetWater = calculateIntake(weight, workHour);
                     SharedPreferencesManager.getInstance(getActivity()).setTargetWater(targetWater);
+
+                    mViewModel.insertData(new DataEntity(DateConverter.dateToString(new Date().getTime()), 0, targetWater,
+                            SharedPreferencesManager.getInstance(getActivity()).getLevel(),
+                            SharedPreferencesManager.getInstance(getActivity()).getPlantType(),
+                            SharedPreferencesManager.getInstance(getActivity()).getIsTargetCompleted(),
+                            SharedPreferencesManager.getInstance(getActivity()).getSeeds(),
+                            SharedPreferencesManager.getInstance(getActivity()).getClover()));
+
                     Intent intent = new Intent(mContext, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

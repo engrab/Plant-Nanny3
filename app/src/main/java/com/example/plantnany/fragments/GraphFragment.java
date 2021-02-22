@@ -42,11 +42,11 @@ public class GraphFragment extends Fragment {
     private Date currentDate = new Date();
     private static final String TAG = "GraphFragment";
     private List<BarEntry> entries = new ArrayList<>();
-ButtonClick buttonClick;
+    ButtonClick buttonClick;
 
     public GraphFragment(Context context) {
         mContext = context;
-buttonClick = new ButtonClick(mContext);
+        buttonClick = new ButtonClick(mContext);
     }
 
     @Nullable
@@ -106,10 +106,6 @@ buttonClick = new ButtonClick(mContext);
 
     @Override
     public void onResume() {
-//        showAlertDialogWithAutoDismiss();
-//        if (mDataList.size() == 0) {
-//            showAlertDialogWithAutoDismiss();
-//        }
 
         super.onResume();
         Log.d(TAG, "onResume: " + mDataList.size());
