@@ -6,11 +6,11 @@ import android.media.MediaPlayer;
 
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
 
-public class ButtonCick {
+public class ButtonClick {
 
     static Context mContext;
 
-    public ButtonCick(Context context) {
+    public ButtonClick(Context context) {
         mContext = context;
     }
 

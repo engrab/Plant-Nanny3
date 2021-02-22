@@ -7,6 +7,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.plantnany.ButtonClick;
 import com.example.plantnany.R;
 import com.example.plantnany.adapters.InfoStatePagerAdapter;
 import com.example.plantnany.infoFragments.ActivityInfoFragment;
@@ -24,6 +25,7 @@ public class StartActivity extends AppCompatActivity {
     private InfoStatePagerAdapter adapter;
     private List<Fragment> list;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,12 +36,13 @@ public class StartActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_start);
 
+
         viewPager = findViewById(R.id.vp_info);
 
         list = new ArrayList<>();
-        list.add(new ActivityInfoFragment());
-        list.add(new ReminderInfoFragment());
-        list.add(new WeightInfoFragment());
+        list.add(new ActivityInfoFragment(StartActivity.this));
+        list.add(new ReminderInfoFragment(StartActivity.this));
+        list.add(new WeightInfoFragment(StartActivity.this));
         list.add(new WaterInfoFragment(StartActivity.this));
 
         adapter = new InfoStatePagerAdapter(getSupportFragmentManager(), list);

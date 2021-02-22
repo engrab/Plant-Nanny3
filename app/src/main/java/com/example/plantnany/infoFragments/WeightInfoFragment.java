@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.plantnany.ButtonClick;
 import com.example.plantnany.R;
 import com.example.plantnany.activities.StartActivity;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
@@ -29,10 +30,15 @@ public class WeightInfoFragment extends Fragment {
     RadioButton radKg, radLb;
     RadioGroup mRadGroup;
     private WeightListener mWeightListener;
+    ButtonClick buttonClick;
+Context mContext;
 
 
-    public WeightInfoFragment() {
+    public WeightInfoFragment(Context context) {
         // Required empty public constructor
+        mContext = context;
+        buttonClick = new ButtonClick(mContext);
+
     }
 
 
@@ -55,11 +61,13 @@ public class WeightInfoFragment extends Fragment {
                 switch (checkedId) {
                     case R.id.rad_kg:
 
+                        buttonClick.setOnsoundOnButtonClick();
                         kg = lb * 0.45359237;
                         weight.setText(String.valueOf(Math.round(kg)));
                         break;
 
                     case R.id.rad_lb:
+                        buttonClick.setOnsoundOnButtonClick();
                         lb = kg / 0.45359237;
                         weight.setText(String.valueOf(Math.round(lb)));
                         break;
@@ -79,9 +87,10 @@ public class WeightInfoFragment extends Fragment {
         sub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                buttonClick.setOnsoundOnButtonClick();
 
                 if (radKg.isChecked()) {
+
                     kg--;
                     weight.setText(String.valueOf(Math.round(kg)));
                 } else if (radLb.isChecked()) {
@@ -94,7 +103,7 @@ public class WeightInfoFragment extends Fragment {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                buttonClick.setOnsoundOnButtonClick();
                 if (radKg.isChecked()) {
                     kg++;
                     weight.setText(String.valueOf(Math.round(kg)));
@@ -107,6 +116,7 @@ public class WeightInfoFragment extends Fragment {
         inflate.findViewById(R.id.btn_next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                buttonClick.setOnsoundOnButtonClick();
                 String weight = WeightInfoFragment.this.weight.getText().toString();
                 SharedPreferencesManager.getInstance(getActivity()).setWeight((int)Double.parseDouble(weight));
                 StartActivity.viewPager.setCurrentItem(3);

@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.plantnany.R;
+import com.example.plantnany.activities.MainActivity;
 import com.example.plantnany.adapters.PotsAdapter;
 import com.example.plantnany.model.PotModel;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
@@ -44,9 +45,9 @@ public class PotsFragment extends Fragment {
     RewardedAd rewardedAd;
     TextView clover;
     TextView seeds;
-    Activity mContext;
+    Context mContext;
 
-    public PotsFragment(Activity context) {
+    public PotsFragment(Context context) {
         mContext = context;
     }
 
@@ -128,7 +129,7 @@ public class PotsFragment extends Fragment {
     private void showRewardedAd() {
 
         if (rewardedAd != null) {
-            rewardedAd.show(mContext, new OnUserEarnedRewardListener() {
+            rewardedAd.show((MainActivity) mContext, new OnUserEarnedRewardListener() {
                 @Override
                 public void onUserEarnedReward(@NonNull com.google.android.gms.ads.rewarded.RewardItem rewardItem) {
 

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.plantnany.ButtonCick;
+import com.example.plantnany.ButtonClick;
 import com.example.plantnany.R;
 import com.example.plantnany.bottomdialoge.WaterReminderBottomDialoge;
 import com.example.plantnany.fragments.AllPlantsFragment;
@@ -24,10 +24,10 @@ import androidx.fragment.app.Fragment;
 
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener
-        , SettingsFragment.MusicPlayingListener, SettingsFragment.SoundClickListener,
+        , SettingsFragment.MusicPlayingListener,
         WaterReminderBottomDialoge.NotificationStatusListener, WaterReminderBottomDialoge.NotificationFrequencyListener {
 
-    ButtonCick buttonCick;
+    ButtonClick buttonClick;
     public static BottomNavigationView navigation;
 
 
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_main);
 
         setNotification();
-        buttonCick = new ButtonCick(this);
+        buttonClick = new ButtonClick(this);
 
 
         //getting bottom navigation view and attaching the listener
@@ -91,30 +91,30 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         switch (item.getItemId()) {
             case R.id.navigation_home:
-                buttonCick.setOnsoundOnButtonClick();
-                fragment = new HomeFragment(MainActivity.this);
+                buttonClick.setOnsoundOnButtonClick();
+                fragment = new HomeFragment(this);
 
                 break;
 
             case R.id.navigation_pots:
-                buttonCick.setOnsoundOnButtonClick();
-                fragment = new PotsFragment(MainActivity.this);
+                buttonClick.setOnsoundOnButtonClick();
+                fragment = new PotsFragment(this);
 
                 break;
 
             case R.id.navigation_all_plants:
-                buttonCick.setOnsoundOnButtonClick();
-                fragment = new AllPlantsFragment();
+                buttonClick.setOnsoundOnButtonClick();
+                fragment = new AllPlantsFragment(this);
 
                 break;
 
             case R.id.navigation_setting:
-                buttonCick.setOnsoundOnButtonClick();
-                fragment = new SettingsFragment();
+                buttonClick.setOnsoundOnButtonClick();
+                fragment = new SettingsFragment(this);
 
                 break;
             case R.id.navigation_graph:
-                buttonCick.setOnsoundOnButtonClick();
+                buttonClick.setOnsoundOnButtonClick();
                 fragment = new GraphFragment(this);
 
                 break;
@@ -151,10 +151,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
-    @Override
-    public void soundClick(boolean bool) {
-        SharedPreferencesManager.getInstance(this).setButtonClickSound(bool);
-    }
 
     @Override
     public void notificationStatus(boolean bool) {

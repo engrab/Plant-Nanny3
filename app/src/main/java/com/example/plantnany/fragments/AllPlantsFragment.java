@@ -1,5 +1,6 @@
 package com.example.plantnany.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +11,18 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.plantnany.ButtonClick;
 import com.example.plantnany.R;
 import com.example.plantnany.adapters.SectionsPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 public class AllPlantsFragment extends Fragment {
+    Context mContext;
+    ButtonClick buttonClick;
+    public AllPlantsFragment(Context context) {
+        mContext = context;
+        buttonClick = new ButtonClick(mContext);
+    }
 
     @Nullable
     @Override

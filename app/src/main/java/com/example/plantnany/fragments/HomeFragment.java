@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.plantnany.ButtonClick;
 import com.example.plantnany.R;
 import com.example.plantnany.activities.MainActivity;
 import com.example.plantnany.database.DataEntity;
@@ -68,12 +69,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     ImageView pots;
     private FragmentViewModel mViewModel;
     TextView level, plant;
+    ButtonClick buttonClick;
 
-    ArrayList<String> plantType = new ArrayList<>();
+
+
 
 
     public HomeFragment(Context context) {
         mContext = context;
+        buttonClick = new ButtonClick(mContext);
+
     }
 
     @Nullable
@@ -96,6 +101,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
 
     private void plantArray() {
+        ArrayList<String> plantType = new ArrayList<>();
         plantType.add("Sunflower");
         plantType.add("Devils");
         plantType.add("Dendelion");
@@ -122,7 +128,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void setPots() {
         int pot = SharedPreferencesManager.getInstance(mContext).getPot();
         switch (pot) {
-
             case 1:
                 pots.setImageResource(R.drawable.ic_pot_1);
                 break;
@@ -156,8 +161,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             level.setText(mListEntity.get(mListEntity.size() - 1).getLevel() + "");
             plant.setText(mListEntity.get(mListEntity.size() - 1).getPlantType() + "");
         } else {
-            level.setText(1 + "");
-            plant.setText(1 + "");
+            level.setText(SharedPreferencesManager.getInstance(getActivity()).getLevel()+ "");
+            plant.setText(SharedPreferencesManager.getInstance(getActivity()).getPlantType()+ "");
         }
 
 
@@ -283,10 +288,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
 
             case R.id.iv_pots_redirect:
+                buttonClick.setOnsoundOnButtonClick();
                 MainActivity.navigation.setSelectedItemId(R.id.navigation_pots);
                 break;
 
             case R.id.rl_camera:
+                buttonClick.setOnsoundOnButtonClick();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     permissionCheck();
                 } else {
@@ -295,7 +302,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.iv_add_water:
-
+                buttonClick.setOnsoundOnButtonClick();
                 if (!mListEntity.isEmpty()) {
 
                     if (mListEntity.get(mListEntity.size() - 1).getDate().equals(DateConverter.dateToString(curDate.getTime()))) {
@@ -324,6 +331,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.rl_seeds:
+                buttonClick.setOnsoundOnButtonClick();
                 seedDialoge();
                 break;
 

@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.plantnany.ButtonClick;
 import com.example.plantnany.database.DataEntity;
 import com.example.plantnany.database.DateConverter;
 import com.example.plantnany.databinding.FragmentGraphBinding;
@@ -41,11 +42,11 @@ public class GraphFragment extends Fragment {
     private Date currentDate = new Date();
     private static final String TAG = "GraphFragment";
     private List<BarEntry> entries = new ArrayList<>();
-
+ButtonClick buttonClick;
 
     public GraphFragment(Context context) {
         mContext = context;
-
+buttonClick = new ButtonClick(mContext);
     }
 
     @Nullable

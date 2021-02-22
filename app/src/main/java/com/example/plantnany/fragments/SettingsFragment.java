@@ -20,6 +20,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.multidex.BuildConfig;
 
+import com.example.plantnany.ButtonClick;
 import com.example.plantnany.R;
 import com.example.plantnany.activities.PrivacyPolicyActivity;
 import com.example.plantnany.bottomdialoge.CupVolumeBottomDialoge;
@@ -32,6 +33,7 @@ import com.example.plantnany.sharedpref.SharedPreferencesManager;
 public class SettingsFragment extends Fragment implements View.OnClickListener, LanguageBottomDialoge.LanguageSelectListener {
 
     private static final String TAG = "SettingsFragment";
+    private final Context mContext;
     LinearLayout mPrivacyPolicy, mMoreApps, mShareApp, mRateUs, mFollowUs, mMusic, mSoundEffect, mLanguage,
             mDailyGoal, mCupVolume, llReminder;
     SwitchCompat mMusicSwitch, mSoundSwitch;
@@ -42,6 +44,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
     public LanguageBottomDialoge.LanguageSelectListener callback;
     private Context context;
     TextView mDefaultCupVolume, mTargerWater;
+    ButtonClick buttonClick;
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -56,7 +60,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         this.context = context;
     }
 
-    public SettingsFragment() {
+    public SettingsFragment(Context context) {
+        mContext = context;
+        buttonClick = new ButtonClick(mContext);
 
     }
 
@@ -78,6 +84,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         mMusicSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                buttonClick.setOnsoundOnButtonClick();
                 Log.d(TAG, "onCheckedChanged: " + isChecked);
                 mMusicPlayListener.musicPlaying(isChecked);
             }
@@ -85,7 +92,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         mSoundSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mSoundListener.soundClick(isChecked);
+                buttonClick.setOnsoundOnButtonClick();
+                SharedPreferencesManager.getInstance(getActivity()).setButtonClickSound(isChecked);
             }
         });
 
@@ -99,8 +107,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         mShareApp.setOnClickListener(this);
         mRateUs.setOnClickListener(this);
         mFollowUs.setOnClickListener(this);
-        mMusic.setOnClickListener(this);
-        mSoundEffect.setOnClickListener(this);
+
         mLanguage.setOnClickListener(this);
         mReminder.setOnClickListener(this);
         mDailyGoal.setOnClickListener(this);
@@ -143,10 +150,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
 
 
             case R.id.ll_privacy_policy:
+                buttonClick.setOnsoundOnButtonClick();
                 startActivity(new Intent(getActivity(), PrivacyPolicyActivity.class));
                 break;
             case R.id.ll_more_apps:
-
+                buttonClick.setOnsoundOnButtonClick();
                 final String appPackageName = getActivity().getPackageName(); // getPackageName() from Context or Activity object
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
@@ -155,7 +163,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
                 }
                 break;
             case R.id.ll_share_app:
-
+                buttonClick.setOnsoundOnButtonClick();
                 try {
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
                     shareIntent.setType("text/plain");
@@ -169,7 +177,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
                 }
                 break;
             case R.id.ll_rate_us:
-
+                buttonClick.setOnsoundOnButtonClick();
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getActivity().getPackageName())));
                 } catch (ActivityNotFoundException e) {
@@ -177,38 +185,34 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
                 }
                 break;
             case R.id.ll_follow_us:
-
+                buttonClick.setOnsoundOnButtonClick();
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
                 startActivity(browserIntent);
                 break;
 
 
-            case R.id.ll_music:
-
-                break;
-            case R.id.ll_sound_effect:
-
-                break;
             case R.id.ll_language:
-
+                buttonClick.setOnsoundOnButtonClick();
                 LanguageBottomDialoge languageBottomDialoge = new LanguageBottomDialoge(callback);
                 languageBottomDialoge.show(getChildFragmentManager(), "language");
                 break;
 
 
             case R.id.ll_daily_goal:
+                buttonClick.setOnsoundOnButtonClick();
                 DailyGoalBottomDialoge dailyGoalBottomDialoge = new DailyGoalBottomDialoge();
                 dailyGoalBottomDialoge.show(getChildFragmentManager(), "dailygoal");
 
                 break;
 
             case R.id.ll_cup_volume:
+                buttonClick.setOnsoundOnButtonClick();
                 CupVolumeBottomDialoge cupVolumeBottomDialoge = new CupVolumeBottomDialoge();
                 cupVolumeBottomDialoge.show(getChildFragmentManager(), "cupvolume");
                 break;
 
             case R.id.ll_reminder:
-
+                buttonClick.setOnsoundOnButtonClick();
                 WaterReminderBottomDialoge waterReminderBottomDialoge = new WaterReminderBottomDialoge();
                 waterReminderBottomDialoge.show(getChildFragmentManager(), "waterreminder");
 
