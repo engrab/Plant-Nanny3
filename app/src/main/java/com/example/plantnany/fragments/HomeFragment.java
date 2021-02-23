@@ -156,7 +156,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             level.setText(mListEntity.get(mListEntity.size() - 1).getLevel() + "");
             plant.setText(mListEntity.get(mListEntity.size() - 1).getPlantType() + "");
             seeds.setText(mListEntity.get(mListEntity.size() - 1).getSeed() + "");
-        } else {
+        }
+        else {
             clover.setText(SharedPreferencesManager.getInstance(getActivity()).getClover() + "");
             seeds.setText(SharedPreferencesManager.getInstance(getActivity()).getSeeds() + "");
             level.setText(SharedPreferencesManager.getInstance(getActivity()).getLevel() + "");

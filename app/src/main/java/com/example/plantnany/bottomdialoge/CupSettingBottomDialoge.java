@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantnany.R;
-import com.example.plantnany.adapters.BodyWeightAdapter;
 import com.example.plantnany.adapters.CupVolumAdapter;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 

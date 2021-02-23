@@ -35,6 +35,7 @@ public class SharedPreferencesManager {
     private static final String LEVEL_KEY = "plant_level";
     private static final String PLANT_TYPE_KEY = "plant_type_key";
     private static final String IS_TARGET_COMPLETED = "is_target_completed";
+    private static final String EXERCISE_TIME = "exercise_time";
 
     private List<TimeModel> mList;
 
@@ -237,6 +238,16 @@ public class SharedPreferencesManager {
 
     public int getIsTargetCompleted() {
         return sharedPrefs.getInt(IS_TARGET_COMPLETED, 0);
+    }
+
+    public void setExerciseTime(int exerciseTime) {
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putInt(EXERCISE_TIME, exerciseTime);
+        editor.apply();
+    }
+
+    public int getExerciseTime() {
+        return sharedPrefs.getInt(EXERCISE_TIME, 0);
     }
 
 }

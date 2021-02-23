@@ -29,9 +29,9 @@ public class WeightInfoFragment extends Fragment {
     TextView weight;
     RadioButton radKg, radLb;
     RadioGroup mRadGroup;
-    private WeightListener mWeightListener;
     ButtonClick buttonClick;
-Context mContext;
+    Context mContext;
+    boolean isKg = true;
 
 
     public WeightInfoFragment(Context context) {
@@ -61,12 +61,14 @@ Context mContext;
                 switch (checkedId) {
                     case R.id.rad_kg:
 
+                        isKg = true;
                         buttonClick.setOnsoundOnButtonClick();
                         kg = lb * 0.45359237;
                         weight.setText(String.valueOf(Math.round(kg)));
                         break;
 
                     case R.id.rad_lb:
+                        isKg = false;
                         buttonClick.setOnsoundOnButtonClick();
                         lb = kg / 0.45359237;
                         weight.setText(String.valueOf(Math.round(lb)));
@@ -118,23 +120,20 @@ Context mContext;
             public void onClick(View v) {
                 buttonClick.setOnsoundOnButtonClick();
                 String weight = WeightInfoFragment.this.weight.getText().toString();
-                SharedPreferencesManager.getInstance(getActivity()).setWeight((int)Double.parseDouble(weight));
+                if (isKg){
+
+                    SharedPreferencesManager.getInstance(getActivity()).setWeight((int) Double.parseDouble(weight));
+                }else {
+                    lb = Double.parseDouble(weight);
+                    kg = lb * 0.45359237;
+                    SharedPreferencesManager.getInstance(getActivity()).setWeight((int) Double.parseDouble(String.valueOf(kg)));
+
+                }
                 StartActivity.viewPager.setCurrentItem(3);
             }
         });
         return inflate;
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
 
-        if (context instanceof WeightListener){
-            mWeightListener = (WeightListener) context;
-        }
-    }
-
-    public interface WeightListener{
-        void weight(double weight);
-    }
 }

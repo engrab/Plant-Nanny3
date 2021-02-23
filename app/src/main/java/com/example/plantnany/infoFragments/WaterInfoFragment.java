@@ -133,6 +133,7 @@ public class WaterInfoFragment extends Fragment implements View.OnClickListener 
                     int weight = SharedPreferencesManager.getInstance(getActivity()).getWeight();
                     int targetWater = calculateIntake(weight, workHour);
                     SharedPreferencesManager.getInstance(getActivity()).setTargetWater(targetWater);
+                    SharedPreferencesManager.getInstance(getActivity()).setExerciseTime(workHour);
 
                     mViewModel.insertData(new DataEntity(DateConverter.dateToString(new Date().getTime()), 0, targetWater,
                             SharedPreferencesManager.getInstance(getActivity()).getLevel(),

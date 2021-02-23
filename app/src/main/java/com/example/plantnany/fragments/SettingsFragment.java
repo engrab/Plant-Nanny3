@@ -24,7 +24,7 @@ import com.example.plantnany.ButtonClick;
 import com.example.plantnany.R;
 import com.example.plantnany.activities.PrivacyPolicyActivity;
 import com.example.plantnany.bottomdialoge.CupVolumeBottomDialoge;
-import com.example.plantnany.bottomdialoge.DailyGoalBottomDialoge;
+import com.example.plantnany.bottomdialoge.DailyGoalBottomDialog;
 import com.example.plantnany.bottomdialoge.LanguageBottomDialoge;
 import com.example.plantnany.bottomdialoge.WaterReminderBottomDialoge;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
@@ -200,8 +200,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
 
             case R.id.ll_daily_goal:
                 buttonClick.setOnsoundOnButtonClick();
-                DailyGoalBottomDialoge dailyGoalBottomDialoge = new DailyGoalBottomDialoge();
-                dailyGoalBottomDialoge.show(getChildFragmentManager(), "dailygoal");
+                DailyGoalBottomDialog dailyGoalBottomDialog = new DailyGoalBottomDialog();
+                dailyGoalBottomDialog.show(getChildFragmentManager(), "dailygoal");
 
                 break;
 

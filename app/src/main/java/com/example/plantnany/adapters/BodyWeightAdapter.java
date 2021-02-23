@@ -1,6 +1,7 @@
 package com.example.plantnany.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,13 +40,16 @@ public class BodyWeightAdapter extends RecyclerView.Adapter<BodyWeightAdapter.Vi
 
 
         holder.weight.setText(String.valueOf(mList.get(position)));
-        holder.weight.setOnClickListener(new View.OnClickListener() {
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder.weight.setTextSize(40.0f);
                 String weight = holder.weight.getText().toString();
-                SharedPreferencesManager.getInstance(mContext).setWeight((int)Double.parseDouble(weight));
+                SharedPreferencesManager.getInstance(mContext).setWeight(Integer.parseInt(weight));
             }
         });
+
 
     }
 
@@ -55,12 +59,10 @@ public class BodyWeightAdapter extends RecyclerView.Adapter<BodyWeightAdapter.Vi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        RadioButton radioButton;
         TextView weight;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            radioButton = itemView.findViewById(R.id.rad_weight);
             weight = itemView.findViewById(R.id.tv_weight);
 
 
