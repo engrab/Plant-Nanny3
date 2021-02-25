@@ -68,6 +68,7 @@ public class WeightInfoFragment extends Fragment {
                         break;
 
                     case R.id.rad_lb:
+
                         isKg = false;
                         buttonClick.setOnsoundOnButtonClick();
                         lb = kg / 0.45359237;
@@ -123,9 +124,12 @@ public class WeightInfoFragment extends Fragment {
                 if (isKg){
 
                     SharedPreferencesManager.getInstance(getActivity()).setWeight((int) Double.parseDouble(weight));
+                    SharedPreferencesManager.getInstance(getActivity()).setIsKgChecked(true);
+
                 }else {
                     lb = Double.parseDouble(weight);
                     kg = lb * 0.45359237;
+                    SharedPreferencesManager.getInstance(getActivity()).setIsKgChecked(false);
                     SharedPreferencesManager.getInstance(getActivity()).setWeight((int) Double.parseDouble(String.valueOf(kg)));
 
                 }

@@ -67,7 +67,6 @@
             android:orientation="vertical">
 
             <RadioButton
-                android:checked="true"
                 android:id="@+id/rad_kg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -30,8 +30,9 @@ public class DailyGoalBottomDialog extends BottomSheetDialogFragment implements 
     int totalWeight;
     int targetWater;
     float kg;
-    float lb;
+
     private TargetWaterListener targetWaterListener;
+    TextView tvUnit;
 
 
     public DailyGoalBottomDialog(SettingsFragment context) {
@@ -48,6 +49,12 @@ public class DailyGoalBottomDialog extends BottomSheetDialogFragment implements 
 
         View view = inflater.inflate(R.layout.dialoge_daily_goal_sheet, container, false);
         initViews(view);
+
+        if (SharedPreferencesManager.getInstance(getActivity()).getIsKgChecked()) {
+            tvUnit.setText("KG");
+        }else {
+            tvUnit.setText("LB");
+        }
 
 
         mHowCalGoal.setOnClickListener(this);
@@ -103,12 +110,23 @@ public class DailyGoalBottomDialog extends BottomSheetDialogFragment implements 
     }
 
     private void updateUI() {
-        targetWater = AppUtils.calculateIntake(totalWeight, exerciseTime);
-        mDailyGoal.setText(String.valueOf(targetWater));
-        SharedPreferencesManager.getInstance(getActivity()).setTargetWater(targetWater);
         SharedPreferencesManager.getInstance(getActivity()).setExerciseTime(exerciseTime);
+        targetWater = AppUtils.calculateIntake(totalWeight, SharedPreferencesManager.getInstance(getActivity()).getExerciseTime());
+
+        SharedPreferencesManager.getInstance(getActivity()).setTargetWater(targetWater);
         int weight = SharedPreferencesManager.getInstance(getActivity()).getWeight();
         mWeight.setText(String.valueOf(weight));
+
+        if (SharedPreferencesManager.getInstance(getActivity()).getIsKgChecked()) {
+            tvUnit.setText("KG");
+            targetWater = AppUtils.calculateIntake(totalWeight, SharedPreferencesManager.getInstance(getActivity()).getExerciseTime());
+
+        }else {
+            tvUnit.setText("LB");
+            targetWater = AppUtils.calculateIntake((int) (((double)totalWeight)/2.205), SharedPreferencesManager.getInstance(getActivity()).getExerciseTime());
+
+        }
+        mDailyGoal.setText(String.valueOf(targetWater));
 
     }
 
@@ -119,6 +137,7 @@ public class DailyGoalBottomDialog extends BottomSheetDialogFragment implements 
         mActivityLevel = view.findViewById(R.id.tv_activity_level);
         mSeekBar = view.findViewById(R.id.seekBar);
         mHowCalGoal = view.findViewById(R.id.ll_how_calc_goal);
+        tvUnit = view.findViewById(R.id.tv_unit);
     }
 
     @Override
@@ -156,22 +175,27 @@ public class DailyGoalBottomDialog extends BottomSheetDialogFragment implements 
     }
 
     @Override
-    public void selectedWeight(int weight, int isKg) {
+    public void selectedWeight(int weight, boolean isKg) {
 
-        if (isKg == 1) {
-            totalWeight = weight;
-            targetWater = AppUtils.calculateIntake(weight, SharedPreferencesManager.getInstance(getActivity()).getExerciseTime());
-            SharedPreferencesManager.getInstance(getActivity()).setWeight(weight);
+        if (isKg) {
+            if (SharedPreferencesManager.getInstance(getActivity()).getIsKgChecked()){
+                totalWeight = weight;
+
+            }else {
+                totalWeight = (int) ((((double)weight)/2.205));
+            }
+            SharedPreferencesManager.getInstance(getActivity()).setWeight(totalWeight);
+            SharedPreferencesManager.getInstance(getActivity()).setIsKgChecked(true);
+
         } else {
-            lb = (float) weight;
-            kg = (float) (lb * 0.45359237);
-            totalWeight = (int) kg;
-            targetWater = AppUtils.calculateIntake(Math.round(kg), SharedPreferencesManager.getInstance(getActivity()).getExerciseTime());
-            SharedPreferencesManager.getInstance(getActivity()).setWeight(Math.round(kg));
+            totalWeight = (int) ((double) weight / 0.45359237);
+            SharedPreferencesManager.getInstance(getActivity()).setWeight(totalWeight);
+            SharedPreferencesManager.getInstance(getActivity()).setIsKgChecked(false);
         }
         updateUI();
     }
-    public interface TargetWaterListener{
+
+    public interface TargetWaterListener {
         void targetWater(int targetWater);
     }
 }

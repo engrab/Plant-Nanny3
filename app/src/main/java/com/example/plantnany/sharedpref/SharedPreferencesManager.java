@@ -44,6 +44,7 @@ public class SharedPreferencesManager {
     private static final String SMALL_CUP_CHECKED_KEY = "small_cup_checked";
     private static final String MEDIUM_CUP_CHECKED_KEY = "medium_cup_checked";
     private static final String LARGE_CUP_CHECKED_KEY = "large_cup_checked";
+    private static final String WEIGHT_UNIT_KEY = "weight_unit";
 
     private List<TimeModel> mList;
 
@@ -316,6 +317,16 @@ public class SharedPreferencesManager {
 
     public boolean getIsSmallCupChecked() {
         return sharedPrefs.getBoolean(SMALL_CUP_CHECKED_KEY, false);
+    }
+
+    public void setIsKgChecked(boolean isSmallCup) {
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putBoolean(WEIGHT_UNIT_KEY, isSmallCup);
+        editor.apply();
+    }
+
+    public boolean getIsKgChecked() {
+        return sharedPrefs.getBoolean(WEIGHT_UNIT_KEY, true);
     }
 
 }

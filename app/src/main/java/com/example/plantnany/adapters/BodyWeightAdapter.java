@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -21,10 +23,12 @@ import java.util.List;
 public class BodyWeightAdapter extends RecyclerView.Adapter<BodyWeightAdapter.ViewHolder> {
     private Context mContext;
     private List<Integer> mList;
+    private int pos;
 
     public BodyWeightAdapter(Context mContext, List<Integer> mList) {
         this.mContext = mContext;
         this.mList = mList;
+        pos = SharedPreferencesManager.getInstance(mContext).getWeight();
     }
 
     @NonNull
@@ -39,12 +43,27 @@ public class BodyWeightAdapter extends RecyclerView.Adapter<BodyWeightAdapter.Vi
 
         holder.weight.setText(String.valueOf(mList.get(position)));
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        if (mList.get(position) == pos) {
+            holder.checkBox.setChecked(true);
+        } else {
+            holder.checkBox.setChecked(false);
+        }
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.weight.setTextSize(40.0f);
-                String weight = holder.weight.getText().toString();
-                SharedPreferencesManager.getInstance(mContext).setWeight(Integer.parseInt(weight));
+                pos = mList.get(position);
+                notifyDataSetChanged();
+
+            }
+        });
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked){
+                    String text = holder.weight.getText().toString();
+                    SharedPreferencesManager.getInstance(mContext).setWeight(Integer.parseInt(text));
+                }
             }
         });
 
@@ -58,11 +77,13 @@ public class BodyWeightAdapter extends RecyclerView.Adapter<BodyWeightAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView weight;
+        CheckBox checkBox;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             weight = itemView.findViewById(R.id.tv_weight);
 
+            checkBox = itemView.findViewById(R.id.checkbox);
 
         }
     }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
@@ -29,8 +30,8 @@ public class BodyWeightBottomDialog extends BottomSheetDialogFragment {
     RadioGroup kglb;
     private WeightListener mWeightListener;
     int totalWeight;
-    int isKg = 1;
-
+    boolean isKg = true;
+    RadioButton kg, lb;
 
 
     public BodyWeightBottomDialog(DailyGoalBottomDialog context) {
@@ -45,21 +46,27 @@ public class BodyWeightBottomDialog extends BottomSheetDialogFragment {
 
 
         View view = inflater.inflate(R.layout.dialoge_body_weight_sheet, container, false);
-        recyclerView = view.findViewById(R.id.rv_weight);
-        kglb = view.findViewById(R.id.radio_group_kg_lb);
+        initView(view);
+
+        if (SharedPreferencesManager.getInstance(getActivity()).getIsKgChecked()) {
+            kg.setChecked(true);
+        } else {
+            lb.setChecked(true);
+        }
+
 
         totalWeight = SharedPreferencesManager.getInstance(getActivity()).getWeight();
         kglb.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-                switch (group.getId()) {
+                switch (checkedId) {
                     case R.id.rad_kg:
-                        isKg = 1;
+                        isKg = true;
                         break;
 
                     case R.id.rad_lb:
-                        isKg = 0;
+                        isKg = false;
                         break;
                 }
             }
@@ -74,11 +81,7 @@ public class BodyWeightBottomDialog extends BottomSheetDialogFragment {
             }
         });
         list();
-        mAdapter = new BodyWeightAdapter(getActivity(), mList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        recyclerView.setAdapter(mAdapter);
-
+        initRecyclerView();
         view.findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +91,21 @@ public class BodyWeightBottomDialog extends BottomSheetDialogFragment {
 
 
         return view;
+    }
+
+    private void initView(View view) {
+        recyclerView = view.findViewById(R.id.rv_weight);
+        kglb = view.findViewById(R.id.radio_group_kg_lb);
+        kg = view.findViewById(R.id.rad_kg);
+        lb = view.findViewById(R.id.rad_lb);
+    }
+
+    private void initRecyclerView() {
+        mAdapter = new BodyWeightAdapter(getActivity(), mList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        recyclerView.setAdapter(mAdapter);
+
     }
 
     private void list() {
@@ -100,7 +118,7 @@ public class BodyWeightBottomDialog extends BottomSheetDialogFragment {
 
 
     public interface WeightListener {
-        void selectedWeight(int weight, int isKg);
+        void selectedWeight(int weight, boolean isKg);
     }
 
 
