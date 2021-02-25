@@ -23,16 +23,18 @@ import java.util.List;
 public class DefaultCupSettingBottomDialoge extends BottomSheetDialogFragment {
 
 
-    ImageView back;
     RecyclerView cupVolumRecyclerView;
     private final List<Integer> mList = new ArrayList<>();
     private DefaultCupVolumeListener defaultCupVolumeListener;
+
+
 
 
     public DefaultCupSettingBottomDialoge(CupVolumeBottomDialoge context) {
         if (context != null) {
             defaultCupVolumeListener = context;
         }
+
 
     }
 
@@ -43,7 +45,6 @@ public class DefaultCupSettingBottomDialoge extends BottomSheetDialogFragment {
 
         View view = inflater.inflate(R.layout.dialoge_cup_setting_sheet, container, false);
 
-        back = view.findViewById(R.id.iv_back);
 
         cupVolumRecyclerView = view.findViewById(R.id.rv_cup_volume);
 
@@ -51,12 +52,7 @@ public class DefaultCupSettingBottomDialoge extends BottomSheetDialogFragment {
             mList.add(i);
         }
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+
         view.findViewById(R.id.iv_ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,8 +71,9 @@ public class DefaultCupSettingBottomDialoge extends BottomSheetDialogFragment {
     }
 
     private void initRecyclerView() {
+        DefaultCupVolumAdapter defaultCupVolumAdapter = new DefaultCupVolumAdapter(getActivity(), mList);
         cupVolumRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        cupVolumRecyclerView.setAdapter(new DefaultCupVolumAdapter(getActivity(), mList));
+        cupVolumRecyclerView.setAdapter(defaultCupVolumAdapter);
 
     }
     public interface DefaultCupVolumeListener{

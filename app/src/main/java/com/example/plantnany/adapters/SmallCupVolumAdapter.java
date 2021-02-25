@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,10 +19,13 @@ import java.util.List;
 public class SmallCupVolumAdapter extends RecyclerView.Adapter<SmallCupVolumAdapter.ViewHolder> {
     private Context mContext;
     private List<Integer> mList;
+    private  int pos;
 
     public SmallCupVolumAdapter(Context mContext, List<Integer> mList) {
         this.mContext = mContext;
         this.mList = mList;
+        pos = SharedPreferencesManager.getInstance(mContext).getSmallCup();
+
     }
 
     @NonNull
@@ -37,12 +42,27 @@ public class SmallCupVolumAdapter extends RecyclerView.Adapter<SmallCupVolumAdap
         holder.cupVolume.setText(String.valueOf(mList.get(position)));
 
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        if (mList.get(position) == pos) {
+            holder.checkBox.setChecked(true);
+        } else {
+            holder.checkBox.setChecked(false);
+        }
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.cupVolume.setTextSize(40.0f);
-                String text = holder.cupVolume.getText().toString();
-                SharedPreferencesManager.getInstance(mContext).setSmallCup(Integer.parseInt(text));
+                pos = mList.get(position);
+                notifyDataSetChanged();
+
+            }
+        });
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked){
+                    String text = holder.cupVolume.getText().toString();
+                    SharedPreferencesManager.getInstance(mContext).setSmallCup(Integer.parseInt(text));
+                }
             }
         });
 
@@ -56,10 +76,14 @@ public class SmallCupVolumAdapter extends RecyclerView.Adapter<SmallCupVolumAdap
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView cupVolume;
+        CheckBox checkBox;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             cupVolume = itemView.findViewById(R.id.tv_weight);
+            checkBox = itemView.findViewById(R.id.checkbox);
+
         }
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -35,7 +36,7 @@ public class CupVolumeBottomDialoge extends BottomSheetDialogFragment
     double mediumCup;
     double largeCup;
     LinearLayout llDefault, llMedium, llSmall, llLarge;
-    RadioButton radSmall, radMedium, radLarge;
+    CheckBox checkSmall, checkMedium, checkLarge;
 
 
     public CupVolumeBottomDialoge() {
@@ -142,31 +143,31 @@ public class CupVolumeBottomDialoge extends BottomSheetDialogFragment
             }
         });
 
-        radSmall.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        checkSmall.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                radSmall.setChecked(isChecked);
+                checkSmall.setChecked(isChecked);
                 SharedPreferencesManager.getInstance(getActivity()).setIsSmallCupChecked(isChecked);
 
             }
         });
 
-        radMedium.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        checkMedium.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                radMedium.setChecked(isChecked);
+                checkMedium.setChecked(isChecked);
                 SharedPreferencesManager.getInstance(getActivity()).setIsMediumCupChecked(isChecked);
 
             }
         });
 
-        radLarge.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        checkLarge.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                radLarge.setChecked(isChecked);
+                checkLarge.setChecked(isChecked);
                 SharedPreferencesManager.getInstance(getActivity()).setIsLargeCupChecked(isChecked);
 
             }
@@ -200,9 +201,9 @@ public class CupVolumeBottomDialoge extends BottomSheetDialogFragment
         llMedium = view.findViewById(R.id.ll_medium);
         llLarge = view.findViewById(R.id.ll_large);
 
-        radSmall = view.findViewById(R.id.radio_button_small);
-        radMedium = view.findViewById(R.id.radio_button_medium);
-        radLarge = view.findViewById(R.id.radio_button_large);
+        checkSmall = view.findViewById(R.id.checkbox_small);
+        checkMedium = view.findViewById(R.id.checkbox_medium);
+        checkLarge = view.findViewById(R.id.checkbox_large);
     }
 
     private double getOZ(double ml) {
@@ -221,9 +222,9 @@ public class CupVolumeBottomDialoge extends BottomSheetDialogFragment
         mMediumCup.setText(String.valueOf(SharedPreferencesManager.getInstance(getActivity()).getMediumCup()));
         mSmallCup.setText(String.valueOf(SharedPreferencesManager.getInstance(getActivity()).getSmallCup()));
 
-        radLarge.setChecked(SharedPreferencesManager.getInstance(getActivity()).getIsLargeCupChecked());
-        radMedium.setChecked(SharedPreferencesManager.getInstance(getActivity()).getIsMediumCupChecked());
-        radSmall.setChecked(SharedPreferencesManager.getInstance(getActivity()).getIsSmallCupChecked());
+        checkLarge.setChecked(SharedPreferencesManager.getInstance(getActivity()).getIsLargeCupChecked());
+        checkMedium.setChecked(SharedPreferencesManager.getInstance(getActivity()).getIsMediumCupChecked());
+        checkSmall.setChecked(SharedPreferencesManager.getInstance(getActivity()).getIsSmallCupChecked());
     }
 
     @Override

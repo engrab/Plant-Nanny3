@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantnany.R;
-import com.example.plantnany.adapters.DefaultCupVolumAdapter;
 import com.example.plantnany.adapters.MediumCupVolumAdapter;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -24,7 +23,7 @@ import java.util.List;
 public class MediumCupSettingBottomDialoge extends BottomSheetDialogFragment {
 
 
-    ImageView back;
+
     RecyclerView cupVolumRecyclerView;
     private final List<Integer> mList = new ArrayList<>();
     private MediumCupVolumeListener mediumCupVolumeListener;
@@ -44,7 +43,6 @@ public class MediumCupSettingBottomDialoge extends BottomSheetDialogFragment {
 
         View view = inflater.inflate(R.layout.dialoge_cup_setting_sheet, container, false);
 
-        back = view.findViewById(R.id.iv_back);
 
         cupVolumRecyclerView = view.findViewById(R.id.rv_cup_volume);
 
@@ -52,12 +50,7 @@ public class MediumCupSettingBottomDialoge extends BottomSheetDialogFragment {
             mList.add(i);
         }
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+
         view.findViewById(R.id.iv_ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
