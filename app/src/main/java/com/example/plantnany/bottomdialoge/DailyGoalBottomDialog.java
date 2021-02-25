@@ -13,7 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.plantnany.R;
+import com.example.plantnany.fragments.SettingsFragment;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
+import com.example.plantnany.utils.AppUtils;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 
@@ -29,10 +31,14 @@ public class DailyGoalBottomDialog extends BottomSheetDialogFragment implements 
     int targetWater;
     float kg;
     float lb;
+    private TargetWaterListener targetWaterListener;
 
 
-    public DailyGoalBottomDialog() {
+    public DailyGoalBottomDialog(SettingsFragment context) {
 
+        if (context != null) {
+            targetWaterListener = context;
+        }
     }
 
     @Nullable
@@ -54,22 +60,22 @@ public class DailyGoalBottomDialog extends BottomSheetDialogFragment implements 
                 if (progress == 0) {
                     mActivityLevel.setText("Sedentary: Almost no exercise");
                     exerciseTime = 2;
-                    upUi();
+                    updateUI();
                 }
                 if (progress == 1) {
                     mActivityLevel.setText("Moderately Active: Exercise 2 - 5 hours a week");
                     exerciseTime = 5;
-                    upUi();
+                    updateUI();
                 }
                 if (progress == 2) {
                     mActivityLevel.setText("Vigorously Active: Exercise 5 - 7 hours a week");
                     exerciseTime = 7;
-                    upUi();
+                    updateUI();
                 }
                 if (progress == 3) {
                     mActivityLevel.setText("Extremely Active: Exercise more than 7 hour a week");
                     exerciseTime = 10;
-                    upUi();
+                    updateUI();
                 }
             }
 
@@ -88,7 +94,7 @@ public class DailyGoalBottomDialog extends BottomSheetDialogFragment implements 
         view.findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                targetWaterListener.targetWater(targetWater);
                 dismiss();
             }
         });
@@ -96,8 +102,8 @@ public class DailyGoalBottomDialog extends BottomSheetDialogFragment implements 
         return view;
     }
 
-    private void upUi() {
-        targetWater = calcTargetWater(totalWeight, exerciseTime);
+    private void updateUI() {
+        targetWater = AppUtils.calculateIntake(totalWeight, exerciseTime);
         mDailyGoal.setText(String.valueOf(targetWater));
         SharedPreferencesManager.getInstance(getActivity()).setTargetWater(targetWater);
         SharedPreferencesManager.getInstance(getActivity()).setExerciseTime(exerciseTime);
@@ -120,6 +126,7 @@ public class DailyGoalBottomDialog extends BottomSheetDialogFragment implements 
         super.onResume();
         totalWeight = SharedPreferencesManager.getInstance(getActivity()).getWeight();
         targetWater = SharedPreferencesManager.getInstance(getActivity()).getTargetWater();
+        updateUI();
     }
 
     @Override
@@ -148,22 +155,23 @@ public class DailyGoalBottomDialog extends BottomSheetDialogFragment implements 
         }
     }
 
-    public final int calcTargetWater(int weight, int workTime) {
-        return (int) ((((double) (weight * 100)) / 3.0d) + ((double) ((workTime / 6) * 7)));
-    }
-
     @Override
     public void selectedWeight(int weight, int isKg) {
 
         if (isKg == 1) {
-            targetWater = calcTargetWater(weight, SharedPreferencesManager.getInstance(getActivity()).getExerciseTime());
+            totalWeight = weight;
+            targetWater = AppUtils.calculateIntake(weight, SharedPreferencesManager.getInstance(getActivity()).getExerciseTime());
             SharedPreferencesManager.getInstance(getActivity()).setWeight(weight);
         } else {
             lb = (float) weight;
             kg = (float) (lb * 0.45359237);
-            targetWater = calcTargetWater(Math.round(kg), SharedPreferencesManager.getInstance(getActivity()).getExerciseTime());
+            totalWeight = (int) kg;
+            targetWater = AppUtils.calculateIntake(Math.round(kg), SharedPreferencesManager.getInstance(getActivity()).getExerciseTime());
             SharedPreferencesManager.getInstance(getActivity()).setWeight(Math.round(kg));
         }
-        upUi();
+        updateUI();
+    }
+    public interface TargetWaterListener{
+        void targetWater(int targetWater);
     }
 }

@@ -30,7 +30,8 @@ import com.example.plantnany.bottomdialoge.WaterReminderBottomDialoge;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
 
 
-public class SettingsFragment extends Fragment implements View.OnClickListener, LanguageBottomDialoge.LanguageSelectListener {
+public class SettingsFragment extends Fragment implements View.OnClickListener,
+        LanguageBottomDialoge.LanguageSelectListener, DailyGoalBottomDialog.TargetWaterListener {
 
     private static final String TAG = "SettingsFragment";
     private final Context mContext;
@@ -121,6 +122,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mTargerWater.setText(String.valueOf(SharedPreferencesManager.getInstance(getActivity()).getTargetWater()));
+
+    }
 
     private void init(View view) {
 
@@ -200,7 +207,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
 
             case R.id.ll_daily_goal:
                 buttonClick.setOnsoundOnButtonClick();
-                DailyGoalBottomDialog dailyGoalBottomDialog = new DailyGoalBottomDialog();
+                DailyGoalBottomDialog dailyGoalBottomDialog = new DailyGoalBottomDialog(SettingsFragment.this);
                 dailyGoalBottomDialog.show(getChildFragmentManager(), "dailygoal");
 
                 break;
@@ -223,14 +230,19 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mDefaultCupVolume.setText(SharedPreferencesManager.getInstance(getActivity()).getDefaultCupVolume());
-        mTargerWater.setText(String.valueOf(SharedPreferencesManager.getInstance(getActivity()).getTargetWater()));
+        mDefaultCupVolume.setText(String.valueOf(SharedPreferencesManager.getInstance(getActivity()).getDefaultCupVolume()));
     }
 
     @Override
     public void selectedLanguage(String lang) {
         Log.d(TAG, "selectedLanguage: " + lang);
         mSelectedLangName.setText(lang);
+    }
+
+    @Override
+    public void targetWater(int targetWater) {
+        mTargerWater.setText(String.valueOf(targetWater));
+
     }
 
     public interface MusicPlayingListener {

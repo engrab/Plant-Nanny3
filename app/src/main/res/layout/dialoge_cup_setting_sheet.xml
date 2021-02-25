@@ -31,7 +31,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Body Weight"
+            android:text="Cup Setting"
             android:textColor="@color/black"
             android:textSize="20dp" />
 
@@ -54,7 +54,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_cup_volume"
             android:layout_width="0dp"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:layout_weight="2" />
 
         <TextView

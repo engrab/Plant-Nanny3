@@ -13,20 +13,27 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantnany.R;
-import com.example.plantnany.adapters.CupVolumAdapter;
+import com.example.plantnany.adapters.DefaultCupVolumAdapter;
+import com.example.plantnany.adapters.LargeCupVolumAdapter;
+import com.example.plantnany.sharedpref.SharedPreferencesManager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CupSettingBottomDialoge extends BottomSheetDialogFragment {
+public class LargeCupSettingBottomDialoge extends BottomSheetDialogFragment {
 
 
-    ImageView back, ok;
+    ImageView back;
     RecyclerView cupVolumRecyclerView;
     private final List<Integer> mList = new ArrayList<>();
+    private LargeCupVolumeListener largeCupVolumeListener;
 
-    public CupSettingBottomDialoge() {
+
+    public LargeCupSettingBottomDialoge(CupVolumeBottomDialoge context) {
+        if (context != null) {
+            largeCupVolumeListener = context;
+        }
 
     }
 
@@ -38,7 +45,7 @@ public class CupSettingBottomDialoge extends BottomSheetDialogFragment {
         View view = inflater.inflate(R.layout.dialoge_cup_setting_sheet, container, false);
 
         back = view.findViewById(R.id.iv_back);
-        ok = view.findViewById(R.id.iv_ok);
+
         cupVolumRecyclerView = view.findViewById(R.id.rv_cup_volume);
 
         for (int i = 240; i <= 1000; i++){
@@ -51,10 +58,10 @@ public class CupSettingBottomDialoge extends BottomSheetDialogFragment {
                 dismiss();
             }
         });
-        ok.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.iv_ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                largeCupVolumeListener.largeCupVolume(SharedPreferencesManager.getInstance(getActivity()).getLargeCup());
                 dismiss();
             }
         });
@@ -70,7 +77,10 @@ public class CupSettingBottomDialoge extends BottomSheetDialogFragment {
 
     private void initRecyclerView() {
         cupVolumRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        cupVolumRecyclerView.setAdapter(new CupVolumAdapter(getActivity(), mList));
+        cupVolumRecyclerView.setAdapter(new LargeCupVolumAdapter(getActivity(), mList));
 
+    }
+    public interface LargeCupVolumeListener{
+        void largeCupVolume(int largeCupVolum);
     }
 }

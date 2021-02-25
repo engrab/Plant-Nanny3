@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.media.RingtoneManager;
+import android.provider.MediaStore;
 
 import com.example.plantnany.R;
 import com.example.plantnany.model.TimeModel;
@@ -36,6 +37,13 @@ public class SharedPreferencesManager {
     private static final String PLANT_TYPE_KEY = "plant_type_key";
     private static final String IS_TARGET_COMPLETED = "is_target_completed";
     private static final String EXERCISE_TIME = "exercise_time";
+    private static final String SMALL_CUP_KEY = "small_cup";
+    private static final String MEDIUM_CUP_KEY = "medium_cup";
+    private static final String LARGE_CUP_KEY = "large_cup";
+
+    private static final String SMALL_CUP_CHECKED_KEY = "small_cup_checked";
+    private static final String MEDIUM_CUP_CHECKED_KEY = "medium_cup_checked";
+    private static final String LARGE_CUP_CHECKED_KEY = "large_cup_checked";
 
     private List<TimeModel> mList;
 
@@ -149,14 +157,14 @@ public class SharedPreferencesManager {
         return sharedPrefs.getInt(TARGET_WATER_KEY, 3300);
     }
 
-    public void setDefaultCupVolume(String cupVolume) {
+    public void setDefaultCupVolume(int cupVolume) {
         SharedPreferences.Editor editor = sharedPrefs.edit();
-        editor.putString(DEFAULT_WATER_VOLUME, cupVolume);
+        editor.putInt(DEFAULT_WATER_VOLUME, cupVolume);
         editor.apply();
     }
 
-    public String getDefaultCupVolume() {
-        return sharedPrefs.getString(DEFAULT_WATER_VOLUME, 240 + "");
+    public int getDefaultCupVolume() {
+        return sharedPrefs.getInt(DEFAULT_WATER_VOLUME, 240);
     }
 
     public void setSafeReminderTime(List<TimeModel> modelList) {
@@ -248,6 +256,66 @@ public class SharedPreferencesManager {
 
     public int getExerciseTime() {
         return sharedPrefs.getInt(EXERCISE_TIME, 0);
+    }
+
+    public void setSmallCup(int smallCup) {
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putInt(SMALL_CUP_KEY, smallCup);
+        editor.apply();
+    }
+
+    public int getSmallCup() {
+        return sharedPrefs.getInt(SMALL_CUP_KEY, 360);
+    }
+
+    public void setMediumCup(int mediumCup) {
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putInt(MEDIUM_CUP_KEY, mediumCup);
+        editor.apply();
+    }
+
+    public int getMediumCup() {
+        return sharedPrefs.getInt(MEDIUM_CUP_KEY, 480);
+    }
+
+    public void setLargeCup(int largeCup) {
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putInt(LARGE_CUP_KEY, largeCup);
+        editor.apply();
+    }
+
+    public int getLargeCup() {
+        return sharedPrefs.getInt(LARGE_CUP_KEY, 600);
+    }
+
+    public void setIsLargeCupChecked(boolean isLargeCup) {
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putBoolean(LARGE_CUP_CHECKED_KEY, isLargeCup);
+        editor.apply();
+    }
+
+    public boolean getIsLargeCupChecked() {
+        return sharedPrefs.getBoolean(LARGE_CUP_CHECKED_KEY, false);
+    }
+
+    public void setIsMediumCupChecked(boolean isMediumCup) {
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putBoolean(MEDIUM_CUP_CHECKED_KEY, isMediumCup);
+        editor.apply();
+    }
+
+    public boolean getIsMediumCupChecked() {
+        return sharedPrefs.getBoolean(MEDIUM_CUP_CHECKED_KEY, false);
+    }
+
+    public void setIsSmallCupChecked(boolean isSmallCup) {
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putBoolean(SMALL_CUP_CHECKED_KEY, isSmallCup);
+        editor.apply();
+    }
+
+    public boolean getIsSmallCupChecked() {
+        return sharedPrefs.getBoolean(SMALL_CUP_CHECKED_KEY, false);
     }
 
 }

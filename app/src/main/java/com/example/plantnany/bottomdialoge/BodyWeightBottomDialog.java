@@ -31,13 +31,7 @@ public class BodyWeightBottomDialog extends BottomSheetDialogFragment {
     int totalWeight;
     int isKg = 1;
 
-//    @Override
-//    public void onAttach(@NonNull Context context) {
-//        super.onAttach(context);
-//        if (context instanceof WeightListener) {
-//            mWeightListener = (WeightListener) context;
-//        }
-//    }
+
 
     public BodyWeightBottomDialog(DailyGoalBottomDialog context) {
         if (context != null) {

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,34 +14,35 @@ import com.example.plantnany.sharedpref.SharedPreferencesManager;
 
 import java.util.List;
 
-public class CupVolumAdapter extends RecyclerView.Adapter<CupVolumAdapter.ViewHolder> {
+public class MediumCupVolumAdapter extends RecyclerView.Adapter<MediumCupVolumAdapter.ViewHolder> {
     private Context mContext;
     private List<Integer> mList;
 
-    public CupVolumAdapter(Context mContext, List<Integer> mList) {
+    public MediumCupVolumAdapter(Context mContext, List<Integer> mList) {
         this.mContext = mContext;
         this.mList = mList;
     }
 
     @NonNull
     @Override
-    public CupVolumAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MediumCupVolumAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.row_item_cup_volume, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CupVolumAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MediumCupVolumAdapter.ViewHolder holder, int position) {
 
 
         holder.cupVolume.setText(String.valueOf(mList.get(position)));
 
 
-        holder.cupVolume.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder.cupVolume.setTextSize(40.0f);
                 String text = holder.cupVolume.getText().toString();
-                SharedPreferencesManager.getInstance(mContext).setDefaultCupVolume(text);
+                SharedPreferencesManager.getInstance(mContext).setMediumCup(Integer.parseInt(text));
             }
         });
 
@@ -60,8 +60,6 @@ public class CupVolumAdapter extends RecyclerView.Adapter<CupVolumAdapter.ViewHo
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             cupVolume = itemView.findViewById(R.id.tv_weight);
-
-
         }
     }
 }

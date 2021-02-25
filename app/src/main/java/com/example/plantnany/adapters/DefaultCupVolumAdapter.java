@@ -1,53 +1,50 @@
 package com.example.plantnany.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantnany.R;
-import com.example.plantnany.model.CreatureModel;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
 
 import java.util.List;
 
-public class BodyWeightAdapter extends RecyclerView.Adapter<BodyWeightAdapter.ViewHolder> {
+public class DefaultCupVolumAdapter extends RecyclerView.Adapter<DefaultCupVolumAdapter.ViewHolder> {
     private Context mContext;
     private List<Integer> mList;
 
-    public BodyWeightAdapter(Context mContext, List<Integer> mList) {
+    public DefaultCupVolumAdapter(Context mContext, List<Integer> mList) {
         this.mContext = mContext;
         this.mList = mList;
     }
 
     @NonNull
     @Override
-    public BodyWeightAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public DefaultCupVolumAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.row_item_body_weight, parent, false));
+        return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.row_item_cup_volume, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BodyWeightAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DefaultCupVolumAdapter.ViewHolder holder, int position) {
 
-        holder.weight.setText(String.valueOf(mList.get(position)));
+
+        holder.cupVolume.setText(String.valueOf(mList.get(position)));
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.weight.setTextSize(40.0f);
-                String weight = holder.weight.getText().toString();
-                SharedPreferencesManager.getInstance(mContext).setWeight(Integer.parseInt(weight));
+                holder.cupVolume.setTextSize(40.0f);
+                String text = holder.cupVolume.getText().toString();
+                SharedPreferencesManager.getInstance(mContext).setDefaultCupVolume(Integer.parseInt(text));
             }
         });
-
 
     }
 
@@ -57,13 +54,12 @@ public class BodyWeightAdapter extends RecyclerView.Adapter<BodyWeightAdapter.Vi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView weight;
+
+        TextView cupVolume;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            weight = itemView.findViewById(R.id.tv_weight);
-
-
+            cupVolume = itemView.findViewById(R.id.tv_weight);
         }
     }
 }

@@ -24,6 +24,7 @@ import com.example.plantnany.activities.SplashScreenActivity;
 import com.example.plantnany.database.DataEntity;
 import com.example.plantnany.database.DateConverter;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
+import com.example.plantnany.utils.AppUtils;
 import com.example.plantnany.viewmodels.FragmentViewModel;
 
 import java.util.Date;
@@ -131,7 +132,7 @@ public class WaterInfoFragment extends Fragment implements View.OnClickListener 
 
                     SharedPreferencesManager.getInstance(getActivity()).setIsFirstTime(false);
                     int weight = SharedPreferencesManager.getInstance(getActivity()).getWeight();
-                    int targetWater = calculateIntake(weight, workHour);
+                    int targetWater = AppUtils.calculateIntake(weight, workHour);
                     SharedPreferencesManager.getInstance(getActivity()).setTargetWater(targetWater);
                     SharedPreferencesManager.getInstance(getActivity()).setExerciseTime(workHour);
 
@@ -148,11 +149,6 @@ public class WaterInfoFragment extends Fragment implements View.OnClickListener 
 
                 }
         }
-    }
-
-
-    public final int calculateIntake(int weight, int workTime) {
-        return (int) ((((double) (weight * 100)) / 3.0d) + ((double) ((workTime / 6) * 7)));
     }
 
 

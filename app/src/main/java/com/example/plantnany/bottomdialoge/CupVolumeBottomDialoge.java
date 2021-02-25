@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -18,7 +19,11 @@ import com.example.plantnany.sharedpref.SharedPreferencesManager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 
-public class CupVolumeBottomDialoge extends BottomSheetDialogFragment {
+public class CupVolumeBottomDialoge extends BottomSheetDialogFragment
+        implements DefaultCupSettingBottomDialoge.DefaultCupVolumeListener,
+        LargeCupSettingBottomDialoge.LargeCupVolumeListener,
+        MediumCupSettingBottomDialoge.MediumCupVolumeListener,
+        SmallCupSettingBottomDialoge.SmallCupVolumeListener {
 
 
     RadioButton mRadml, mRadoz;
@@ -29,7 +34,9 @@ public class CupVolumeBottomDialoge extends BottomSheetDialogFragment {
     double smallCup;
     double mediumCup;
     double largeCup;
-    LinearLayout mDefaultCupVolume;
+    LinearLayout llDefault, llMedium, llSmall, llLarge;
+    RadioButton radSmall, radMedium, radLarge;
+
 
     public CupVolumeBottomDialoge() {
 
@@ -42,27 +49,43 @@ public class CupVolumeBottomDialoge extends BottomSheetDialogFragment {
 
         View view = inflater.inflate(R.layout.dialoge_cup_volume_sheet, container, false);
 
-        mRadml = view.findViewById(R.id.rad_ml);
-        mRadoz = view.findViewById(R.id.rad_oz);
-        mRadmloz = view.findViewById(R.id.radg_ml_oz);
+        initView(view);
 
-        mDefaultCup = view.findViewById(R.id.tv_default_cup);
-        mDefaultUnit = view.findViewById(R.id.tv_defaul_unit);
-        mSmallCup = view.findViewById(R.id.tv_small_cup);
-        mSmallUnit = view.findViewById(R.id.tv_small_unit);
-        mMediumCup = view.findViewById(R.id.tv_medium_cup);
-        mMediumUnit = view.findViewById(R.id.tv_medium_unit);
-        mLargeCup = view.findViewById(R.id.tv_large_cup);
-        mLargeUnit = view.findViewById(R.id.tv_large_unit);
-        mDefaultCupVolume = view.findViewById(R.id.ll_default_cup_volume);
 
-        mDefaultCup.setText(SharedPreferencesManager.getInstance(getActivity()).getDefaultCupVolume());
-        mDefaultCupVolume.setOnClickListener(new View.OnClickListener() {
+        llDefault.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                CupSettingBottomDialoge cupSettingBottomDialoge = new CupSettingBottomDialoge();
-                cupSettingBottomDialoge.show(getChildFragmentManager(), "custom_volume_setting_dialoge");
+                DefaultCupSettingBottomDialoge defaultCupSettingBottomDialoge = new DefaultCupSettingBottomDialoge(CupVolumeBottomDialoge.this);
+                defaultCupSettingBottomDialoge.show(getChildFragmentManager(), "default_custom_volume_setting_dialoge");
+                mRadml.setChecked(true);
+            }
+        });
+        llSmall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                SmallCupSettingBottomDialoge smallCupSettingBottomDialoge = new SmallCupSettingBottomDialoge(CupVolumeBottomDialoge.this);
+                smallCupSettingBottomDialoge.show(getChildFragmentManager(), "small_custom_volume_setting_dialoge");
+                mRadml.setChecked(true);
+            }
+        });
+        llMedium.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                MediumCupSettingBottomDialoge mediumCupSettingBottomDialoge = new MediumCupSettingBottomDialoge(CupVolumeBottomDialoge.this);
+                mediumCupSettingBottomDialoge.show(getChildFragmentManager(), "medium_custom_volume_setting_dialoge");
+                mRadml.setChecked(true);
+            }
+        });
+        llLarge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                LargeCupSettingBottomDialoge largeCupSettingBottomDialoge = new LargeCupSettingBottomDialoge(CupVolumeBottomDialoge.this);
+                largeCupSettingBottomDialoge.show(getChildFragmentManager(), "large_custom_volume_setting_dialoge");
+                mRadml.setChecked(true);
             }
         });
 
@@ -76,7 +99,6 @@ public class CupVolumeBottomDialoge extends BottomSheetDialogFragment {
                         mSmallUnit.setText("ml");
                         mMediumUnit.setText("ml");
                         mLargeUnit.setText("ml");
-
 
 
                         defaultCup = getML(Double.parseDouble(mDefaultCup.getText().toString()));
@@ -120,8 +142,67 @@ public class CupVolumeBottomDialoge extends BottomSheetDialogFragment {
             }
         });
 
+        radSmall.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                radSmall.setChecked(isChecked);
+                SharedPreferencesManager.getInstance(getActivity()).setIsSmallCupChecked(isChecked);
+
+            }
+        });
+
+        radMedium.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                radMedium.setChecked(isChecked);
+                SharedPreferencesManager.getInstance(getActivity()).setIsMediumCupChecked(isChecked);
+
+            }
+        });
+
+        radLarge.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                radLarge.setChecked(isChecked);
+                SharedPreferencesManager.getInstance(getActivity()).setIsLargeCupChecked(isChecked);
+
+            }
+        });
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+    }
+
+    private void initView(View view) {
+        mRadml = view.findViewById(R.id.rad_ml);
+        mRadoz = view.findViewById(R.id.rad_oz);
+        mRadmloz = view.findViewById(R.id.radg_ml_oz);
+
+        mDefaultCup = view.findViewById(R.id.tv_default_cup);
+        mDefaultUnit = view.findViewById(R.id.tv_defaul_unit);
+        mSmallCup = view.findViewById(R.id.tv_small_cup);
+        mSmallUnit = view.findViewById(R.id.tv_small_unit);
+        mMediumCup = view.findViewById(R.id.tv_medium_cup);
+        mMediumUnit = view.findViewById(R.id.tv_medium_unit);
+        mLargeCup = view.findViewById(R.id.tv_large_cup);
+        mLargeUnit = view.findViewById(R.id.tv_large_unit);
+        llDefault = view.findViewById(R.id.ll_default_cup_volume);
+        llSmall = view.findViewById(R.id.ll_small);
+        llMedium = view.findViewById(R.id.ll_medium);
+        llLarge = view.findViewById(R.id.ll_large);
+
+        radSmall = view.findViewById(R.id.radio_button_small);
+        radMedium = view.findViewById(R.id.radio_button_medium);
+        radLarge = view.findViewById(R.id.radio_button_large);
     }
 
     private double getOZ(double ml) {
@@ -132,5 +213,37 @@ public class CupVolumeBottomDialoge extends BottomSheetDialogFragment {
         return oz * 29.574;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mDefaultCup.setText(String.valueOf(SharedPreferencesManager.getInstance(getActivity()).getDefaultCupVolume()));
+        mLargeCup.setText(String.valueOf(SharedPreferencesManager.getInstance(getActivity()).getLargeCup()));
+        mMediumCup.setText(String.valueOf(SharedPreferencesManager.getInstance(getActivity()).getMediumCup()));
+        mSmallCup.setText(String.valueOf(SharedPreferencesManager.getInstance(getActivity()).getSmallCup()));
 
+        radLarge.setChecked(SharedPreferencesManager.getInstance(getActivity()).getIsLargeCupChecked());
+        radMedium.setChecked(SharedPreferencesManager.getInstance(getActivity()).getIsMediumCupChecked());
+        radSmall.setChecked(SharedPreferencesManager.getInstance(getActivity()).getIsSmallCupChecked());
+    }
+
+    @Override
+    public void defaultCupVolume(int defaultCupVolum) {
+        mDefaultCup.setText(String.valueOf(defaultCupVolum));
+
+    }
+
+    @Override
+    public void largeCupVolume(int largeCupVolum) {
+        mLargeCup.setText(String.valueOf(largeCupVolum));
+    }
+
+    @Override
+    public void mediumCupVolume(int mediumCupVolum) {
+        mMediumCup.setText(String.valueOf(mediumCupVolum));
+    }
+
+    @Override
+    public void smallCupVolume(int smallCupVolum) {
+        mSmallCup.setText(String.valueOf(smallCupVolum));
+    }
 }
