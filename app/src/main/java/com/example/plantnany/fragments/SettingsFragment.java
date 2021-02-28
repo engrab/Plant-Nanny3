@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +23,7 @@ import androidx.multidex.BuildConfig;
 
 import com.example.plantnany.ButtonClick;
 import com.example.plantnany.R;
+import com.example.plantnany.activities.FirebaseAuthActivity;
 import com.example.plantnany.activities.PrivacyPolicyActivity;
 import com.example.plantnany.bottomdialoge.CupVolumeBottomDialoge;
 import com.example.plantnany.bottomdialoge.DailyGoalBottomDialog;
@@ -46,6 +48,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener,
     private Context context;
     TextView mDefaultCupVolume, mTargerWater;
     ButtonClick buttonClick;
+    Button btnLogin;
 
 
     @Override
@@ -114,6 +117,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener,
         mDailyGoal.setOnClickListener(this);
         mCupVolume.setOnClickListener(this);
         llReminder.setOnClickListener(this);
+        btnLogin.setOnClickListener(this);
 
     }
 
@@ -148,6 +152,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener,
         mSoundSwitch = view.findViewById(R.id.sc_sound);
         mDefaultCupVolume = view.findViewById(R.id.tv_default_cup_volume);
         mTargerWater = view.findViewById(R.id.tv_target_water);
+        btnLogin = view.findViewById(R.id.btn_login);
     }
 
     @Override
@@ -222,7 +227,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener,
                 buttonClick.setOnsoundOnButtonClick();
                 WaterReminderBottomDialoge waterReminderBottomDialoge = new WaterReminderBottomDialoge();
                 waterReminderBottomDialoge.show(getChildFragmentManager(), "waterreminder");
+                break;
 
+            case R.id.btn_login:
+
+                startActivity(new Intent(getActivity(), FirebaseAuthActivity.class));
+                break;
 
         }
     }

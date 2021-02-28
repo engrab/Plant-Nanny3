@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "555247963445",
+    "project_id": "plantnany-5a42a",
+    "storage_bucket": "plantnany-5a42a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:555247963445:android:0d2a0c4ec0bf903274d07c",
+        "android_client_info": {
+          "package_name": "com.example.plantnany"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "555247963445-rm4ojajs434fqvu5q6vld6e79rv2robg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_ziyD1Fa10BhJaovvXztueeyf6FPgb4U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "555247963445-rm4ojajs434fqvu5q6vld6e79rv2robg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
 import com.example.plantnany.ButtonClick;
 import com.example.plantnany.R;
@@ -33,7 +32,7 @@ public class ActivityInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View inflate = inflater.inflate(R.layout.fragment_activity_info, container, false);
-        inflate.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+        inflate.findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 buttonClick.setOnsoundOnButtonClick();

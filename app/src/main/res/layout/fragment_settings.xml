@@ -29,7 +29,7 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/btn_login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -41,7 +41,7 @@
                     android:id="@+id/textView"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/button"
+                    android:layout_below="@id/btn_login"
                     android:layout_centerHorizontal="true"
                     android:text="After Loggin in , the app will help you backup your drinking water records, plant details, etc."
                     android:textColor="#FFFFFF"
