@@ -28,6 +28,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void facebookSingIn(View view) {
+        startActivity(new Intent(this, FacebookSignInActivity.class));
 
     }
 
