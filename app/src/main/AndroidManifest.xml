@@ -15,8 +15,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PlantNany">
-        <activity android:name=".activities.FirebaseAuthActivity"></activity>
-        <activity android:name=".activities.PrivacyPolicyActivity"></activity> <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+        <activity android:name=".activities.FacebookSignInActivity"></activity>
+        <activity android:name=".activities.SignInActivity" />
+        <activity android:name=".activities.GoogleSigninActivity" />
+        <activity android:name=".activities.EmailSignInActivity" />
+        <activity android:name=".activities.PrivacyPolicyActivity" /> <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713" />

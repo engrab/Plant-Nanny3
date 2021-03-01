@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,7 +24,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 
-public class FirebaseAuthActivity extends AppCompatActivity {
+public class EmailSignInActivity extends AppCompatActivity {
 
     private TextInputLayout mEmailLayout, mPasswordLayout;
     private Button mBtnSignin, mBtnRegisterUser, mBtnSignOut;
@@ -35,6 +36,7 @@ public class FirebaseAuthActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_firebase_auth);
         initViews();
 
@@ -85,17 +87,17 @@ public class FirebaseAuthActivity extends AppCompatActivity {
 
                         if (task.isSuccessful()) {
 
-                            Toast.makeText(FirebaseAuthActivity.this, "User Logged in", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EmailSignInActivity.this, "User Logged in", Toast.LENGTH_SHORT).show();
 
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
 
-                                Toast.makeText(FirebaseAuthActivity.this, "Password Incorrect", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EmailSignInActivity.this, "Password Incorrect", Toast.LENGTH_SHORT).show();
                                 mOutputText.setText("Password Incorrect");
                                 mPasswordLayout.setError("Password Incorrect");
                             } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
                                 mEmailLayout.setError("Email Incorrect");
-                                Toast.makeText(FirebaseAuthActivity.this, "Email Incorrect", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EmailSignInActivity.this, "Email Incorrect", Toast.LENGTH_SHORT).show();
                                 mOutputText.setText("Email Incorrect");
                             }
 
@@ -134,7 +136,7 @@ public class FirebaseAuthActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         if (task.isSuccessful()) {
-                            Toast.makeText(FirebaseAuthActivity.this, "User Logged in", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EmailSignInActivity.this, "User Logged in", Toast.LENGTH_SHORT).show();
                             hideProgressBar();
                         }
                     }
@@ -145,7 +147,7 @@ public class FirebaseAuthActivity extends AppCompatActivity {
 
                         if (e instanceof FirebaseAuthUserCollisionException) {
                             mEmailLayout.setError("Email already in use");
-                            Toast.makeText(FirebaseAuthActivity.this, "Email already in use", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EmailSignInActivity.this, "Email already in use", Toast.LENGTH_SHORT).show();
                             mOutputText.setText("Email already in use");
                         }
                     }

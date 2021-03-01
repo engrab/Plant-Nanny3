@@ -23,8 +23,9 @@ import androidx.multidex.BuildConfig;
 
 import com.example.plantnany.ButtonClick;
 import com.example.plantnany.R;
-import com.example.plantnany.activities.FirebaseAuthActivity;
+import com.example.plantnany.activities.GoogleSigninActivity;
 import com.example.plantnany.activities.PrivacyPolicyActivity;
+import com.example.plantnany.activities.SignInActivity;
 import com.example.plantnany.bottomdialoge.CupVolumeBottomDialoge;
 import com.example.plantnany.bottomdialoge.DailyGoalBottomDialog;
 import com.example.plantnany.bottomdialoge.LanguageBottomDialoge;
@@ -231,7 +232,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener,
 
             case R.id.btn_login:
 
-                startActivity(new Intent(getActivity(), FirebaseAuthActivity.class));
+                startActivity(new Intent(getActivity(), SignInActivity.class));
                 break;
 
         }
