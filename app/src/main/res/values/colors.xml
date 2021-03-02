@@ -16,4 +16,5 @@
 
     <color name="colorSelected">#26C6DA</color>
     <color name="colorDeSelected">#3C3B3D</color>
+    <color name="green">#158204</color>
 </resources>

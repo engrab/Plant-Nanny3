@@ -96,8 +96,6 @@ public class FacebookSignInActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
 
                         }
-
-                        // ...
                     }
 
 
