@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
             case R.id.navigation_setting:
                 buttonClick.setOnsoundOnButtonClick();
-                fragment = new SettingsFragment(this);
+               fragment = SettingsFragment.getInstance(MainActivity.this);
 
                 break;
             case R.id.navigation_graph:

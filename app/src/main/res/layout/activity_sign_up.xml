@@ -9,6 +9,13 @@
     android:orientation="vertical"
     tools:context=".activities.SignUpActivity">
 
+    <TextView
+        android:id="@+id/tv_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="no text" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -77,55 +84,56 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:textColor="@color/black"
             android:layout_margin="10dp"
-            android:text="Already have account" />
+            android:text="Already have account"
+            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/btn_sign_up"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/green"
-            android:textColor="@color/white"
-            android:text="Sign Up" />
+            android:text="Sign Up"
+            android:textColor="@color/white" />
 
         <LinearLayout
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_google"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
                 android:backgroundTint="@color/white"
                 android:drawableLeft="@drawable/ic_google"
-                android:textColor="@color/black"
-                android:textAllCaps="false"
-                android:layout_marginEnd="5dp"
                 android:text="Google"
-                android:layout_marginRight="5dp" />
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
 
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/btn_facebook"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center"
                 android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp" />
+                android:layout_marginBottom="30dp"
+                android:layout_weight="1" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/tv_sign_up_phone"
             android:layout_width="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/black"
             android:layout_height="wrap_content"
-            android:text="Sign Up with Phone"/>
+            android:layout_marginTop="5dp"
+            android:text="Sign Up with Phone"
+            android:textColor="@color/black" />
     </LinearLayout>
 
 </LinearLayout>

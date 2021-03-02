@@ -23,6 +23,7 @@ import androidx.multidex.BuildConfig;
 
 import com.example.plantnany.ButtonClick;
 import com.example.plantnany.R;
+import com.example.plantnany.activities.MainActivity;
 import com.example.plantnany.activities.PrivacyPolicyActivity;
 import com.example.plantnany.activities.SignUpActivity;
 import com.example.plantnany.bottomdialoge.CupVolumeBottomDialoge;
@@ -36,7 +37,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener,
         LanguageBottomDialoge.LanguageSelectListener, DailyGoalBottomDialog.TargetWaterListener {
 
     private static final String TAG = "SettingsFragment";
-    private final Context mContext;
+    private static Context mContext;
     LinearLayout mPrivacyPolicy, mMoreApps, mShareApp, mRateUs, mFollowUs, mMusic, mSoundEffect, mLanguage,
             mDailyGoal, mCupVolume, llReminder;
     SwitchCompat mMusicSwitch, mSoundSwitch;
@@ -47,7 +48,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener,
     public LanguageBottomDialoge.LanguageSelectListener callback;
     private Context context;
     TextView mDefaultCupVolume, mTargerWater;
-    ButtonClick buttonClick;
+    static ButtonClick buttonClick;
     Button btnLogin;
 
 
@@ -63,11 +64,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener,
         }
         this.context = context;
     }
-
-    public SettingsFragment(Context context) {
+    public static SettingsFragment getInstance(MainActivity context){
         mContext = context;
         buttonClick = new ButtonClick(mContext);
-
+        SettingsFragment f = new SettingsFragment();
+        return f;
     }
 
 
@@ -262,4 +263,5 @@ public class SettingsFragment extends Fragment implements View.OnClickListener,
     public interface SoundClickListener {
         void soundClick(boolean bool);
     }
+
 }

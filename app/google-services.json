@@ -12,20 +12,7 @@
           "package_name": "com.example.plantnany"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "555247963445-t514i09b32h1o7e479bepcd01lcvavqb.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.plantnany",
-            "certificate_hash": "e0bc1dbe7e009385412884fb5b8bed21bf2cc673"
-          }
-        },
-        {
-          "client_id": "555247963445-rm4ojajs434fqvu5q6vld6e79rv2robg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyB_ziyD1Fa10BhJaovvXztueeyf6FPgb4U"
@@ -33,12 +20,7 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "555247963445-rm4ojajs434fqvu5q6vld6e79rv2robg.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
