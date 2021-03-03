@@ -1,26 +1,44 @@
 {
   "project_info": {
-    "project_number": "555247963445",
-    "project_id": "plantnany-5a42a",
-    "storage_bucket": "plantnany-5a42a.appspot.com"
+    "project_number": "565200425321",
+    "project_id": "plant-73540",
+    "storage_bucket": "plant-73540.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:555247963445:android:0d2a0c4ec0bf903274d07c",
+        "mobilesdk_app_id": "1:565200425321:android:b50f443b1a71d22aa2adf8",
         "android_client_info": {
           "package_name": "com.example.plantnany"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "565200425321-om2rq3o8e9o1gheh078c734tm1um23v4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.plantnany",
+            "certificate_hash": "e0bc1dbe7e009385412884fb5b8bed21bf2cc673"
+          }
+        },
+        {
+          "client_id": "565200425321-kr1pcj4jidiq78ccmqjhadlte8b50ujr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyB_ziyD1Fa10BhJaovvXztueeyf6FPgb4U"
+          "current_key": "AIzaSyChjOBXrKpDJS4i6iHh3KX-5dGc4NdPfoY"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "565200425321-kr1pcj4jidiq78ccmqjhadlte8b50ujr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

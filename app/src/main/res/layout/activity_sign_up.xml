@@ -117,14 +117,19 @@
                 android:textColor="@color/black" />
 
 
-            <com.facebook.login.widget.LoginButton
+            <Button
                 android:id="@+id/btn_facebook"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:drawableStart="@drawable/ic_facebook"
+                android:drawableLeft="@drawable/ic_facebook"
+                android:text="Facebook"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/com_facebook_blue" />
         </LinearLayout>
 
         <TextView

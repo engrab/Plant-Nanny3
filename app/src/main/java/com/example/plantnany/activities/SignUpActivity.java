@@ -46,10 +46,12 @@ public class SignUpActivity extends AppCompatActivity {
     private ProgressDialog mProgressDialog;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    public static final int SIGN_IN_REQUEST_CODE = 60;
+    public static final int GOOGLE_SIGN_IN_REQUEST_CODE = 60;
+    public static  int FACEBOOK_SIGN_IN_REQUEST_CODE = 61;
+
     public static final String TAG = "SignUpActivity";
     private GoogleSignInClient mGoogleSignInClient;
-    private CallbackManager callbackManager;
+    private CallbackManager mCallbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +74,14 @@ public class SignUpActivity extends AppCompatActivity {
 
         binding.btnSignUp.setOnClickListener(this::singUp);
         binding.btnGoogle.setOnClickListener(this::googleSingIn);
-        binding.btnFacebook.setOnClickListener(this::facebookSingIn);
+        binding.btnFacebook.setOnClickListener(this::facebookSignIn);
         binding.tvAlreadyHaveAccount.setOnClickListener(this::alreadyAccount);
 
-        binding.btnFacebook.setPermissions(Arrays.asList(EMAIL));
+
 
     }
+
+
 
     @Override
     public void onStart() {
@@ -202,34 +206,33 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-
-    private void facebookSingIn(View view) {
-        callbackManager = CallbackManager.Factory.create();
+    private void facebookSignIn(View view) {
 
 
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+        mCallbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().logInWithReadPermissions(SignUpActivity.this, Arrays.asList("email", "public_profile"));
 
-
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
             @Override
             public void onCancel() {
-
+                Log.d(TAG, "facebook:onCancel");
+                // ...
             }
 
             @Override
             public void onError(FacebookException error) {
-
-                Log.d(TAG, "onError: "+error.getMessage());
+                Log.d(TAG, "facebook:onError", error);
+                // ...
             }
         });
-
     }
+
 
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
@@ -242,24 +245,18 @@ public class SignUpActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-//                            FirebaseUser user = mAuth.getCurrentUser();
-//                            updateUI(user);
-                            openProfile();
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            Toast.makeText(SignUpActivity.this, ""+user.getEmail(), Toast.LENGTH_SHORT).show();
+                            binding.tvEmail.setText(user.getEmail());
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(SignUpActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-
                         }
+                        updateUI();
                     }
-
-
                 });
-    }
-
-    private void openProfile() {
-
     }
 
     private void googleSingIn(View view) {
@@ -279,12 +276,13 @@ public class SignUpActivity extends AppCompatActivity {
     }
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, SIGN_IN_REQUEST_CODE);
+        startActivityForResult(signInIntent, GOOGLE_SIGN_IN_REQUEST_CODE);
     }
 
     private void updateUI(FirebaseUser firebaseUser) {
 
         if (firebaseUser != null) {
+            binding.tvEmail.setText(firebaseUser.getEmail());
             Toast.makeText(this, "User Login", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "User not Login", Toast.LENGTH_SHORT).show();
@@ -293,15 +291,14 @@ public class SignUpActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
+        super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == SIGN_IN_REQUEST_CODE) {
+        if (requestCode == GOOGLE_SIGN_IN_REQUEST_CODE) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleGoogleSignIn(task);
         }
-        super.onActivityResult(requestCode, resultCode, data);
-//        callbackManager.onActivityResult(requestCode, resultCode, data);
+//        mCallbackManager.onActivityResult(requestCode, resultCode, data);
 
     }
 
@@ -319,28 +316,6 @@ public class SignUpActivity extends AppCompatActivity {
             Log.d(TAG, "handleGoogleSignIn: Error status message: "
                     + GoogleSignInStatusCodes.getStatusCodeString(e.getStatusCode()));
         }
-    }
-
-    private void firebaseAuthWithGoogle(String idToken) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            updateUI(null);
-                        }
-
-                        // ...
-                    }
-                });
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount result) {
