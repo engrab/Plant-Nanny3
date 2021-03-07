@@ -23,6 +23,7 @@ import androidx.multidex.BuildConfig;
 
 import com.example.plantnany.ButtonClick;
 import com.example.plantnany.R;
+import com.example.plantnany.activities.FUISignOutActivity;
 import com.example.plantnany.activities.MainActivity;
 import com.example.plantnany.activities.PrivacyPolicyActivity;
 import com.example.plantnany.activities.SignUpActivity;
@@ -232,7 +233,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener,
 
             case R.id.btn_login:
 
-                startActivity(new Intent(getActivity(), SignUpActivity.class));
+                startActivity(new Intent(getActivity(), FUISignOutActivity.class));
                 break;
 
         }

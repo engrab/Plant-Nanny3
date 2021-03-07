@@ -14,8 +14,9 @@
     <string name="title_pots">Pots</string>
     <string name="title_all_plants">All Plants</string>
 
-    <string name="facebook_app_id">454767975672010</string>
-    <string name="fb_login_protocol_scheme">fb454767975672010</string>
 
+    <string name="facebook_app_id">354245865760236</string>
+    <string name="facebook_application_id">354245865760236</string>
+    <string name="fb_login_protocol_scheme">fb354245865760236</string>
 
 </resources>
