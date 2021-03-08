@@ -9,11 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantnany.R;
 import com.example.plantnany.adapters.CreatureAdapter;
-import com.example.plantnany.adapters.PlantAdapter;
+import com.example.plantnany.databinding.FragmentCreaturesBinding;
 import com.example.plantnany.model.CreatureModel;
 
 import java.util.ArrayList;
@@ -21,14 +20,17 @@ import java.util.List;
 
 public class CreaturesFragment extends Fragment {
 
-    RecyclerView mRecyclerView;
     List<CreatureModel> modelList;
+    private FragmentCreaturesBinding binding;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_creatures, container, false);
+        binding = FragmentCreaturesBinding.inflate(inflater, container, false);
+
+        View view = binding.getRoot();
         initList();
-        init(view);
+        startRecyclerView();
         return view;
 
     }
@@ -56,11 +58,16 @@ public class CreaturesFragment extends Fragment {
         modelList.add(new CreatureModel(R.drawable.ic_placeholder_image, "Unknown", "Upgrade your greenhouse to discover this creature."));
     }
 
-    private void init(View view) {
+    private void startRecyclerView() {
 
-        mRecyclerView = view.findViewById(R.id.creature_recyclerview);
         CreatureAdapter creatureAdapter = new CreatureAdapter(getActivity(), modelList);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setAdapter(creatureAdapter);
+        binding.creatureRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.creatureRecyclerview.setAdapter(creatureAdapter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }

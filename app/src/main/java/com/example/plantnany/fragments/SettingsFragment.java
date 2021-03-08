@@ -31,7 +31,10 @@ import com.example.plantnany.bottomdialoge.CupVolumeBottomDialoge;
 import com.example.plantnany.bottomdialoge.DailyGoalBottomDialog;
 import com.example.plantnany.bottomdialoge.LanguageBottomDialoge;
 import com.example.plantnany.bottomdialoge.WaterReminderBottomDialoge;
+import com.example.plantnany.databinding.FragmentSettingsBinding;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class SettingsFragment extends Fragment implements View.OnClickListener,
@@ -39,18 +42,21 @@ public class SettingsFragment extends Fragment implements View.OnClickListener,
 
     private static final String TAG = "SettingsFragment";
     private static Context mContext;
-    LinearLayout mPrivacyPolicy, mMoreApps, mShareApp, mRateUs, mFollowUs, mMusic, mSoundEffect, mLanguage,
-            mDailyGoal, mCupVolume, llReminder;
-    SwitchCompat mMusicSwitch, mSoundSwitch;
     private MusicPlayingListener mMusicPlayListener;
-    private SoundClickListener mSoundListener;
-    ImageView mReminder;
-    static TextView mSelectedLangName;
     public LanguageBottomDialoge.LanguageSelectListener callback;
     private Context context;
-    TextView mDefaultCupVolume, mTargerWater;
+
     static ButtonClick buttonClick;
-    Button btnLogin;
+    static TextView mSelectedLangName;
+
+//    TextView mDefaultCupVolume, mTargerWater;
+//    ImageView mReminder;
+//    Button btnLogin;
+//    LinearLayout mPrivacyPolicy, mMoreApps, mShareApp, mRateUs, mFollowUs, mMusic, mSoundEffect, mLanguage,
+//            mDailyGoal, mCupVolume, llReminder;
+//    SwitchCompat mMusicSwitch, mSoundSwitch;
+
+    private FragmentSettingsBinding binding;
 
 
     @Override
@@ -60,9 +66,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener,
         if (context instanceof MusicPlayingListener) {
             mMusicPlayListener = (MusicPlayingListener) context;
         }
-        if (context instanceof SoundClickListener) {
-            mSoundListener = (SoundClickListener) context;
-        }
+
         this.context = context;
     }
     public static SettingsFragment getInstance(MainActivity context){
@@ -72,22 +76,45 @@ public class SettingsFragment extends Fragment implements View.OnClickListener,
         return f;
     }
 
+    private void getUser(){
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user!= null){
+            binding.btnLogin.setVisibility(View.INVISIBLE);
+            binding.tvInfo.setVisibility(View.INVISIBLE);
+
+            binding.tvDisplayName.setVisibility(View.VISIBLE);
+            binding.ivUserImage.setVisibility(View.VISIBLE);
+
+            binding.tvDisplayName.setText(user.getDisplayName());
+            
+
+        }else {
+            binding.btnLogin.setVisibility(View.VISIBLE);
+            binding.tvInfo.setVisibility(View.VISIBLE);
+
+            binding.tvDisplayName.setVisibility(View.INVISIBLE);
+            binding.ivUserImage.setVisibility(View.INVISIBLE);
+        }
+    }
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        Log.d(TAG, "onCreateView: ");
-        init(view);
+
+        binding = FragmentSettingsBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        getUser();
         initListener();
         mediaPlayerListener();
         callback = this;
 
 
-        mMusicSwitch.setChecked(SharedPreferencesManager.getInstance(getActivity()).getMusicPlay());
-        mSoundSwitch.setChecked(SharedPreferencesManager.getInstance(getActivity()).getButtonClickSound());
+        binding.scMusic.setChecked(SharedPreferencesManager.getInstance(getActivity()).getMusicPlay());
+        binding.scSound.setChecked(SharedPreferencesManager.getInstance(getActivity()).getButtonClickSound());
 
-        mMusicSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        binding.scMusic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 buttonClick.setOnsoundOnButtonClick();
@@ -95,7 +122,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener,
                 mMusicPlayListener.musicPlaying(isChecked);
             }
         });
-        mSoundSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        binding.scSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 buttonClick.setOnsoundOnButtonClick();
@@ -108,18 +135,18 @@ public class SettingsFragment extends Fragment implements View.OnClickListener,
     }
 
     private void initListener() {
-        mPrivacyPolicy.setOnClickListener(this);
-        mMoreApps.setOnClickListener(this);
-        mShareApp.setOnClickListener(this);
-        mRateUs.setOnClickListener(this);
-        mFollowUs.setOnClickListener(this);
+        binding.llPrivacyPolicy.setOnClickListener(this);
+        binding.llMoreApps.setOnClickListener(this);
+        binding.llShareApp.setOnClickListener(this);
+        binding.llRateUs.setOnClickListener(this);
+        binding.llFollowUs.setOnClickListener(this);
 
-        mLanguage.setOnClickListener(this);
-        mReminder.setOnClickListener(this);
-        mDailyGoal.setOnClickListener(this);
-        mCupVolume.setOnClickListener(this);
-        llReminder.setOnClickListener(this);
-        btnLogin.setOnClickListener(this);
+        binding.llLanguage.setOnClickListener(this);
+        binding.llReminder.setOnClickListener(this);
+        binding.llDailyGoal.setOnClickListener(this);
+        binding.llCupVolume.setOnClickListener(this);
+        binding.llReminder.setOnClickListener(this);
+        binding.btnLogin.setOnClickListener(this);
 
     }
 
@@ -131,30 +158,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onResume() {
         super.onResume();
-        mTargerWater.setText(String.valueOf(SharedPreferencesManager.getInstance(getActivity()).getTargetWater()));
+        binding.tvTargetWater.setText(String.valueOf(SharedPreferencesManager.getInstance(getActivity()).getTargetWater()));
 
-    }
-
-    private void init(View view) {
-
-        mPrivacyPolicy = view.findViewById(R.id.ll_privacy_policy);
-        mMoreApps = view.findViewById(R.id.ll_more_apps);
-        mShareApp = view.findViewById(R.id.ll_share_app);
-        mRateUs = view.findViewById(R.id.ll_rate_us);
-        mFollowUs = view.findViewById(R.id.ll_follow_us);
-        mMusic = view.findViewById(R.id.ll_music);
-        mSoundEffect = view.findViewById(R.id.ll_sound_effect);
-        mLanguage = view.findViewById(R.id.ll_language);
-        mMusicSwitch = view.findViewById(R.id.sc_music);
-        mReminder = view.findViewById(R.id.iv_reminder);
-        mSelectedLangName = view.findViewById(R.id.tv_language_name);
-        mDailyGoal = view.findViewById(R.id.ll_daily_goal);
-        mCupVolume = view.findViewById(R.id.ll_cup_volume);
-        llReminder = view.findViewById(R.id.ll_reminder);
-        mSoundSwitch = view.findViewById(R.id.sc_sound);
-        mDefaultCupVolume = view.findViewById(R.id.tv_default_cup_volume);
-        mTargerWater = view.findViewById(R.id.tv_target_water);
-        btnLogin = view.findViewById(R.id.btn_login);
     }
 
     @Override
@@ -242,18 +247,18 @@ public class SettingsFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mDefaultCupVolume.setText(String.valueOf(SharedPreferencesManager.getInstance(getActivity()).getDefaultCupVolume()));
+        binding.tvDefaultCupVolume.setText(String.valueOf(SharedPreferencesManager.getInstance(getActivity()).getDefaultCupVolume()));
     }
 
     @Override
     public void selectedLanguage(String lang) {
         Log.d(TAG, "selectedLanguage: " + lang);
-        mSelectedLangName.setText(lang);
+        binding.tvLanguageName.setText(lang);
     }
 
     @Override
     public void targetWater(int targetWater) {
-        mTargerWater.setText(String.valueOf(targetWater));
+        binding.tvTargetWater.setText(String.valueOf(targetWater));
 
     }
 
@@ -261,8 +266,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener,
         void musicPlaying(boolean bool);
     }
 
-    public interface SoundClickListener {
-        void soundClick(boolean bool);
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
-
 }

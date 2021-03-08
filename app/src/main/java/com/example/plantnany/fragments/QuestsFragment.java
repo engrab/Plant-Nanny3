@@ -10,19 +10,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.plantnany.R;
+import com.example.plantnany.databinding.FragmentQuestsBinding;
 
 public class QuestsFragment extends Fragment {
+
+    private FragmentQuestsBinding binding;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_quests, container, false);
-        init(view);
+        binding = FragmentQuestsBinding.inflate(inflater, container, false);
+
+        View view = binding.getRoot();
+
         return view;
 
     }
 
-    private void init(View view) {
-
-    }
 }

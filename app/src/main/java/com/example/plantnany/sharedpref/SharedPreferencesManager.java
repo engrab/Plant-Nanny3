@@ -178,8 +178,9 @@ public class SharedPreferencesManager {
 
     public List<TimeModel> getSafeReminderTime() {
         Gson gson = new Gson();
-        String json = sharedPrefs.getString(SAFE_REMINDER_TIME_KEY, null);
+        String json = sharedPrefs.getString(SAFE_REMINDER_TIME_KEY, "null");
         Type type = new TypeToken<ArrayList<TimeModel>>() {
+
         }.getType();
 
         if (mList == null) {

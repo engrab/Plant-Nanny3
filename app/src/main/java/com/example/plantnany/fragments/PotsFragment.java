@@ -26,6 +26,7 @@ import com.example.plantnany.activities.MainActivity;
 import com.example.plantnany.adapters.PotsAdapter;
 import com.example.plantnany.database.DataEntity;
 import com.example.plantnany.database.DateConverter;
+import com.example.plantnany.databinding.FragmentPotsBinding;
 import com.example.plantnany.model.PotModel;
 import com.example.plantnany.sharedpref.SharedPreferencesManager;
 import com.example.plantnany.viewmodels.FragmentViewModel;
@@ -45,14 +46,10 @@ import java.util.List;
 
 public class PotsFragment extends Fragment {
 
-    RecyclerView mRecyclerView;
+    private FragmentPotsBinding binding;
     List<PotModel> mList;
-    LinearLayout freeClover;
     RewardedAd rewardedAd;
-    TextView clover;
-    TextView seeds;
     Context mContext;
-    TextView level;
     List<DataEntity> mListEntity = new ArrayList<>();
     private FragmentViewModel mViewModel;
     Date date = new Date();
@@ -65,14 +62,14 @@ public class PotsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_pots, container, false);
-        init(view);
+        binding = FragmentPotsBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
         initViewModel();
         listPots();
         setAdapterForRecyclerView();
 
 
-        freeClover.setOnClickListener(new View.OnClickListener() {
+        binding.llFreeClover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cloverDialoge();
@@ -181,13 +178,13 @@ public class PotsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (!mListEntity.isEmpty()) {
-            clover.setText(mListEntity.get(mListEntity.size() - 1).getClover() + "");
-            level.setText(mListEntity.get(mListEntity.size() - 1).getLevel() + "");
-            seeds.setText(mListEntity.get(mListEntity.size() - 1).getSeed() + "");
+            binding.tvClover.setText(mListEntity.get(mListEntity.size() - 1).getClover() + "");
+            binding.tvLevel.setText(mListEntity.get(mListEntity.size() - 1).getLevel() + "");
+            binding.tvSeeds.setText(mListEntity.get(mListEntity.size() - 1).getSeed() + "");
         } else {
-            clover.setText(SharedPreferencesManager.getInstance(getActivity()).getClover() + "");
-            seeds.setText(SharedPreferencesManager.getInstance(getActivity()).getSeeds() + "");
-            level.setText(SharedPreferencesManager.getInstance(getActivity()).getLevel() + "");
+            binding.tvClover.setText(SharedPreferencesManager.getInstance(getActivity()).getClover() + "");
+            binding.tvSeeds.setText(SharedPreferencesManager.getInstance(getActivity()).getSeeds() + "");
+            binding.tvLevel.setText(SharedPreferencesManager.getInstance(getActivity()).getLevel() + "");
         }
 
     }
@@ -203,19 +200,13 @@ public class PotsFragment extends Fragment {
     }
 
     private void setAdapterForRecyclerView() {
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        mRecyclerView.setAdapter(new PotsAdapter(getActivity(), mList));
+        binding.rvPots.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        binding.rvPots.setAdapter(new PotsAdapter(getActivity(), mList));
     }
 
-    private void init(View view) {
-
-        mRecyclerView = view.findViewById(R.id.rv_pots);
-        freeClover = view.findViewById(R.id.ll_free_clover);
-        clover = view.findViewById(R.id.tv_clover);
-        seeds = view.findViewById(R.id.tv_seeds);
-        level = view.findViewById(R.id.tv_level);
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
-
-
 }

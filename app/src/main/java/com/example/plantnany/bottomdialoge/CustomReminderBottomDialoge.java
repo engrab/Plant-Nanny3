@@ -105,6 +105,6 @@ public class CustomReminderBottomDialoge extends BottomSheetDialogFragment {
 
     private void timeList() {
         mList = new ArrayList<>();
-        mList = getInstance(getActivity()).getSafeReminderTime();
+        mList = SharedPreferencesManager.getInstance(getActivity()).getSafeReminderTime();
     }
 }

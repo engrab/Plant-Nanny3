@@ -14,11 +14,14 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.plantnany.ButtonClick;
 import com.example.plantnany.R;
 import com.example.plantnany.adapters.SectionsPagerAdapter;
+import com.example.plantnany.databinding.FragmentPlantsAllBinding;
 import com.google.android.material.tabs.TabLayout;
 
 public class AllPlantsFragment extends Fragment {
     Context mContext;
     ButtonClick buttonClick;
+    private FragmentPlantsAllBinding binding;
+
     public AllPlantsFragment(Context context) {
         mContext = context;
         buttonClick = new ButtonClick(mContext);
@@ -27,15 +30,19 @@ public class AllPlantsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_plants_all, container, false);
+        binding = FragmentPlantsAllBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getContext(), getChildFragmentManager());
-        ViewPager viewPager = view.findViewById(R.id.view_pager);
-        viewPager.setAdapter(sectionsPagerAdapter);
+        binding.viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = view.findViewById(R.id.tabs);
-        tabs.setupWithViewPager(viewPager);
+        tabs.setupWithViewPager(binding.viewPager);
         return view;
 
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
+    }
 }
